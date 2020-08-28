@@ -1,7 +1,5 @@
 package com.cao.oa.action;
 
-import com.cao.oa.bean.FileDepot;
-import com.cao.oa.bean.UserInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import com.cao.oa.bean.FileDepot;
+import com.cao.oa.bean.UserInfo;
 import com.cao.oa.service.FileDepotService;
 import com.cao.oa.service.GroupService;
 import com.cao.oa.service.PartService;
@@ -43,11 +43,11 @@ public class FileDepotAction {
 	
 	public FileDepotAction(){
 		super();
-		sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½ hh:mm:ss");
+		sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
 	}
 
 	/**
-	 * ×ªï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ö¿ï¿½Ò³ï¿½ï¿½
+	 * ×ªµ½ÎÄ¼þ²Ö¿âÒ³Ãæ
 	 * @param page
 	 * @param kind
 	 * @param req
@@ -62,7 +62,7 @@ public class FileDepotAction {
 		String userPartName = partService.getNameById(userPart);
 		String userGroupName= groupService.getNameById(userPart, userGroup);
 		
-		List<Map<String,String>> filesList = null;//Ò»Ò³5ï¿½ï¿½
+		List<Map<String,String>> filesList = null;//Ò»Ò³5¸ö
 		String currentFile = "group";
 		int allPage = 0;
 		int currentPage = 0;
@@ -70,24 +70,24 @@ public class FileDepotAction {
 		int canSelectPart = userPart;
 		int canSelectGroup = userGroup;
 		
-		//ï¿½ï¿½Ç°ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+		//µ±Ç°ÎÄ¼þ·ÖÀà
 		if(kind==null  || kind.length()==0){
 			currentFile = "company";
 			kind = "company";
 		}else{
 			currentFile = kind;
 		}
-		//ï¿½ï¿½Ç°Ò³
+		//µ±Ç°Ò³
 		if(page==null  || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
 		
-		//ï¿½ï¿½Ò³ï¿½ï¿½
+		//×ÜÒ³Êý
 		if(kind.equals("group")){
-			//Ð¡ï¿½ï¿½
-			if(userKind== UserInfo.KIND_MANAGER_WEB){
+			//Ð¡×é
+			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canUpload = 1;
 				canSelectPart = -1;
 				canSelectGroup= -1;
@@ -103,7 +103,7 @@ public class FileDepotAction {
 				allPage = fileDepotService.getFileListGroupPageNumber(userPart, userGroup);
 			}
 		}else if(kind.equals("part")){
-			//ï¿½ï¿½ï¿½ï¿½
+			//²¿ÃÅ
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canUpload = 1;
 				canSelectPart = -1;
@@ -115,7 +115,7 @@ public class FileDepotAction {
 				allPage = fileDepotService.getFileListOfPartPageNumber(userPart);
 			}
 		}else{
-			//ï¿½ï¿½Ë¾
+			//¹«Ë¾
 			allPage = fileDepotService.getFileListOfCompanyPageNumber();
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canUpload = 1;
@@ -123,7 +123,7 @@ public class FileDepotAction {
 		}
 
 
-		//ï¿½ï¿½Ö¹Ò³ï¿½ï¿½ï¿½Ç·ï¿½
+		//·ÀÖ¹Ò³Êý·Ç·¨
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}else if(currentPage<1){
@@ -132,7 +132,7 @@ public class FileDepotAction {
 		
 		List<FileDepot> list = null;
 		if(kind.equals("group")){
-			//Ð¡ï¿½ï¿½
+			//Ð¡×é
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				list = fileDepotService.getFileListByPageOfAllPartAndGroup(currentPage);
 			}else if(userKind==UserInfo.KIND_MANAGER_PART){
@@ -141,38 +141,38 @@ public class FileDepotAction {
 				list = fileDepotService.getFileListByPageOfGroup(userPart, userGroup, currentPage);
 			}
 		}else if(kind.equals("part")){
-			//ï¿½ï¿½ï¿½ï¿½
+			//²¿ÃÅ
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				list = fileDepotService.getFileListByPageOfAllPart(currentPage);
 			}else{
 				list = fileDepotService.getFileListByPageOfPart(userPart, currentPage);
 			}
 		}else{
-			//ï¿½ï¿½Ë¾
+			//¹«Ë¾
 			list = fileDepotService.getFileListByPageOfCompany(currentPage);
 		}
-		//ï¿½ï¿½ï¿½ï¿½
+		//Êý¾Ý
 		if(list!=null){
 			filesList = new ArrayList<Map<String,String>>();
 			for(int i=0;i<list.size();i++){
 				Map<String,String> map = new HashMap<String,String>();
 				map.put("fileId", ""+list.get(i).getId());
 				map.put("showFileName", list.get(i).getShowFileName());
-				//ï¿½ï¿½Ô´
+				//À´Ô´
 				if(kind.equals("group")){
-					//Ð¡ï¿½ï¿½
+					//Ð¡×é
 					map.put("source", groupService.getNameById(list.get(i).getPart(), list.get(i).getGroup()));
 				}else if(kind.equals("part")){
-					//ï¿½ï¿½ï¿½ï¿½
+					//²¿ÃÅ
 					map.put("source", partService.getNameById(list.get(i).getPart()));
 				}else{
-					//ï¿½ï¿½Ë¾
-					map.put("source", "ï¿½ï¿½Ë¾");
+					//¹«Ë¾
+					map.put("source", "¹«Ë¾");
 				}
-				//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//ÉÏ´«ÕßÃû×Ö
 				String uploadName = userServer.getUserNameById(list.get(i).getCreatePerson());
 				if(uploadName==null){
-					//Ã»ï¿½Òµï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½
+					//Ã»ÕÒµ½ÈËµÄÃû×Ö
 					map.put("uploadPersonName", "Î´Öª");
 				}else{
 					map.put("uploadPersonName", uploadName);
@@ -185,24 +185,24 @@ public class FileDepotAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","file/fileHome.jsp");
-		model.put("myPageTitle","ï¿½Ä¼ï¿½ï¿½Ö¿ï¿½");
+		model.put("myPageTitle","ÎÄ¼þ²Ö¿â");
 		model.put("myPageNav","5");
 		
 		model.put("fhPartName", userPartName);
 		model.put("fhGroupName", userGroupName);
 		model.put("fhCanSelectPart", canSelectPart);
 		model.put("fhCanSelectGroup", canSelectGroup);
-		model.put("fhFileKind", kind);//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("fhFilesList", filesList);//ï¿½Ä¼ï¿½ï¿½Ð±ï¿½
-		model.put("fhCurrentFile", currentFile);//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ä¼ï¿½Ä¿Â¼
-		model.put("fhCanUpload", canUpload);//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½1Îªï¿½ï¿½ï¿½ï¿½
+		model.put("fhFileKind", kind);//ÎÄ¼þÀàÐÍ
+		model.put("fhFilesList", filesList);//ÎÄ¼þÁÐ±í
+		model.put("fhCurrentFile", currentFile);//µ±Ç°µÄÎÄ¼þÄ¿Â¼
+		model.put("fhCanUpload", canUpload);//ÊÇ·ñ¿ÉÒÔÉÏ´«£¬1Îª¿ÉÒÔ
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ð¡
+	 * ×ª»»ÎÄ¼þ´óÐ¡
 	 * @param size
 	 * @return
 	 */
@@ -221,7 +221,7 @@ public class FileDepotAction {
 	}
 	
 	/**
-	 * ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ö¿ï¿½
+	 * ÉÏ´«ÎÄ¼þµ½ÎÄ¼þ²Ö¿â
 	 * @param uploadFile
 	 * @param fileKind
 	 * @param selectPart
@@ -239,11 +239,11 @@ public class FileDepotAction {
 		String url = req.getHeader("REFERER");
 		url = url.substring(url.indexOf("/file/"));
 		FileDepot fd = new FileDepot();
-		//ï¿½ï¿½Ö¤È¨ï¿½Þ¡ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½Í¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½Î»ï¿½ï¿½
+		//ÑéÖ¤È¨ÏÞ¡¢ÅÐ¶¨ÀàÐÍ¡¢ÉèÖÃÉÏ´«Î»ÖÃ
 		if(fileKind==null || fileKind.length()==0){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨ÉÏ´«ÀàÐÍ´íÎó£©");
 		}else if(fileKind.equals("group")){
-			//Ð¡ï¿½ï¿½
+			//Ð¡×é
 			fd.setSource(FileDepot.SOURCE_GROUP);
 			if(userKind==UserInfo.KIND_MANAGER_WEB || userKind==UserInfo.KIND_MANAGER_PART){
 				fd.setPart(Integer.parseInt(selectPart));
@@ -252,38 +252,38 @@ public class FileDepotAction {
 				fd.setPart(userPart);
 				fd.setGroup(userGroup);
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨ÎÞÈ¨ÏÞ£©");
 			}
 		}else if(fileKind.equals("part")){
-			//ï¿½ï¿½ï¿½ï¿½
+			//²¿ÃÅ
 			fd.setSource(FileDepot.SOURCE_PART);
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				fd.setPart(Integer.parseInt(selectPart));
 			}else if(userKind==UserInfo.KIND_MANAGER_PART){
 				fd.setPart(userPart);
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨ÎÞÈ¨ÏÞ£©");
 			}
 		}else{
-			//ï¿½ï¿½Ë¾
+			//¹«Ë¾
 			fd.setSource(FileDepot.SOURCE_COMPANY);
 			if(userKind!=0){
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨ÎÞÈ¨ÏÞ£©");
 			}
 		}
 		File file = null;
 		if(uploadFile.getSize()!=0){
-			//ï¿½ï¿½ï¿½Ä¼ï¿½
-			//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+			//ÓÐÎÄ¼þ
+			//ÉÏ´«µÄÎÄ¼þÃû
 			fd.setShowFileName(uploadFile.getOriginalFilename());
 			ServletContext application = req.getServletContext();
 			String realPath = application.getRealPath("upload/file/fileDepot");
 			int index = uploadFile.getOriginalFilename().lastIndexOf(".");
 			String suffix = uploadFile.getOriginalFilename().substring(index+1);
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½jobId_1234567891235646.ï¿½ï¿½×º
-			String realFileName = jobId+"_"+System.currentTimeMillis()+"."+suffix;
+			//ÃüÃû¸ñÊ½£ºjobId_1234567891235646.ºó×º
+			String realFileName = jobId+"_"+new Date().getTime()+"."+suffix;
 			String fileName = realPath+File.separator+realFileName;
-			//ï¿½ï¿½È¡ï¿½Ä¼ï¿½
+			//»ñÈ¡ÎÄ¼þ
 			file = new File(fileName);
 			try {
 				File fileTemp = new File(realPath);
@@ -294,35 +294,35 @@ public class FileDepotAction {
 				fd.setRealFileName(realFileName);
 			} catch (IllegalStateException | IOException e) {
 				e.printStackTrace();
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨·þÎñÆ÷±£´æÎÄ¼þÊ§°Ü£©");
 			}
 			fd.setCreatePerson(jobId);
 			fd.setSize(uploadFile.getSize());
 			fd.setUpdateDate(new Date());
 			
 		}else{
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨ÕÒ²»µ½ÎÄ¼þ£©");
 		}
-		//ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½Ý¿ï¿½
+		//±£´æµ½Êý¾Ý¿â
 		boolean tempB = false;
 		try {
 			tempB = fileDepotService.addNewFile(fd);
 		} catch (Exception e) {
 		}
 		if(tempB){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«³É¹¦£¡");
 		}else{
-			//ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½É¾ï¿½ï¿½ï¿½Ä¼ï¿½
+			//±£´æÊ§°Ü£¬É¾³ýÎÄ¼þ
 			if(file!=null){
 				file.delete();
 			}
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½Ï´ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½Ê§ï¿½Ü£ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉÏ´«Ê§°Ü¡££¨±£´æÊý¾Ý¿âÊ§°Ü£©");
 		}
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ö¿ï¿½É¾ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * ÔÚÎÄ¼þ²Ö¿âÉ¾³ýÎÄ¼þ
 	 * @param fileId
 	 * @param req
 	 * @return
@@ -341,7 +341,7 @@ public class FileDepotAction {
 		}
 		
 		if(fileId==null || fileId.length()==0){
-			return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨È±ÉÙ²ÎÊý£©");
 		}
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		int userKind = userServer.getUserKindByJobId(jobId);
@@ -350,17 +350,17 @@ public class FileDepotAction {
 		
 		FileDepot fd = fileDepotService.getOneFileInfoById(Integer.parseInt(fileId));
 		if(fd==null){
-			return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½Ó¦ï¿½Ä¼ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨Î´ÕÒµ½¶ÔÓ¦ÎÄ¼þ£©");
 		}
 		String createUserId = fd.getCreatePerson();
 		
-		//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
+		//ÅÐ¶ÏÊÇ·ñ¿ÉÒÔÉ¾³ý
 		boolean canDel = false;
 		if(fd.getSource()==FileDepot.SOURCE_COMPANY && userKind==UserInfo.KIND_MANAGER_WEB){
-			//ï¿½ï¿½Ë¾ï¿½Ä¼ï¿½
+			//¹«Ë¾ÎÄ¼þ
 			canDel = true;
 		}else if(fd.getSource()==FileDepot.SOURCE_PART){
-			//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+			//²¿ÃÅÎÄ¼þ
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canDel = true;
 			}else if(userKind==UserInfo.KIND_MANAGER_PART && fd.getPart()==userPart){
@@ -369,7 +369,7 @@ public class FileDepotAction {
 		}else if(createUserId.equals(jobId)){
 			canDel = true;
 		}else{
-			//Ð¡ï¿½ï¿½
+			//Ð¡×é
 			if(userKind==0){
 				canDel = true;
 			}else if(userKind==UserInfo.KIND_MANAGER_PART && fd.getPart()==userPart){
@@ -379,7 +379,7 @@ public class FileDepotAction {
 			}
 		}
 		if(!canDel){
-			return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨ÎÞÈ¨ÏÞ£©");
 		}
 		
 		ServletContext application = req.getServletContext();
@@ -387,26 +387,26 @@ public class FileDepotAction {
 		String fileName = realPath+File.separator+fd.getRealFileName();
 		File file = new File(fileName);
 		if(file.exists()){
-			//É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½
+			//É¾³ýÊý¾Ý¿â
 			boolean tempB = false;
 			try {
 				tempB = fileDepotService.delFileById(Integer.parseInt(fileId));
 			} catch (Exception e) {}
 			if(!tempB){
-				return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½É¾ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨Êý¾Ý¿âÉ¾³ýÊ§°Ü£©");
 			}
 			if(file.delete()){
-				return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½"+fd.getShowFileName()+"ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÎÄ¼þ¡°"+fd.getShowFileName()+"¡±³É¹¦£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½"+fd.getShowFileName()+"ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½ï¿½Ä¼ï¿½Ê§ï¿½Ü£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÎÄ¼þ¡°"+fd.getShowFileName()+"¡±³É¹¦£¡£¨·þÎñÆ÷ÄÚÉ¾³ýÎÄ¼þÊ§°Ü£©");
 			}
 		}else{
-			return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨·þÎñÆ÷ÕÒ²»µ½´ËÎÄ¼þ£©");
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * ÔÚÎÄ¼þ²Ö¿âÏÂÔØÎÄ¼þ
 	 * @param fileId
 	 * @param req
 	 * @param response
@@ -421,7 +421,7 @@ public class FileDepotAction {
 			url = url.substring(url.indexOf("/file/"));
 		}
 		if(fileId==null || fileId.length()==0){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÏÂÔØÊ§°Ü¡££¨È±ÉÙ²ÎÊý£©");
 		}
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		int userKind = userServer.getUserKindByJobId(jobId);
@@ -430,17 +430,17 @@ public class FileDepotAction {
 		
 		FileDepot fd = fileDepotService.getOneFileInfoById(Integer.parseInt(fileId));
 		if(fd==null){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½Î´ï¿½Òµï¿½ï¿½ï¿½Ó¦ï¿½Ä¼ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÏÂÔØÊ§°Ü¡££¨Î´ÕÒµ½¶ÔÓ¦ÎÄ¼þ£©");
 		}
 		String createUserId = fd.getCreatePerson();
 		
-		//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÅÐ¶ÏÊÇ·ñ¿ÉÒÔÏÂÔØ
 		boolean canDown = false;
 		if(fd.getSource()==FileDepot.SOURCE_COMPANY){
-			//ï¿½ï¿½Ë¾ï¿½Ä¼ï¿½
+			//¹«Ë¾ÎÄ¼þ
 			canDown = true;
 		}else if(fd.getSource()==FileDepot.SOURCE_PART){
-			//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+			//²¿ÃÅÎÄ¼þ
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canDown = true;
 			}else if(fd.getPart()==userPart){
@@ -449,7 +449,7 @@ public class FileDepotAction {
 		}else if(createUserId.equals(jobId)){
 			canDown = true;
 		}else{
-			//Ð¡ï¿½ï¿½
+			//Ð¡×é
 			if(userKind==UserInfo.KIND_MANAGER_WEB){
 				canDown = true;
 			}else if(userKind==UserInfo.KIND_MANAGER_PART && fd.getPart()==userPart){
@@ -460,17 +460,17 @@ public class FileDepotAction {
 		}
 		
 		if(!canDown){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Þ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÏÂÔØÊ§°Ü¡££¨ÎÞÈ¨ÏÞ£©");
 		}else{
 			if(!downFile(fd,req,response)){
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÏÂÔØÊ§°Ü¡££¨·þÎñÆ÷ÖÐ²»´æÔÚ¸ÃÎÄ¼þ£©");
 			}
 			return null;
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * ¿ªÊ¼ÏÂÔØÎÄ¼þ
 	 * @param fd
 	 * @param req
 	 * @param response
@@ -481,15 +481,15 @@ public class FileDepotAction {
 		String fileName = realPath+File.separator+fd.getRealFileName();
 		File file = new File(fileName);
 		if(file.exists()){
-			response.setContentType("application/octet-stream;charset=UTF-8");// ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
-			response.addHeader("Content-Length", "" + file.length());//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+			response.setContentType("application/octet-stream;charset=UTF-8");// ÉèÖÃÇ¿ÖÆÏÂÔØ²»´ò¿ª
+			response.addHeader("Content-Length", "" + file.length());//ÎÄ¼þ³¤¶È
 			try {
 				String encodedFileName = new String(fd.getShowFileName().getBytes("utf-8"),"iso-8859-1");
 				response.addHeader("Content-Disposition",  "attachment;fileName=\"" +encodedFileName+"\"" );
 			} catch (UnsupportedEncodingException e1) {
 				response.addHeader("Content-Disposition",  "attachment;fileName=" +fd.getShowFileName());
 				e1.printStackTrace();
-			}//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+			}//ÉèÖÃÎÄ¼þÃû
 			OutputStream os = null;
 			FileInputStream fis = null;
 			try {
@@ -503,17 +503,15 @@ public class FileDepotAction {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}finally{
-				if(os!=null) {
+				if(os!=null)
 					try {
 						os.close();
 					}catch (IOException e) {e.printStackTrace();
 				}
-				}
-				if(fis!=null) {
+				if(fis!=null)
 					try {
 						fis.close();
 					}catch (IOException e) {e.printStackTrace();
-				}
 				}
 			}
 			return true;

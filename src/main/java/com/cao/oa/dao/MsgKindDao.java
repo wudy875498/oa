@@ -1,10 +1,10 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.MessageKind;
-import com.cao.oa.mapper.MessageKindMapper;
 import java.util.List;
 
 import javax.annotation.Resource;
+import com.cao.oa.bean.MessageKind;
+import com.cao.oa.mapper.MessageKindMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class MsgKindDao {
 	private MessageKindMapper mapper;
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ·µ»ØËùÓĞÓÃ»§ÀàĞÍ
 	 * @return
 	 */
 	public List<MessageKind> getAllUserKind(){

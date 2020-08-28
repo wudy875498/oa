@@ -27,7 +27,7 @@ public class DownWord {
 	public static final int PASS_OTHER = 3;
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * ¼ÓÔØÎÄ¼þ
 	 * @param filePath
 	 * @param name
 	 * @param info
@@ -57,7 +57,7 @@ public class DownWord {
 				}
 				System.out.println(fileStr);
 				
-				//ï¿½æ»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//Ìæ»»ÆäËûÄÚÈÝ
 				fileStr = changeContent(fileStr,REPLACE_ALL_TITLE,info.get(REPLACE_ALL_TITLE));
 				fileStr = changeContent(fileStr,REPLACE_PROJECT_TITLE_NAME,info.get(REPLACE_PROJECT_TITLE_NAME));
 				fileStr = changeContent(fileStr,REPLACE_PROJECT_NAME,info.get(REPLACE_PROJECT_NAME));
@@ -69,7 +69,7 @@ public class DownWord {
 				fileStr = changeContent(fileStr,REPLACE_FU_JIAN,info.get(REPLACE_FU_JIAN));
 				fileStr = changeContent(fileStr,REPLACE_BEI_ZHU,info.get(REPLACE_BEI_ZHU));
 				System.out.println("++0+");
-				//ï¿½æ»»ï¿½ï¿½Ñ¡ï¿½ï¿½
+				//Ìæ»»ÌîÑ¡Ïî
 				String option = "";
 				for(int i=1;i<=opt.size();i++) {
 					String opt1 = "";
@@ -78,10 +78,10 @@ public class DownWord {
 					i++;
 					System.out.println("++"+i);
 					if(i<=opt.size()) {
-						//ï¿½ï¿½ï¿½ï¿½
+						//»¹ÓÐ
 						opt2 = createOptin(opt.get(i).get("title"),opt.get(i).get("content"));
 					}else {
-						//Ã»ï¿½ï¿½
+						//Ã»ÁË
 						opt2 = createOptionBlank();
 					}
 					option += createOptionLine(opt1+opt2);
@@ -91,7 +91,7 @@ public class DownWord {
 				System.out.println("+++");
 				fileStr = replaceOption(fileStr,option);
 				
-				//ï¿½æ»»ï¿½ï¿½ï¿½ï¿½
+				//Ìæ»»Á÷³Ì
 				String shenStr = "";
 				for(int i=1;i<=shen.size();i++) {
 					shenStr += createShen(shen.get(i).get("name"), shen.get(i).get("time"), 
@@ -99,16 +99,16 @@ public class DownWord {
 				}
 				fileStr = replaceShen(fileStr, shenStr);
 				if(isPass==PASS_OK) {
-					fileStr = changeResult(fileStr,"green","ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½");
+					fileStr = changeResult(fileStr,"green","ÉóÅúÍ¨¹ý");
 				}else if(isPass==PASS_NO) {
-					fileStr = changeResult(fileStr,"red","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+					fileStr = changeResult(fileStr,"red","ÉóÅú²»¹ý");
 				}else if(isPass==PASS_WORKING) {
-					fileStr = changeResult(fileStr,"yellow","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+					fileStr = changeResult(fileStr,"yellow","ÉóÅúÖÐ");
 				}else {
-					fileStr = changeResult(fileStr,"black","ï¿½ï¿½ï¿½ï¿½");
+					fileStr = changeResult(fileStr,"black","ÆäËû");
 				}
 				
-				//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+				//´´½¨ÎÄ¼þ
 				newFile.createNewFile();
 				System.out.println("DW->"+newFile.getAbsolutePath());
 				FileOutputStream fos = new FileOutputStream(newFile);
@@ -125,7 +125,7 @@ public class DownWord {
 				du.createDoc(filePath,dataMap,name);
 				isOk = true;
 			}else {
-				System.out.println("Ä£ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+				System.out.println("Ä£°åÎÄ¼þ²»´æÔÚ");
 			}
 			System.out.println("newFileName:"+newFileName);
 		} catch (IOException e) {
@@ -143,7 +143,7 @@ public class DownWord {
 	}
 	
 	/**
-	 * ï¿½æ»»ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Ìæ»»ÌØ¶¨ÄÚÈÝ
 	 * @param source
 	 * @param find
 	 * @param last
@@ -153,13 +153,13 @@ public class DownWord {
 		if(last==null){
 			last = "";
 		}
-		String toChange = last;//ï¿½Ä³ï¿½ï¿½ï¿½ï¿½
-		String toFind = "${"+find+"}";//ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½
+		String toChange = last;//¸Ä³ÉÕâ¸ö
+		String toFind = "${"+find+"}";//ÐÞ¸ÄÕâ¸ö
 		return source.replace(toFind, toChange);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ñ¡ï¿½ï¿½
+	 * ´´½¨ÌîÒ»¸öÑ¡Ïî
 	 * @param title
 	 * @param content
 	 * @return
@@ -171,7 +171,7 @@ public class DownWord {
 				+ "<w:t></w:t></w:r><w:r><w:t>"+content+"</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t></w:t></w:r></w:p></w:tc>";
 	}
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
+	 * ´´½¨Ò»¸öÌîÑ¡ÏîÐÐ
 	 * @param source
 	 * @return
 	 */
@@ -181,7 +181,7 @@ public class DownWord {
 			return modelBegin+source+modelEnd;
 	}
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Õ°ï¿½
+	 * ´´½¨Ò»¸öÌîÑ¡Ïî¿Õ°×
 	 * @return
 	 */
 	public String createOptionBlank() {
@@ -190,7 +190,7 @@ public class DownWord {
 	
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ´´½¨ÉóÅú
 	 * @param sname
 	 * @param stime
 	 * @param stitle
@@ -204,16 +204,16 @@ public class DownWord {
 				+ "<w:t>"+stitle+"</w:t>"
 				+ "</w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"6222\" w:type=\"dxa\"/><w:gridSpan w:val=\"3\"/></w:tcPr><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr></w:pPr><w:r>"
 				+ "<w:t>"+scontent+"</w:t>"
-				+ "</w:r><w:bookmarkStart w:id=\"0\" w:name=\"_GoBack\"/><w:bookmarkEnd w:id=\"0\"/></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ç©ï¿½ï¿½ï¿½ï¿½</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr>"
+				+ "</w:r><w:bookmarkStart w:id=\"0\" w:name=\"_GoBack\"/><w:bookmarkEnd w:id=\"0\"/></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ç©Ãû£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr>"
 				+ "<w:t></w:t></w:r><w:r><w:t>"+sname+"</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">   "
 				+ "</w:t>"
 				+ "</w:r></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr>"
-				+ "<w:t>Ê±ï¿½ä£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr>"
+				+ "<w:t>Ê±¼ä£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr>"
 				+ "<w:t></w:t></w:r><w:r><w:t>"+stime+"</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">  </w:t></w:r></w:p></w:tc></w:tr>";
 	}
 	
 	/**
-	 * ï¿½æ»»ï¿½ï¿½Ñ¡ï¿½ï¿½
+	 * Ìæ»»ÌîÑ¡Ïî
 	 * @param source
 	 * @param replace
 	 * @return
@@ -224,27 +224,27 @@ public class DownWord {
 	}
 	
 	/**
-	 * ï¿½æ»»ï¿½ï¿½ï¿½ï¿½
+	 * Ìæ»»¹ý³Ì
 	 * @param source
 	 * @param replace
 	 * @return
 	 */
 	public String replaceShen(String source,String replace) {
-		String model = "<w:tr w:rsidR=\"0002119F\" w:rsidTr=\"0002119F\"><w:tc><w:tcPr><w:tcW w:w=\"2074\" w:type=\"dxa\"/></w:tcPr><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:r><w:t>${stitle1}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"6222\" w:type=\"dxa\"/><w:gridSpan w:val=\"3\"/></w:tcPr><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:r><w:t>${scontent1}</w:t></w:r></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ç©ï¿½ï¿½ï¿½ï¿½</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t></w:t></w:r><w:r><w:t>${sname1}</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">   </w:t></w:r></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ê±ï¿½ä£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t></w:t></w:r><w:r><w:t>${stime1}</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">  </w:t></w:r></w:p></w:tc></w:tr>";
+		String model = "<w:tr w:rsidR=\"0002119F\" w:rsidTr=\"0002119F\"><w:tc><w:tcPr><w:tcW w:w=\"2074\" w:type=\"dxa\"/></w:tcPr><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:r><w:t>${stitle1}</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w=\"6222\" w:type=\"dxa\"/><w:gridSpan w:val=\"3\"/></w:tcPr><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:r><w:t>${scontent1}</w:t></w:r></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ç©Ãû£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t></w:t></w:r><w:r><w:t>${sname1}</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">   </w:t></w:r></w:p><w:p w:rsidR=\"0002119F\" w:rsidRDefault=\"0002119F\" w:rsidP=\"0097405A\"><w:pPr><w:jc w:val=\"right\"/></w:pPr><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t>Ê±¼ä£º</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t></w:t></w:r><w:r><w:t>${stime1}</w:t></w:r><w:r><w:rPr><w:rFonts w:hint=\"eastAsia\"/></w:rPr><w:t xml:space=\"preserve\">  </w:t></w:r></w:p></w:tc></w:tr>";
 		return source.replace(model, replace);
 	}
 	
 	/**
-	 * Ë®Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½
+	 * Ë®Ó¡£¬¼´×îÖÕ½á¹û
 	 * @param source
 	 * @param color
 	 * @param str
 	 * @return
 	 */
 	public String changeResult(String source,String color,String str) {
-		String model = "fillcolor=\"red\" stroked=\"f\"><v:fill opacity=\".5\"/><v:textpath style=\"font-family:&quot;ï¿½ï¿½ï¿½ï¿½&quot;;font-size:1pt\" string=\"ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½\"";
+		String model = "fillcolor=\"red\" stroked=\"f\"><v:fill opacity=\".5\"/><v:textpath style=\"font-family:&quot;ºÚÌå&quot;;font-size:1pt\" string=\"ÉóÅúÍ¨¹ý\"";
 		String change = "fillcolor=\""+color+"\" stroked=\"f\"><v:fill opacity=\".5\"/><v:textpath style=\""
-				+ "font-family:&quot;ï¿½ï¿½ï¿½ï¿½&quot;;font-size:1pt\" "
+				+ "font-family:&quot;ºÚÌå&quot;;font-size:1pt\" "
 				+ "string=\""+str+"\"";
 		return source.replaceAll(model, change);
 	}

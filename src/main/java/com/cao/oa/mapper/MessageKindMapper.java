@@ -1,9 +1,9 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.MessageKind;
 import java.util.List;
+import com.cao.oa.bean.MessageKind;
 
 public interface MessageKindMapper {
-	//锟斤拷取全锟斤拷锟斤拷锟斤拷
+	//获取全部种类
 	public List<MessageKind> getAllKinds();
 }

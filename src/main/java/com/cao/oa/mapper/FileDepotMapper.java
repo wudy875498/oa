@@ -1,47 +1,49 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.FileDepot;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
+import com.cao.oa.bean.FileDepot;
 
 public interface FileDepotMapper {
 	public FileDepot findById(int id);
 	
-	//锟斤拷取锟斤拷司锟侥硷拷锟斤拷锟斤拷页锟斤拷
+	//获取公司文件的总页数
 	public int fileOfCompanyNumber(@Param("source") int source);
-	//锟斤拷取锟斤拷锟斤拷锟侥硷拷锟斤拷锟斤拷
+	//获取部门文件总数
 	public int fileOfPartNumber(@Param("source") int source, @Param("part") int part);
-	//锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟斤拷锟斤拷
+	//获取全部的部门文件总数
 	public int fileOfAllPartNumber(@Param("source") int source);
-	//锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷某锟斤拷小锟斤拷
+	//获取小组文件总数，某个小组
 	public int fileOfGroupNumber(@Param("source") int source, @Param("part") int part,
       @Param("group") int group);
-	//锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷全锟斤拷小锟斤拷
+	//获取小组文件总数，全部小组
 	public int fileOfAllGroupNumber(@Param("source") int source, @Param("part") int part);
-	//锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷全锟斤拷锟斤拷锟斤拷
+	//获取小组文件总数，全部部门
 	public int fileOfAllPartAndGroupNumber(@Param("source") int source);
-	//锟斤拷取锟接第硷拷锟斤拷锟节硷拷锟斤拷锟侥癸拷司锟侥硷拷锟叫憋拷
+	//获取从第几到第几个的公司文件列表
 	public List<FileDepot> fileFromNumToNumOfCompany(@Param("source") int source,
       @Param("begin") int begin, @Param("end") int end);
-	//锟斤拷取锟斤拷锟斤拷锟侥硷拷锟叫憋拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	//获取部门文件列表，从第几到第几个
 	public List<FileDepot> fileFromNumToNumOfPart(@Param("source") int source,
       @Param("part") int part, @Param("begin") int begin, @Param("end") int end);
-	//锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟叫憋拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	//获取全部的部门文件列表，从第几到第几个
 	public List<FileDepot> fileListFromNumToNumOfAllPart(@Param("source") int source,
       @Param("begin") int begin, @Param("end") int end);
-	//锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷某锟斤拷小锟介，锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	//获取小组文件列表，某个小组，从第几到第几个
 	public List<FileDepot> fileListFromNumToNumOfGroup(@Param("source") int source,
       @Param("part") int part, @Param("group") int group, @Param("begin") int begin,
       @Param("end") int end);
-	// 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷小锟介，锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	// 获取小组文件列表，全部小组，从第几到第几个
 	public List<FileDepot> fileListFromNumToNumOfAllGroup(@Param("source") int source,
       @Param("part") int part, @Param("begin") int begin, @Param("end") int end);
-	//锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷锟斤拷锟脚ｏ拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	//获取小组文件列表，全部部门，从第几到第几个
 	public List<FileDepot> fileListFromNumToNumOfAllPartAndGroup(@Param("source") int source,
       @Param("begin") int begin, @Param("end") int end);
-	//锟斤拷锟斤拷锟较达拷锟斤拷锟侥硷拷锟斤拷锟斤拷锟捷库（锟缴凤拷锟斤拷锟斤拷锟斤拷锟斤拷
+	//保存上传的文件到数据库（可返回主键）
 	public int addNewFile(FileDepot fileDepot);
-	//删锟斤拷一锟斤拷锟侥硷拷
+	//删除一个文件
 	public int delFileById(int id);
 	
 }

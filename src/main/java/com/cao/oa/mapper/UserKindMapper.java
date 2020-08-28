@@ -1,12 +1,14 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.UserKind;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.cao.oa.bean.UserKind;
+
 public interface UserKindMapper {
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	//·µ»ØËùÓĞÓÃ»§ÀàĞÍ
 	public List<UserKind> getAllUserKind();
-	//ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	//¸ù¾İID»ñÈ¡Ãû×Ö
 	public String getNameById(@Param("id") int id);
 }

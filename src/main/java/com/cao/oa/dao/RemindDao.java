@@ -1,7 +1,7 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.mapper.RemindMapper;
 import javax.annotation.Resource;
+import com.cao.oa.mapper.RemindMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +11,7 @@ public class RemindDao {
 	private RemindMapper mapper;
 	
 	/**
-	 * É¾ï¿½ï¿½Ò»ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * É¾³ýÒ»ÌõÖ¸¶¨µÄÌáÐÑ
 	 * @param jobId
 	 * @param msgId
 	 * @param isMag
@@ -25,24 +25,24 @@ public class RemindDao {
 			isMsgNum = 1;
 		}
 		if(mapper.hasThisRemind(msgId, jobId, isMsgNum)==1){
-			//ï¿½Ð£ï¿½É¾ï¿½ï¿½
+			//ÓÐ£¬É¾³ý
 			int num = mapper.delRemindById(msgId, jobId, isMsgNum);
 			if(num==1){
-				//ï¿½É¹ï¿½É¾ï¿½ï¿½
+				//³É¹¦É¾³ý
 				result = true;
 			}else{
-				//É¾ï¿½ï¿½Ê§ï¿½ï¿½
+				//É¾³ýÊ§°Ü
 				throw new Exception();
 			}
 		}else{
-			//Ã»ï¿½Ð·ï¿½ï¿½ï¿½
+			//Ã»ÓÐ·µ»Ø
 			result = true;
 		}
 		return result;
 	}
 	
 	/**
-	 * ï¿½Ç·ï¿½ï¿½Ä¶ï¿½
+	 * ÊÇ·ñÔÄ¶Á
 	 * @param jobId
 	 * @param msgId
 	 * @param isMag
@@ -65,7 +65,7 @@ public class RemindDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ï¢IDï¿½ï¿½
+	 * »ñÈ¡Ä³¸öÈËÐèÒªÌáÐÑµÄÏûÏ¢IDÊý
 	 * @param jobId
 	 * @return
 	 */
@@ -76,7 +76,7 @@ public class RemindDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ÑµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸öÈËÐèÒªÌáÐÑµÄ¹«¸æÊý
 	 * @param jobId
 	 * @return
 	 */

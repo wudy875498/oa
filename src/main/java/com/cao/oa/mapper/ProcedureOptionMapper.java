@@ -1,12 +1,14 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ProcedureOption;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.cao.oa.bean.ProcedureOption;
+
 public interface ProcedureOptionMapper {
-	//ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	//Ìí¼ÓĞÂµÄÌîÑ¡Ïî
 	public int addNewOption(ProcedureOption procedureOption);
-	//Í¨ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	//Í¨¹ıÌá½»ºÅÕÒÈ«²¿Ìá½»µÄÌîÑ¡Ïî
 	public List<ProcedureOption> findBySubmitId(@Param("submitId") int submitId);
 }

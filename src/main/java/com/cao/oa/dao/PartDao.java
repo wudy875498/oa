@@ -1,13 +1,13 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.Part;
-import com.cao.oa.mapper.GroupMapper;
-import com.cao.oa.mapper.PartMapper;
-import com.cao.oa.mapper.UserInfoMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import com.cao.oa.bean.Part;
+import com.cao.oa.mapper.GroupMapper;
+import com.cao.oa.mapper.PartMapper;
+import com.cao.oa.mapper.UserInfoMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,7 +22,7 @@ public class PartDao {
 
 	
 	/**
-	 * Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ID
+	 * Í¨¹ýÃû×Ö»ñÈ¡²¿ÃÅID
 	 * @param name
 	 * @return
 	 */
@@ -37,7 +37,7 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+	 * Ìí¼Ó²¿ÃÅ
 	 * @param name
 	 * @param person
 	 * @return
@@ -45,16 +45,16 @@ public class PartDao {
 	 */
 	public boolean addPart(String name,String person) throws Exception{
 		boolean result = false;
-		//ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+		//Ìí¼Ó²¿ÃÅ
 		Part newPart = new Part();
 		newPart.setName(name);
 		newPart.setCreateDate(new Date());
 		newPart.setCreatePerson(person);
 		int newId = pMapper.addNewPart(newPart);
 		if(newId!=0){
-			//ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Ð¡ï¿½ï¿½
+			//Ìí¼ÓÄ¬ÈÏÐ¡×é
 			newId = newPart.getId();
-			if(gMapper.addGroup(newId, "ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½", "ÏµÍ³", new Date())!=0){
+			if(gMapper.addGroup(newId, "ÔÝÎÞÐ¡×é", "ÏµÍ³", new Date())!=0){
 				result = true;
 			}
 		}
@@ -65,14 +65,14 @@ public class PartDao {
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * É¾³ý²¿ÃÅ
 	 * @param partId
 	 * @return
 	 * @throws Exception 
 	 */
 	public boolean delPart(int partId) throws Exception{
 		boolean result = false;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅÊý
 		int all = gMapper.allGroupsCount(partId);
 		if(gMapper.delAllGroupsByPartId(partId)==all){
 			if(pMapper.delPartById(partId)!=0){
@@ -86,7 +86,7 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÈËÊý
 	 * @param partId
 	 * @return
 	 */
@@ -97,7 +97,7 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÐ¡×éÊý
 	 * @param partId
 	 * @return
 	 */
@@ -108,10 +108,10 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ø´Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * ·µ»Ø´Ó¼¸µ½¼¸µÄÐÅÏ¢
 	 * @param begin
 	 * @param end
-	 * @return ï¿½ï¿½ï¿½ï¿½nullï¿½ï¿½Ã»ï¿½ï¿½ï¿½Òµï¿½
+	 * @return ·µ»ØnullÔòÃ»ÓÐÕÒµ½
 	 */
 	public List<Part> getPartsAllInfoByNumber(int begin,int end){
 		List<Part> partList = null;
@@ -128,7 +128,7 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÅµÄ¸ï¿½ï¿½ï¿½
+	 * »ñÈ¡²¿ÃÅµÄ¸öÊý
 	 * @return 
 	 */
 	
@@ -139,7 +139,7 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÐµÄ²ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡ËùÓÐµÄ²¿ÃÅidºÍÃû×Ö
 	 * @return
 	 */
 	public List<Map<String, Object>>  getAllPartsAndNames(){
@@ -149,9 +149,9 @@ public class PartDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾Ýid»ñÈ¡Ãû×Ö
 	 * @param id
-	 * @return ï¿½Õ£ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½
+	 * @return ¿Õ£¬ÔòÊ§°Ü¡£
 	 */
 	public String getNameById(int id){
 		String result = null;

@@ -1,11 +1,11 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.Group;
-import com.cao.oa.mapper.GroupMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import com.cao.oa.bean.Group;
+import com.cao.oa.mapper.GroupMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class GroupDao {
 	private GroupMapper mapper;
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	 * »ñÈ¡Ä³²¿ÃÅµÄËùÓÐÐ¡×éÃûºÍID
 	 * @param partId
 	 * @return
 	 */
@@ -26,7 +26,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡Ð¡ï¿½ï¿½ID
+	 * ¸ù¾Ý²¿ÃÅIDºÍÐ¡×éÃû£¬»ñÈ¡Ð¡×éID
 	 * @param partId
 	 * @param name
 	 * @return
@@ -42,7 +42,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * Ìí¼ÓÐ¡×é
 	 * @param partId
 	 * @param name
 	 * @param person
@@ -62,7 +62,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * É¾³ýÐ¡×é
 	 * @param partId
 	 * @param groupId
 	 * @return
@@ -75,7 +75,7 @@ public class GroupDao {
 		if(all!=0){
 			return false;
 		}
-		if(!groupName.equals("ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½")){
+		if(!groupName.equals("ÔÝÎÞÐ¡×é")){
 			if(mapper.delGroup(groupId, partId)!=0){
 				result = true;
 			}
@@ -91,10 +91,10 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³Ð¡×éµÄÈËÊý
 	 * @param partId
 	 * @param groupId
-	 * @return -1Îªï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
+	 * @return -1Îª²éÕÒÊ§°Ü
 	 */
 	public int getMemberNumbersOfGroup(int partId,int groupId){
 		int result = -1;
@@ -104,7 +104,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ø´Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * ·µ»Ø´Ó¼¸µ½¼¸µÄÐÅÏ¢
 	 * @param partId
 	 * @param begin
 	 * @param end
@@ -122,7 +122,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ð¡ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ð¡×éµÄ¸öÊý
 	 * @param partId
 	 * @return
 	 */
@@ -134,7 +134,7 @@ public class GroupDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾Ýid»ñÈ¡Ãû×Ö
 	 * @param id
 	 * @param partId
 	 * @return

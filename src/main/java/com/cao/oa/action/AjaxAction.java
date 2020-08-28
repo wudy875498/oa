@@ -1,13 +1,9 @@
 package com.cao.oa.action;
 
-import com.cao.oa.bean.UserInfo;
-import com.cao.oa.service.GroupService;
-import com.cao.oa.service.PartService;
-import com.cao.oa.service.UserService;
-import com.cao.oa.util.CodeOfLogin;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cao.oa.bean.UserInfo;
+import com.cao.oa.service.GroupService;
+import com.cao.oa.service.PartService;
+import com.cao.oa.service.UserService;
+import com.cao.oa.util.CodeOfLogin;
 
 @Controller
 public class AjaxAction {
@@ -33,30 +35,30 @@ public class AjaxAction {
 	
 	public AjaxAction(){
 		super();
-		sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½ hh:mm:ss");
+		sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½Ö¤ï¿½ï¿½
-	 * ï¿½ï¿½codeStrï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
+	 * »ñÈ¡ÑéÖ¤Âë
+	 * ´æcodeStr£¬ÑéÖ¤Âë×Ö·û¡£
 	 * @param req
-	 * @return ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Â·ï¿½ï¿½
+	 * @return ÑéÖ¤ÂëËùÔÚµÄÂ·¾¶
 	 */
 	@RequestMapping(value="ajax/getLoginCodeAjax.do")
 	@ResponseBody
 	public String getLoginCode(HttpServletRequest req){
 		HttpSession session = req.getSession();
-		String codeStr = "";//ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½
-		String codeCon = "";//ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String path = "img/loginCode";//ï¿½ï¿½Ö¤ï¿½ï¿½Â·ï¿½ï¿½
+		String codeStr = "";//ÑéÖ¤Âë´ð°¸
+		String codeCon = "";//ÑéÖ¤ÂëÄÚÈÝ
+		String path = "img/loginCode";//ÑéÖ¤ÂëÂ·¾¶
 		
 		ServletContext application = req.getServletContext();
 		String realPath = application.getRealPath("img/loginCode");
-		String fileName = System.currentTimeMillis()+".jpg";
+		String fileName = new Date().getTime()+".jpg";
 		File file = new File(realPath+File.separator+fileName);//File.separator
 		int num1 = (int)(Math.random()*10);
 		int num2 = (int)(Math.random()*10);
-		int fu = (int)(System.currentTimeMillis()%2);
+		int fu = (int)(new Date().getTime()%2);
 		if(fu==1){
 			codeStr = (num1+num2)+"";
 			codeCon = num1+"+"+num2;
@@ -71,14 +73,15 @@ public class AjaxAction {
 			e.printStackTrace();
 			return "error,jpg";
 		}
-		String name = fileName;//ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+		String name = fileName;//ÑéÖ¤ÂëÎÄ¼þÃû
 		session.setAttribute("codeStr", codeStr);
 		return path+"/"+name;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
-	 * @return Map<Integer, String>ï¿½ï¿½ï¿½Íµï¿½ï¿½Ð±ï¿½
+	 * »ñÈ¡ÓÃ»§ÀàÐÍÁÐ±í
+	 * @param req
+	 * @return Map<Integer, String>ÀàÐÍµÄÁÐ±í
 	 */
 	@SuppressWarnings("unchecked")
 	private Map<Integer, String> getUserKinds(HttpServletRequest request){
@@ -86,7 +89,7 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ì²½ï¿½ï¿½ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½Åµï¿½È«ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½Öºï¿½JobId
+	 * Òì²½£¬»ñÈ¡Ä³²¿ÃÅµÄÈ«²¿ÈËÔ±Ãû×ÖºÍJobId
 	 * @param partId
 	 * @param groupId
 	 * @return 
@@ -108,22 +111,22 @@ public class AjaxAction {
 						int userKind = (int)list.get(i).get("kind");
 						switch(userKind){
 							case UserInfo.KIND_MANAGER_WEB:
-								res += (String)list.get(i).get("name")+"ï¿½ï¿½ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½";
+								res += (String)list.get(i).get("name")+"£¨ÍøÕ¾¹ÜÀíÔ±£¬";
 								break;
 							case UserInfo.KIND_MANAGER_PART:
-								res += (String)list.get(i).get("name")+"ï¿½ï¿½ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±ï¿½ï¿½";
+								res += (String)list.get(i).get("name")+"£¨²¿ÃÅ¹ÜÀíÔ±£¬";
 								break;
 							case UserInfo.KIND_MANAGER_GROUP:
-								res += (String)list.get(i).get("name")+"ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½";
+								res += (String)list.get(i).get("name")+"£¨Ð¡×é¹ÜÀíÔ±£¬";
 								break;
 							default:
-								res += (String)list.get(i).get("name")+"ï¿½ï¿½";
+								res += (String)list.get(i).get("name")+"£¨";
 								break;
 						}
 						if(list.get(i).get("post")==null){
-							res += "ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½";
+							res += "ÔÝÎÞÖ°Îñ£©";
 						}else{
-							res += (String)list.get(i).get("post")+"ï¿½ï¿½";
+							res += (String)list.get(i).get("post")+"£©";
 						}
 						
 					}
@@ -134,9 +137,9 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ì²½ï¿½ï¿½jobIdï¿½Ç·ï¿½ï¿½Ø¸ï¿½
-	 * @param jobId ï¿½ï¿½Òªï¿½ï¿½ï¿½Òµï¿½ï¿½Ã»ï¿½jobId
-	 * @return ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½Ð¾Í·ï¿½ï¿½Ø¡ï¿½yesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½noï¿½ï¿½
+	 * Òì²½£¬jobIdÊÇ·ñÖØ¸´
+	 * @param jobId ÐèÒª²éÕÒµÄÓÃ»§jobId
+	 * @return Èç¹ûÊý¾Ý¿âÖÐÓÐ¾Í·µ»Ø¡°yes¡±£¬·ñÔòÎª¡°no¡±
 	 */
 	@RequestMapping(value="ajax/hasUserAjax.do")
 	@ResponseBody
@@ -151,9 +154,9 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ì²½ï¿½ï¿½jobIdï¿½Ç·ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
-	 * ï¿½Ø¸ï¿½ï¿½Í·ï¿½ï¿½Ø¡ï¿½yesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ò·µ»ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½Åµï¿½idï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½Ê½Îªï¿½ï¿½ï¿½ï¿½id1:name1,id2:name2ï¿½ï¿½
-	 * @param jobId ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jobId
+	 * Òì²½£¬jobIdÊÇ·ñÖØ¸´£¬ »ñÈ¡²¿ÃÅÁÐ±í¡£
+	 * ÖØ¸´¾Í·µ»Ø¡°yes¡±¡£²»ÖØ¸´Ôò·µ»ØËùÓÐ²¿ÃÅµÄidºÍÃû×Ö£¬¸ñÊ½Îª£º¡°id1:name1,id2:name2¡±
+	 * @param jobId ÐÂÊäÈëµÄjobId
 	 * @param response
 	 * @return
 	 */
@@ -166,14 +169,14 @@ public class AjaxAction {
 				return "yes";
 			}
 		}else{
-			//Ã»ï¿½Ð»ï¿½ï¿½
+			//Ã»ÓÐ»ñµÃ
 		}
 		res = getAllPartsToStr();
 		return res;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð²ï¿½ï¿½Åµï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡ËùÓÐ²¿ÃÅµÄidºÍÃû×Ö
 	 * @return
 	 */
 	@RequestMapping("ajax/getAllPartsAjax.do")
@@ -185,17 +188,17 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½Åµï¿½idï¿½ï¿½ï¿½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½Ê½Îªï¿½ï¿½ï¿½ï¿½id1:name1,id2:name2ï¿½ï¿½
+	 * »ñÈ¡²¿ÃÅÁÐ±í¡£·µ»ØËùÓÐ²¿ÃÅµÄidºÍÃû×Ö£¬¸ñÊ½Îª£º¡°id1:name1,id2:name2¡±
 	 * @return
 	 */
 	private String getAllPartsToStr(){
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Öºï¿½id
+		//»ñÈ¡Ãû×ÖºÍid
 		String res = "";
 		List<Map<String, Object>> list = partService.getAllPartsAndNames();
 		if(list==null || list.size()==0){
 			return res;
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½Ê½
+		//´¦ÀíÊý¾Ý¸ñÊ½
 		for(int i=0;i<list.size();i++){
 			if(i!=0){
 				res += ",";
@@ -207,8 +210,8 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½È«ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	 * @param partId Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ID
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÈ«²¿Ð¡×éµÄID¼°ÆäÃû×Ö
+	 * @param partId Ä³¸ö²¿ÃÅµÄID
 	 * @param response
 	 * @return
 	 */
@@ -216,12 +219,12 @@ public class AjaxAction {
 	@ResponseBody
 	public String getGroups(String partId,HttpServletResponse response)  {
 		String res = "";
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Öºï¿½id
+		//»ñÈ¡Ãû×ÖºÍid
 		List<Map<String, Object>> list = groupService.getAllGroupsOfPartNameAndId(Integer.parseInt(partId));
 		if(list==null || list.size()==0){
 			return res;
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½Ê½
+		//´¦ÀíÊý¾Ý¸ñÊ½
 		for(int i=0;i<list.size();i++){
 			if(i!=0){
 				res += ",";
@@ -233,8 +236,8 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ì²½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jobIdï¿½ï¿½cardIdï¿½ï¿½nameï¿½Í»ï¿½È¡ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Ä±ï¿½ï¿½ï¿½È¡ï¿½ï¿½È¨ï¿½Þ¡ï¿½
-	 * È¨ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½trueï¿½ï¿½ï¿½Í¡ï¿½falseï¿½ï¿½
+	 * Òì²½£¬»ñÈ¡ÓÃ»§µÄ»ù±¾ÐÅÏ¢¡£°üÀ¨£ºjobId¡¢cardId¡¢nameºÍ»ñÈ¡ÕßÊÇ·ñ¿ÉÒÔ¸ü¸Ä±»»ñÈ¡ÕßÈ¨ÏÞ¡£
+	 * È¨ÏÞÊÇ·ñÎª¡°true¡±ºÍ¡°false¡±
 	 * @param jobId
 	 * @param req
 	 * @return
@@ -263,9 +266,9 @@ public class AjaxAction {
 	}
 	
 	/**
-	 * ï¿½ì²½ï¿½ï¿½ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ÚµÄ²ï¿½ï¿½Å²ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	 * ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Úµï¿½Ð¡ï¿½é²¢ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
-	 * ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½È¨ï¿½Þºï¿½È«ï¿½ï¿½È¨ï¿½ï¿½
+	 * Òì²½£¬»ñÈ¡Ä³¸öÓÃ»§ËùÔÚµÄ²¿ÃÅ²¢¸½¼ÓÈ«²¿²¿ÃÅ
+	 * »òÓÃ»§ËùÔÚµÄÐ¡×é²¢¸½¼ÓÈ«²¿²¿ÃÅÀïµÄÐ¡×é
+	 * »òÓÃ»§µÄÈ¨ÏÞºÍÈ«²¿È¨ÏÞ
 	 * @param jobId
 	 * @param kind
 	 * @param req
@@ -280,45 +283,45 @@ public class AjaxAction {
 		if(kind.equals("part")){
 			returnStr += partId+":"+partService.getNameById(partId);
 			if(userServer.getUserKindByJobId(userJobId)==UserInfo.KIND_MANAGER_WEB){
-				//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½Ô¸Ä±ä²¿ï¿½ï¿½
+				//ÍøÕ¾¹ÜÀíÔ±¿ÉÒÔ¸Ä±ä²¿ÃÅ
 				List<Map<String, Object>> list = partService.getAllPartsAndNames();
 //				System.out.println(list);
 				for(Map<String, Object> m:list){
 					returnStr += ","+(int)m.get("id")+":"+(String)m.get("name");
 				}
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸Ä±ï¿½
+				//²»¿ÉÒÔ¸Ä±ä
 			}
 		}else if(kind.equals("group")){
 			int groupId = userServer.getUserGroupByJobId(jobId);
 			returnStr += groupId+":"+groupService.getNameById(partId, groupId);
 			if(userServer.getUserKindByJobId(userJobId)==UserInfo.KIND_MANAGER_WEB ||
 				(userServer.getUserKindByJobId(userJobId)==UserInfo.KIND_MANAGER_PART && userServer.getUserPartByJobId(userJobId)==partId)){
-				//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½Ô¸Ä±ï¿½Ð¡ï¿½ï¿½
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ÅµÄ²ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±Ò²ï¿½ï¿½ï¿½Ô¸Ä±ï¿½Ð¡ï¿½ï¿½
+				//ÍøÕ¾¹ÜÀíÔ±¿ÉÒÔ¸Ä±äÐ¡×é
+				//±¾²¿ÃÅµÄ²¿ÃÅ¹ÜÀíÔ±Ò²¿ÉÒÔ¸Ä±äÐ¡×é
 				List<Map<String, Object>> list = groupService.getAllGroupsOfPartNameAndId(partId);
 //				System.out.println(list);
 				for(Map<String, Object> m:list){
 					returnStr += ","+(int)m.get("id")+":"+(String)m.get("name");
 				}
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸Ä±ï¿½
+				//²»¿ÉÒÔ¸Ä±ä
 			}
 		}else if(kind.equals("shen")){
 			int userKind = userServer.getUserKindByJobId(jobId);
 			returnStr += userKind+":";
 			switch(userKind){
 			case UserInfo.KIND_MANAGER_WEB:
-				returnStr +="ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±";
+				returnStr +="ÍøÕ¾¹ÜÀíÔ±";
 				break;
 			case UserInfo.KIND_MANAGER_PART:
-				returnStr +="ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±";
+				returnStr +="²¿ÃÅ¹ÜÀíÔ±";
 				break;
 			case UserInfo.KIND_MANAGER_GROUP:
-				returnStr +="Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±";
+				returnStr +="Ð¡×é¹ÜÀíÔ±";
 				break;
 			case UserInfo.KIND_MEMBER:
-				returnStr +="ï¿½ï¿½Í¨ï¿½ï¿½Ô±";
+				returnStr +="ÆÕÍ¨³ÉÔ±";
 				break;
 			}
 			Map<Integer, String> map = getUserKinds(req);

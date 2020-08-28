@@ -3,16 +3,16 @@ package com.cao.oa.mapper;
 import org.apache.ibatis.annotations.Param;
 
 public interface RemindMapper {
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//Ìí¼ÓÌáĞÑ
 	public int addRemind(@Param("msgId") int msgId, @Param("remindId") String remindId,
       @Param("isMsg") int isMsg);
-	//É¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//É¾³ıÒ»¸öÌáĞÑ
 	public int delRemindById(@Param("msgId") int msgId, @Param("remindId") String remindId,
       @Param("isMsg") int isMSg);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ 
+	//²éÕÒÕâ¸öÌáĞÑÊÇ·ñ´æÔÚ 
 	public int hasThisRemind(@Param("msgId") int msgId, @Param("remindId") String remindId,
       @Param("isMsg") int isMSg);
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½Ï¢ï¿½ò¹«¸ï¿½IDï¿½ï¿½
+	//»ñÈ¡Ä³¸öÈËĞèÒªÌáĞÑµÄÏûÏ¢»ò¹«¸æIDÊı
 	public int getNeedToRemindNumber(@Param("isMsg") int isMSg, @Param("remindId") String remindId);
 	
 	

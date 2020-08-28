@@ -30,21 +30,21 @@ public class UserCenter {
 	private GroupService groupService;
 	
 	/**
-	 * ï¿½ï¿½ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * µ½ÐÞ¸Ä¸öÈËÃÜÂëÒ³Ãæ
 	 * @return
 	 */
 	@RequestMapping("/changePassword.do")
 	public ModelAndView viewChangePassword(){
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","user/changePassword.jsp");
-		model.put("myPageTitle","ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","ÐÞ¸Ä¸öÈËÃÜÂë");
 		model.put("myPageNav","10");
 		
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ò³ï¿½ï¿½
+	 * µ½¸öÈËÐÅÏ¢Ò³Ãæ
 	 * @param req
 	 * @return
 	 */
@@ -52,28 +52,28 @@ public class UserCenter {
 	public ModelAndView viewInfo(HttpServletRequest req){
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","user/persionInfo.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢");
+		model.put("myPageTitle","¸öÈËÐÅÏ¢");
 		model.put("myPageNav","11");
 		
 		HttpSession session = req.getSession();
 		Map<String,Object> infoMap = userServer.getPersonInfoAllByJobId((String)session.getAttribute("userJobId"));
 		if(infoMap==null){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~/(ï¿½ï¿½oï¿½ï¿½)/~~<br/>"
-					+ "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "»ñÈ¡»ù±¾ÐÅÏ¢´íÎó£¡/(¨Òo¨Ò)/~~/(¨Òo¨Ò)/~~<br/>"
+					+ "£¨½¨ÒéÁªÏµ¹ÜÀíÔ±£©");
 		}
 		String tsex = "";
 		if((int)infoMap.get("sex") == UserInfo.SEX_MALE){
-			tsex = "ï¿½ï¿½";
+			tsex = "ÄÐ";
 		}else{
 			tsex = "Å®";
 		}
 		int groupId = (int)infoMap.get("ggroup");
 		int partId = (int)infoMap.get("part");
-		//ï¿½ï¿½È¡Ð¡ï¿½ï¿½ï¿½ï¿½ groupService
+		//»ñÈ¡Ð¡×éÃû groupService
 		String groupName = groupService.getNameById(partId, groupId);
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ partService
+		//»ñÈ¡²¿ÃÅÃû partService
 		String partName = partService.getNameById(partId);
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡¸½¼ÓÏî
 		Map<String,Object> res = userServer.getOtherInfoByJobId((String)infoMap.get("jobId"));
 		
 		model.put("piName", (String)infoMap.get("name"));
@@ -96,7 +96,7 @@ public class UserCenter {
 	
 	
 	/**
-	 * ï¿½Ô¼ï¿½ï¿½Þ¸ï¿½ï¿½Ô¼ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * ×Ô¼ºÐÞ¸Ä×Ô¼ºµÄ¸öÈËÐÅÏ¢
 	 * @param tel
 	 * @param email
 	 * @param addr
@@ -114,19 +114,19 @@ public class UserCenter {
 			res = userServer.changeMyPersonInfoByJobId(jobId, tel, email, addr);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(baseUrl, "ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½Ü¡ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~");
+			return JumpPrompt.jumpOfModelAndView(baseUrl, "ÐÞ¸Ä¸öÈËÐÅÏ¢Ê§°Ü¡£/(¨Òo¨Ò)/~~");
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦Àí½á¹û
 		if(!res){
-			baseContent = "ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢Ê§ï¿½Ü¡ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~";
+			baseContent = "ÐÞ¸Ä¸öÈËÐÅÏ¢Ê§°Ü¡£/(¨Òo¨Ò)/~~";
 		}else{
-			baseContent = "ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½É¹ï¿½ï¿½ï¿½";
+			baseContent = "ÐÞ¸Ä¸öÈËÐÅÏ¢³É¹¦£¡";
 		}
 		return JumpPrompt.jumpOfModelAndView(baseUrl, baseContent);
 	}
 	
 	/**
-	 * ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÐÞ¸ÄÃÜÂë
 	 * @param oldPassword
 	 * @param newPassword
 	 * @param newPassword2
@@ -144,14 +144,14 @@ public class UserCenter {
 				res = userServer.changeMyPassword((String)req.getSession().getAttribute("userJobId"), oldPassword, newPassword);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return JumpPrompt.jumpOfModelAndView(baseUrl, "ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~");
+				return JumpPrompt.jumpOfModelAndView(baseUrl, "ÐÞ¸ÄÃÜÂëÊ§°Ü¡£/(¨Òo¨Ò)/~~");
 			}
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦Àí½á¹û
 		if(!res){
-			baseContent = "ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~";
+			baseContent = "ÐÞ¸ÄÃÜÂëÊ§°Ü¡£/(¨Òo¨Ò)/~~";
 		}else{
-			baseContent = "ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½";
+			baseContent = "ÐÞ¸ÄÃÜÂë³É¹¦£¡";
 		}
 		return JumpPrompt.jumpOfModelAndView(baseUrl, baseContent);
 	}

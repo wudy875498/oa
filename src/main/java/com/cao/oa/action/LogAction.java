@@ -1,10 +1,5 @@
 package com.cao.oa.action;
 
-import com.cao.oa.bean.UserInfo;
-import com.cao.oa.service.RemindService;
-import com.cao.oa.service.UserKindService;
-import com.cao.oa.service.UserService;
-import com.cao.oa.util.JumpPrompt;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import com.cao.oa.bean.UserInfo;
+import com.cao.oa.service.RemindService;
+import com.cao.oa.service.UserKindService;
+import com.cao.oa.service.UserService;
+import com.cao.oa.util.JumpPrompt;
+
 /**
- * ï¿½ï¿½Â¼ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½
+ * µÇÂ¼¡¢ÍË³ö²¿·Ö
  * @author DELL
  *
  */
@@ -38,24 +39,24 @@ public class LogAction {
 	}
 	
 	/**
-	 * Ä¬ï¿½Ï·ï¿½ï¿½ï¿½Ò³ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½Â¼Ò³ï¿½ï¿½
+	 * Ä¬ÈÏ·ÃÎÊÒ³Ãæ£¬µ½µÇÂ¼Ò³Ãæ
 	 * @return
 	 */
 	@RequestMapping("/welcome.do")
 	public String viewWelcome(HttpServletRequest req){
 		HttpSession session = req.getSession();
 		if(session!=null && session.getAttribute("userJobId")!=null){
-			//ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+			//Èç¹ûµÇÂ¼¹ý
 			return "redirect:/home.do";
 		}else{
-			//Ã»ï¿½Ðµï¿½Â¼ï¿½ï¿½
+			//Ã»ÓÐµÇÂ¼¹ý
 			return "login";
 		}
 		
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * µ½Íü¼ÇÃÜÂëÒ³Ãæ
 	 * @return
 	 */
 	@RequestMapping("/forgetPassword.do")
@@ -64,20 +65,20 @@ public class LogAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½Â¼ï¿½É¹ï¿½ï¿½ó¿´µï¿½ï¿½ï¿½Ò³ï¿½ï¿½
-	 * @param
+	 * µÇÂ¼³É¹¦ºó¿´µ½µÄÒ³Ãæ
+	 * @param request
 	 */
 	@RequestMapping("/home.do")
 	public ModelAndView viewHome(HttpServletRequest req){
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","home.jsp");
-		model.put("myPageTitle","ï¿½ï¿½Ó­");
+		model.put("myPageTitle","»¶Ó­");
 		model.put("myPageNav","-1");
 		return new ModelAndView("baseJsp",model);
 	}
 
 	/**
-	 * ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
+	 * µÇÂ¼²Ù×÷
 	 * @param username
 	 * @param password
 	 * @param code
@@ -90,37 +91,37 @@ public class LogAction {
 			HttpServletRequest request,HttpServletResponse res){
 		String codeStr = (String)request.getSession().getAttribute("codeStr");
 		if(codeStr==null){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½ï¿½È»ï¿½È¡ï¿½ï¿½Ö¤ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ÇëÏÈ»ñÈ¡ÑéÖ¤Âë");
 		}else{
 			if(!codeStr.equals(code)){
-				return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ó£¬µï¿½Â¼Ê§ï¿½Ü£ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/welcome.do", "ÑéÖ¤Âë´íÎó£¬µÇÂ¼Ê§°Ü£¡");
 			}
 		}
 		int status = userServer.getUserStatusByJobId(username);
 		if(status==-1){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬µï¿½Â¼Ê§ï¿½Ü£ï¿½");
-		}else if(status== UserInfo.STATUS_NO_ACTIVITY){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½Ë»ï¿½Î´ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ÓÃ»§Ãû»òÃÜÂë´íÎó£¬µÇÂ¼Ê§°Ü£¡");
+		}else if(status==UserInfo.STATUS_NO_ACTIVITY){
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÕË»§Î´¼¤»î£¬ÇëÏÈÖØÖÃÒ»´ÎÃÜÂëÀ´½øÐÐ¼¤»îÕË»§¡£");
 		}else if(status==UserInfo.STATUS_DISABLE ){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÕË»§±»½ûÓÃ£¬ÇëÁªÏµ¹ÜÀíÔ±¡£");
 		}else if(status==UserInfo.STATUS_ABNORMAL ){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½Ë»ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÕË»§Òì³££¬½ûÖ¹µÇÂ½£¬ÇëÁªÏµ¹ÜÀíÔ±¡£");
 		}else if(status==UserInfo.STATUS_FROZEN_15_MINUTE ){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½15ï¿½ï¿½ï¿½Ó£ï¿½15ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÓÉÓÚ¶à´ÎÊäÈëÃÜÂë´íÎó£¬ÕË»§±»¶³½á15·ÖÖÓ£¬15·ÖÖÓºó¿ÉÒÔÖØÐÂµÇÂ¼¡£ÈçÐèÁ¢¼´µÇÂ¼£¬ÇëÁªÏµ¹ÜÀíÔ±¡£");
 		}else if(status==UserInfo.STATUS_FROZEN_30_MINUTE ){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½15ï¿½ï¿½ï¿½Óºï¿½ï¿½Ù´Î¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½30ï¿½ï¿½ï¿½Ó£ï¿½30ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÓÉÓÚ±»¶³½á15·ÖÖÓºó£¬ÔÙ´Î¶à´ÎÊäÈëÃÜÂë´íÎó£¬ÕË»§±»¶³½á30·ÖÖÓ£¬30·ÖÖÓºó¿ÉÒÔÖØÐÂµÇÂ¼¡£ÈçÐèÁ¢¼´µÇÂ¼£¬ÇëÁªÏµ¹ÜÀíÔ±¡£");
 		}else if(status==UserInfo.STATUS_FROZEN_24_HOUR ){
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½Ú±ï¿½ï¿½ï¿½ï¿½ï¿½30ï¿½ï¿½ï¿½Óºï¿½ï¿½Ù´Î¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½24Ð¡Ê±ï¿½ï¿½24Ð¡Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡ÓÉÓÚ±»¶³½á30·ÖÖÓºó£¬ÔÙ´Î¶à´ÎÊäÈëÃÜÂë´íÎó£¬ÕË»§±»¶³½á24Ð¡Ê±£¬24Ð¡Ê±ºó¿ÉÒÔÖØÐÂµÇÂ¼¡£ÈçÐèÁ¢¼´µÇÂ¼£¬ÇëÁªÏµ¹ÜÀíÔ±¡£");
 		}
 		UserInfo info = userServer.checkLogin(username, password);
 		if(info!=null){
-			//ï¿½ï¿½Â½ï¿½É¹ï¿½
+			//µÇÂ½³É¹¦
 			request.getSession().removeAttribute("codeStr");
 			try {
 				userServer.changeUserPasswordErrorTimes(info.getJobId(),0);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡£¨·þÎñÆ÷Òì³££©");
 			}
 			HttpSession session = request.getSession();
 			session.setAttribute("userKindName", userKindService.getNameById(info.getKind()));
@@ -145,11 +146,11 @@ public class LogAction {
 			session.setAttribute("myPageMessagePrompt", msg+procedure+notice);
 			return new ModelAndView("redirect:/home.do");
 		}else{
-			//ï¿½ï¿½Â¼Ê§ï¿½ï¿½
-			//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//µÇÂ¼Ê§°Ü
+			//»ñÈ¡ÃÜÂë´íÎó´ÎÊý
 			int times = userServer.getUserPasawordErrorTimes(username);
 			times++;
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ð¶³½ï¿½
+			//°´¼¶±ð¶³½á
 			try{
 				if(times>=9){
 					userServer.changeUserStatusByJobId(username, UserInfo.STATUS_FROZEN_24_HOUR);
@@ -158,19 +159,19 @@ public class LogAction {
 				}else if(times>=3){
 					userServer.changeUserStatusByJobId(username, UserInfo.STATUS_FROZEN_15_MINUTE);
 				}
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//±£´æ´íÎó´ÎÊý
 				userServer.changeUserPasswordErrorTimes(username,times);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½ï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£02ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/welcome.do", "µÇÂ¼Ê§°Ü£¡£¨·þÎñÆ÷Òì³£02£©");
 			}
-			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó£¬µï¿½Â¼Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+times+"ï¿½Î£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/welcome.do", "ÓÃ»§Ãû»òÃÜÂë´íÎó£¬µÇÂ¼Ê§°Ü£¡£¨ÒÑÁ¬ÐøÊäÈë´íÎó"+times+"´Î£©");
 		}
 	}
 	
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Íü¼ÇÃÜÂë²Ù×÷
 	 * @param jobId
 	 * @param cardId
 	 * @param username
@@ -182,27 +183,27 @@ public class LogAction {
 	public ModelAndView forgetPassword(String jobId,String cardId,String username,
 			String newPassword1,String newPassword2){
 		if(jobId!=null){
-			//ï¿½Ð´ï¿½ï¿½ï¿½
+			//ÓÐ´«Èë
 			if(newPassword1.equals(newPassword2)){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬
+				//Á½´ÎÃÜÂëÏàÍ¬
 				boolean res;
 				try {
 					res = userServer.forgetPassword(jobId, cardId, username, newPassword1);
 				} catch (Exception e) {
 					e.printStackTrace();
-					return JumpPrompt.jumpOfModelAndView("/forgetPassword.do", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/forgetPassword.do", "ÖØÖÃÃÜÂëÊ§°Ü£¡£¨·þÎñÆ÷Òì³££©");
 				}
 				if(res){
-					//ï¿½Þ¸Ä³É¹ï¿½
+					//ÐÞ¸Ä³É¹¦
 					return new ModelAndView("redirect:/welcome.do");
 				}
 			}
 		}
-		return JumpPrompt.jumpOfModelAndView("/forgetPassword.do", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½");
+		return JumpPrompt.jumpOfModelAndView("/forgetPassword.do", "ÖØÖÃÃÜÂëÊ§°Ü£¡");
 	}
 	
 	/**
-	 * ×¢ï¿½ï¿½
+	 * ×¢Ïú
 	 * @param request
 	 * @return
 	 */
@@ -213,7 +214,7 @@ public class LogAction {
 	}
 	
 	/**
-	 * Ë¢ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Ë¢ÐÂÌáÊ¾µÄÊý×Ö
 	 * @param req
 	 * @return
 	 */

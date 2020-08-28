@@ -1,39 +1,40 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ProcedureShen;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
+import com.cao.oa.bean.ProcedureShen;
 
 public interface ProcedureShenMapper {
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//Ìí¼ÓÉóÅúÁ÷³Ì
 	public int addNewShen(ProcedureShen procedureShen);
-	//Í¨ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//Í¨¹ıÌá½»ºÅÕÒÈ«²¿Ìá½»µÄÉóÅú
 	public List<ProcedureShen> findBySubmitId(@Param("submitId") int submitId);
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ä³¸öÈËĞèÒª´¦ÀíµÄ×ÜÊı
 	public int getAllNeedToDealNumber(@Param("userJobId") String jobId);
 	
-	//ï¿½Òµï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id
+	//ÕÒµ½ĞèÒª´¦ÀíµÄÉóÅúÁ÷³Ìid
 	public List<Map<String, Object>> getNeedDealIdsByJobIdFromNumberToNumber
   (@Param("userJobId") String jobId, @Param("begin") int begin, @Param("end") int end);
 	
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Âµï¿½Ê±ï¿½ï¿½
+	//»ñÈ¡¸üĞÂµÄÊ±¼ä
 	public Timestamp getUpdateTime(@Param("procedureId") int submitId, @Param("order") int order);
 	
-	//Ñ°ï¿½Ò´ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+	//Ñ°ÕÒ´¦ÀíÈËÔ±
 	public String getDealPersonByIds(@Param("id") int shenId, @Param("procedureId") int procedureId);
-	//ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½
+	//»ñµÃ¸ÃÁ÷³ÌµÄÉóÅúË³Ğò
 	public int getOrderByIds(@Param("id") int shenId, @Param("procedureId") int procedureId);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//¸üĞÂÉóÅúÁ÷³Ì
 	public int updateAllByIds(ProcedureShen procedureShen);
-	//ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//²éÕÒÄ³¸öÁ÷³ÌµÚÄ³²½ÖèµÄÉóÅúÈË
 	public String getJobIdByOrderAndProcedureId(@Param("procedureId") int procedureId,
       @Param("order") int order);
-	//ï¿½ï¿½Ñ¯Ä³ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ğ´Ë²ï¿½ï¿½ï¿½
+	//²éÑ¯Ä³¸öÌá½»µÄÁ÷³ÌÊÇ·ñÓĞ´Ë²½Öè
 	public int getHasThisOrderOfSubmit(@Param("procedureId") int procedureId,
       @Param("order") int order);
-	//ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+	//¸ü¸ÄÄ³¸öÌá½»µÄÁ÷³ÌµÄÄ³²½ÖèµÄ×´Ì¬
 	public int updateWork(@Param("work") int work, @Param("procedureId") int procedureId,
       @Param("order") int order);
 	

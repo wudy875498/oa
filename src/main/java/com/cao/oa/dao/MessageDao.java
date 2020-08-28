@@ -1,12 +1,12 @@
 package com.cao.oa.dao;
 
+import java.util.Date;
+import java.util.List;
+import javax.annotation.Resource;
 import com.cao.oa.bean.Message;
 import com.cao.oa.mapper.MessageMapper;
 import com.cao.oa.mapper.RemindMapper;
 import com.cao.oa.mapper.UserInfoMapper;
-import java.util.Date;
-import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +20,7 @@ public class MessageDao {
 	private UserInfoMapper uMapper;
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³Ò»ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ï¸
+	 * »ñÈ¡Ä³Ò»¸öÏûÏ¢µÄÏêÏ¸
 	 * @param messageId
 	 * @return
 	 */
@@ -31,7 +31,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ËµÄ²ï¿½ï¿½Å¹ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄ²¿ÃÅ¹«¸æÁÐ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	 * @param jobId
 	 * @param begin
 	 * @param end
@@ -39,14 +39,14 @@ public class MessageDao {
 	 */
 	public List<Message> getNoticeOfPartFromNumToNum(String jobId,int begin,int end){
 		List<Message> result = null;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
 		result = mMapper.getMessageOfPartFromNumToNum(4, part, begin, end);
 		return result;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ËµÄ¹ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄ¹«Ë¾¹«¸æÁÐ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	 * @param begin
 	 * @param end
 	 * @return
@@ -58,7 +58,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½Ëµï¿½Ð¡ï¿½é¹«ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄÐ¡×é¹«¸æÁÐ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	 * @param jobId
 	 * @param begin
 	 * @param end
@@ -66,9 +66,9 @@ public class MessageDao {
 	 */
 	public List<Message> getNoticeOfGroupFromNumToNum(String jobId,int begin,int end){
 		List<Message> result = null;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
-		//ï¿½ï¿½È¡Ð¡ï¿½ï¿½
+		//»ñÈ¡Ð¡×é
 		int group= uMapper.getUserGroupByJobId(jobId);
 		result = mMapper.getMessageOfGroupFromNumToNum(7, part, group, begin, end);
 		return result;
@@ -76,19 +76,19 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ËµÄ²ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄ²¿ÃÅ¹«¸æÒ³Êý
 	 * @param jobId
 	 */
 	public int getNoticeOfPartNumberByJobId(String jobId){
 		int result = 0;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
 		result = mMapper.getNoticeOfPartNumberByJobId(part);
 		return result;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ËµÄ¹ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄ¹«Ë¾¹«¸æÒ³Êý
 	 * @param jobId
 	 * @return
 	 */
@@ -99,21 +99,21 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½Ëµï¿½Ð¡ï¿½é¹«ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄÐ¡×é¹«¸æÒ³Êý
 	 * @param jobId
 	 */
 	public int getNoticeOfGroupNumberByJobId(String jobId){
 		int result = 0;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
-		//ï¿½ï¿½È¡Ð¡ï¿½ï¿½
+		//»ñÈ¡Ð¡×é
 		int group= uMapper.getUserGroupByJobId(jobId);
 		result = mMapper.getNoticeOfGroupNumberByJobId(part, group);
 		return result;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½  ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËÈ«²¿ÏûÏ¢µÄ  ´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö  µÄÏûÏ¢ÄÚÈÝÈ«²¿
 	 * @param jobId
 	 * @param begin
 	 * @param end
@@ -121,31 +121,31 @@ public class MessageDao {
 	 */
 	public List<Message> getAllMessageInfoByJobId(String jobId, int begin, int end) {
 		List<Message> result = null;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
-		//ï¿½ï¿½È¡Ð¡ï¿½ï¿½
+		//»ñÈ¡Ð¡×é
 		int group= uMapper.getUserGroupByJobId(jobId);
 		result = mMapper.getAllMessageInfoByJobId(jobId, part, group, begin, end);
 		return result;
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½Ëµï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³ÈËµÄÈ«²¿ÏûÏ¢¸öÊý
 	 * @param jobId
 	 * @return
 	 */
 	public int getAllMessageByJobId(String jobId){
 		int result = -1;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡²¿ÃÅ
 		int part = uMapper.getUserPartByJobId(jobId);
-		//ï¿½ï¿½È¡Ð¡ï¿½ï¿½
+		//»ñÈ¡Ð¡×é
 		int group= uMapper.getUserGroupByJobId(jobId);
 		result = mMapper.getAllMessageByJobId(jobId, part, group);
 		return result;
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½
+	 * ÏòËùÓÐÈË·¢ËÍ
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -167,7 +167,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Å·ï¿½
+	 * Ïò²¿ÃÅ·¢
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -189,7 +189,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½Ä³ï¿½Ë·ï¿½
+	 * ÏòÄ³ÈË·¢
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -210,7 +210,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½Ð¡ï¿½é·¢
+	 * ÏòÐ¡×é·¢
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -231,7 +231,7 @@ public class MessageDao {
 	}
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÏòËùÓÐÈËÌí¼ÓÌáÐÑ
 	 * @param msgId
 	 * @param isMsg
 	 * @return
@@ -251,7 +251,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Ïò²¿ÃÅÌí¼ÓÌáÐÑ
 	 * @param msgId
 	 * @param isMsg
 	 * @param remindPart
@@ -272,7 +272,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÏòÐ¡×éÌí¼ÓÌáÐÑ
 	 * @param msgId
 	 * @return
 	 * @throws Exception 
@@ -292,7 +292,7 @@ public class MessageDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Ïò¸öÈËÌí¼ÓÌáÐÑ
 	 * @param msgId
 	 * @param remindId
 	 * @param isMsg

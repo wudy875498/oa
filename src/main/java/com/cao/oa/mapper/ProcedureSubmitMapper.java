@@ -1,31 +1,33 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ProcedureSubmit;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.cao.oa.bean.ProcedureSubmit;
+
 public interface ProcedureSubmitMapper {
-	//ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½á½»
+	//Ìí¼ÓĞÂµÄÌá½»
 	public int addNewSubmit(ProcedureSubmit procedureSubmit);
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËÌá½»µÄÁ÷³ÌµÄ×ÜÊı
 	public int getNumberOfSubmitByCreatePerson(@Param("createPerson") String jobId);
-	//ï¿½ï¿½È¡ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
+	//»ñÈ¡´ÓµÚ¼¸µ½µÚ¼¸µÄÎÒÌá½»µÄÁ÷³Ì£¬¼òÂÔ°æ
 	public List<Map<String, Object>> getAllMyProcedureSimpleFromNumToNum(
       @Param("createPerson") String jobId, @Param("begin") int begin, @Param("end") int end);
 	
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½á½»ï¿½ï¿½È«ï¿½ï¿½
+	//»ñÈ¡Ä³¸öÌá½»µÄÈ«²¿
 	public ProcedureSubmit findById(@Param("id") int id);
-	//ï¿½ï¿½È¡ï¿½á½»ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ï¢
+	//»ñÈ¡Ìá½»µÄÖ÷ÒªĞÅÏ¢
 	public Map<String, Object> getMainInfoById(@Param("id") int id);
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ìµï¿½ï¿½á½»ï¿½ï¿½
+	//»ñÈ¡Á÷³ÌµÄÌá½»ÈË
 	public String getCreatePerson(@Param("id") int id);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
+	//¸üĞÂÌá½»µÄÁ÷³Ì×´Ì¬
 	public int updateStatus(@Param("id") int id, @Param("status") int status);
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½
+	//»ñÈ¡Ä³¸öÈËĞèÒªÌáĞÑµÄÁ÷³ÌIDÊı
 	public int getNumberByUserJobIdAndWork(@Param("userJobId") String jobId, @Param("work") int work);
 	
-	//É¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//É¾³ıÒ»¸öÌá½»µÄÁ÷³Ì
 	public int delOneSubmit(@Param("id") int id);
 	
 }

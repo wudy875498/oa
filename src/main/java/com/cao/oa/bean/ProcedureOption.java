@@ -1,7 +1,7 @@
 package com.cao.oa.bean;
 
 /**
- * 锟结交锟斤拷锟斤拷锟教碉拷选锟斤拷
+ * 提交的流程的选项
  * @author DELL
  *
  */

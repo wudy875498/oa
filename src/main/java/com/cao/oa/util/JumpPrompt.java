@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class JumpPrompt {
 	/**
-	 * 锟斤拷转锟斤拷锟斤拷示页锟斤拷
+	 * 跳转到提示页面
 	 * @param baseUrl
 	 * @param baseContent
 	 * @return

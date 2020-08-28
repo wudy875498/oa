@@ -1,33 +1,35 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.Group;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.cao.oa.bean.Group;
+
 public interface GroupMapper {
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	//»ñÈ¡Ä³²¿ÃÅµÄËùÓÐÐ¡×éÃûºÍID
 	public List<Map<String, Object>> getAllGroupsOfPartNameAndId(@Param("partId") int partId);
-	//ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡Ð¡ï¿½ï¿½ID
+	//¸ù¾Ý²¿ÃÅIDºÍÐ¡×éÃû£¬»ñÈ¡Ð¡×éID
 	public int getGroupByName(@Param("partId") int partId, @Param("name") String name);
-	//ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+	//Ìí¼ÓÐ¡×é
 	public int addGroup(@Param("partId") int partId, @Param("name") String name,
       @Param("person") String person, @Param("date") Date date);
-	//ï¿½ï¿½ï¿½ï¿½idï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	//¸ù¾Ýid»ñÈ¡Ãû×Ö
 	public String getNameById(@Param("id") int id, @Param("partId") int partId);
-	//É¾ï¿½ï¿½Ð¡ï¿½ï¿½
+	//É¾³ýÐ¡×é
 	public int delGroup(@Param("id") int id, @Param("partId") int partId);
-	//ï¿½ï¿½È¡Ä³Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ä³Ð¡×éµÄÈËÊý
 	public int getMemberNumbersOfGroup(@Param("groupId") int groupId, @Param("partId") int partId);
-	//ï¿½ï¿½ï¿½Ø´Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//·µ»Ø´Ó¼¸µ½¼¸µÄÐÅÏ¢
 	public List<Group> getGroupsOfPartAllInfoByNumber(@Param("id") int id, @Param("begin") int begin,
       @Param("end") int end);
-	//ï¿½ï¿½È¡Ð¡ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½
+	//»ñÈ¡Ð¡×éµÄ¸öÊý
 	public int allGroupsCount(@Param("partId") int partId);
-	//É¾ï¿½ï¿½Ð¡ï¿½é£¬ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//É¾³ýÐ¡×é£¬¸ù¾Ý²¿ÃÅidºÍÃû×Ö
 	public int delGroupByPartIdAndName(@Param("name") String name, @Param("partId") int partId);
-	//É¾ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½È«ï¿½ï¿½Ð¡ï¿½ï¿½
+	//É¾³ýÄ³¸ö²¿ÃÅµÄÈ«²¿Ð¡×é
 	public int delAllGroupsByPartId(@Param("partId") int partId);
 
 }

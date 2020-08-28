@@ -1,7 +1,7 @@
 package com.cao.oa.bean;
 
 /**
- * Ä£ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+ * Ä£°åµÄÑ¡Ïî
  * @author DELL
  *
  */

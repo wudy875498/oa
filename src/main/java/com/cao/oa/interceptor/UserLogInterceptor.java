@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cao.oa.service.RemindService;
 
 /**
- * ï¿½ï¿½Ö¤ï¿½Ã»ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½
+ * ÑéÖ¤ÓÃ»§µÇÂ¼Óë·ñ
  * @author DELL
  *
  */
@@ -45,7 +45,7 @@ public class UserLogInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object arg2) throws Exception {
 		String path = req.getServletPath();
-		System.out.println("ï¿½ï¿½"+req.getContextPath()+"ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼");
+		System.out.println("¡¾"+req.getContextPath()+"¡¿µÇÂ¼À¹½ØÆ÷¿ªÊ¼");
 		if(path.equals("/welcome.do") || path.equals("/forgetPassword.do") ||
 		path.equals("/forgetPasswordForm.do") || path.equals("/loginForm.do") ||
 		path.equals("/jspFile/helpFile.jsp") ||
@@ -56,7 +56,7 @@ public class UserLogInterceptor implements HandlerInterceptor {
 			if(session!=null && session.getAttribute("userJobId")!=null){
 				return true;
 			}else{
-				req.setAttribute("baseContent", "ï¿½ï¿½ï¿½Èµï¿½Â¼ï¿½ï¿½");
+				req.setAttribute("baseContent", "ÇëÏÈµÇÂ¼£¡");
 				req.setAttribute("baseUrl", "/welcome.do");
 				req.getRequestDispatcher("/jspFile/prompt.jsp").forward(req, res);
 				return false;

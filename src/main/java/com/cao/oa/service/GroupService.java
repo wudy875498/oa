@@ -1,12 +1,12 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.Group;
-import com.cao.oa.dao.GroupDao;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.cao.oa.bean.Group;
+import com.cao.oa.dao.GroupDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -16,7 +16,7 @@ public class GroupService {
 	private GroupDao groupDao;
 
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+	 * »ñÈ¡Ä³²¿ÃÅµÄËùÓÐÐ¡×éÃûºÍID
 	 * @param partId
 	 * @return
 	 */
@@ -25,7 +25,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ý²ï¿½ï¿½ï¿½IDï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡Ð¡ï¿½ï¿½ID
+	 * ¸ù¾Ý²¿ÃÅIDºÍÐ¡×éÃû£¬»ñÈ¡Ð¡×éID
 	 * @param partId
 	 * @param name
 	 * @return
@@ -35,7 +35,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * É¾³ýÐ¡×é
 	 * @param partId
 	 * @param groupId
 	 * @return
@@ -47,7 +47,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * Ìí¼ÓÐ¡×é
 	 * @param partId
 	 * @param name
 	 * @param person
@@ -60,7 +60,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³Ð¡×éµÄÈËÊý
 	 * @param partId
 	 * @param groupId
 	 * @return
@@ -70,7 +70,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ú¼ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡µÚ¼¸Ò³µÄÄÚÈÝ
 	 * @param page
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡×ÜÒ³Êý
 	 * @return
 	 */
 	public int getAllPage(int partId){
@@ -93,7 +93,7 @@ public class GroupService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½È¡Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾ÝID»ñÈ¡Ð¡×éÃû×Ö
 	 * @param partId
 	 * @param groupId
 	 * @return

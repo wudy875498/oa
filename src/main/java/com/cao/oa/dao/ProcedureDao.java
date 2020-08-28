@@ -1,5 +1,12 @@
 package com.cao.oa.dao;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 import com.cao.oa.bean.ModelOption;
 import com.cao.oa.bean.ModelProcedure;
 import com.cao.oa.bean.ModelShen;
@@ -12,13 +19,6 @@ import com.cao.oa.mapper.ModelShenMapper;
 import com.cao.oa.mapper.ProcedureOptionMapper;
 import com.cao.oa.mapper.ProcedureShenMapper;
 import com.cao.oa.mapper.ProcedureSubmitMapper;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,7 +38,7 @@ public class ProcedureDao {
 	private ProcedureSubmitMapper ppMapper;
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ñµï¿½ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½
+	 * »ñÈ¡Ä³¸öÈËÐèÒªÌáÐÑµÄÁ÷³ÌIDÊý
 	 * @param jobId
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÉóÅúÒ»¸öÁ÷³Ì
 	 * @param shen
 	 * @param jobId
 	 * @return
@@ -61,13 +61,13 @@ public class ProcedureDao {
 		String good = psMapper.getDealPersonByIds(shen.getId(), shen.getProcedureId());
 		int order = psMapper.getOrderByIds(shen.getId(),shen.getProcedureId());
 		if(!good.equals(jobId)){
-			//ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½
+			//²»ÊÇÖ¸¶¨ÈËÔ±´¦Àí
 			return null;
 		}
 		int num = 0;
 		if(shen.isPass()){
-			//Í¨ï¿½ï¿½
-			//ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½ï¿½
+			//Í¨¹ý
+			//¸üÐÂ¸ÃÉóÅú
 			shen.setTime(new Date());
 			shen.setPass(1);
 			shen.setWork(ProcedureShen.WORK_OK);
@@ -75,20 +75,20 @@ public class ProcedureDao {
 			if(num==1){
 				int nextNum = psMapper.getHasThisOrderOfSubmit(shen.getProcedureId(), order+1);
 				if(nextNum==1){
-					//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½×´Ì¬ï¿½Ä±ï¿½
+					//ÓÐÏÂÒ»¸ö£¬ÏÂÒ»¸ö×´Ì¬¸Ä±ä
 					num = psMapper.updateWork(ProcedureShen.WORK_NEED, shen.getProcedureId(), order+1);
 					if(num==1){
-						//ï¿½ï¿½É£ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+						//Íê³É£¬Í¨¹ý£¬ÓÐÏÂÒ»¸ö
 						result = new HashMap<>();
 						result.put("finish", false);
 						result.put("hasNextPerson", true);
 						result.put("nextPerson", psMapper.getJobIdByOrderAndProcedureId(shen.getProcedureId(), order+1));
 					}
 				}else{
-					//Ã»ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½
+					//Ã»ÓÐÏÂÒ»¸ö£¬Á÷³Ì½áÊø
 					num = ppMapper.updateStatus(shen.getProcedureId(), ProcedureSubmit.STATUS_PASS);
 					if(num==1){
-						//ï¿½ï¿½É£ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+						//Íê³É£¬Í¨¹ý£¬ÎÞÏÂÒ»¸ö
 						result = new HashMap<>();
 						result.put("finish", true);
 						result.put("result", true);
@@ -97,36 +97,36 @@ public class ProcedureDao {
 				}
 			}
 		}else{
-			//ï¿½ï¿½Í¨ï¿½ï¿½
-			//ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½ï¿½
+			//²»Í¨¹ý
+			//¸üÐÂ¸ÃÉóÅú
 			shen.setTime(new Date());
 			shen.setPass(0);
 			shen.setWork(ProcedureShen.WORK_OK);
 			num = psMapper.updateAllByIds(shen);
 			if(num==1){
 				boolean hasError = false;
-				//ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½
+				//¸ü¸ÄÊ£ÓàÉóÅúÎª¡°ÂÔ¹ý¡±
 				while(true){
 					int nextNum = psMapper.getHasThisOrderOfSubmit(shen.getProcedureId(), order+1);
 					if(nextNum==1){
-						//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½×´Ì¬ï¿½Ä±ï¿½
+						//ÓÐÏÂÒ»¸ö£¬ÏÂÒ»¸ö×´Ì¬¸Ä±ä
 						num = psMapper.updateWork(ProcedureShen.WORK_PASS, shen.getProcedureId(), order+1);
 						if(num==0){
-							//ï¿½ï¿½ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
+							//ÓÐÎÊÌâ£¬¸üÐÂÊ§°Ü
 							hasError = true;
 							break;
 						}
 						order++;
 					}else{
-						//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½Ñ­ï¿½ï¿½
+						//ÎÞÏÂÒ»¸ö£¬ÍË³öÑ­»·
 						break;
 					}
 				}
 				if(!hasError){
-					//Ã»ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ï¿½ï¿½
+					//Ã»ÎÊÌâ£¬¼ÌÐø¡£Á÷³Ì½áÊø
 					num = ppMapper.updateStatus(shen.getProcedureId(), ProcedureSubmit.STATUS_NO_PASS);
 					if(num==1){
-						//ï¿½ï¿½É£ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+						//Íê³É£¬²»Í¨¹ý£¬ÖÕ½áÆäËûÉóÅú
 						result = new HashMap<>();
 						result.put("finish", true);
 						result.put("result", false);
@@ -142,7 +142,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½  ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
+	 * »ñÈ¡´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö  ÐèÒª´¦ÀíµÄÁ÷³Ì£¬¼òÂÔ°æ
 	 * @param begin
 	 * @param end
 	 * @param jobId
@@ -150,16 +150,16 @@ public class ProcedureDao {
 	 */
 	public List<Map<String, Object>> getNeedToDealSimpleFromNumToNum(int begin, int end, String jobId) {
 		List<Map<String, Object>> result = null;
-			//ï¿½Òµï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id
+			//ÕÒµ½ÐèÒª´¦ÀíµÄÉóÅúÁ÷³Ìid
 		List<Map<String, Object>> ids = psMapper.getNeedDealIdsByJobIdFromNumberToNumber(jobId, begin, end);
 		if(ids!=null && ids.size()!=0){
 			result = new ArrayList<>();
 			for(int i=0;i<ids.size();i++){
 				Map<String, Object> mapTemp = null;
-				//ï¿½ï¿½È¡ï¿½ï¿½Òªï¿½ï¿½Ï¢
+				//»ñÈ¡Ö÷ÒªÐÅÏ¢
 				mapTemp = ppMapper.getMainInfoById((int)ids.get(i).get("procedureId"));
 				if(mapTemp!=null){
-					//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+					//»ñÈ¡¸üÐÂÊ±¼ä
 					if((int)ids.get(i).get("oorder")==1){
 						mapTemp.put("updateDate", mapTemp.get("createDate"));
 					}else{
@@ -174,7 +174,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸öÈËÐèÒª´¦ÀíµÄ×ÜÊý
 	 * @param jobId
 	 * @return
 	 */
@@ -185,7 +185,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Òµï¿½Ò»ï¿½ï¿½ï¿½á½»ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * »ñÈ¡ÎÒµÄÒ»¸öÌá½»µÄÈ«²¿ÐÅÏ¢
 	 * @param submitId
 	 * @return
 	 */
@@ -217,7 +217,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
+	 * »ñÈ¡´ÓµÚ¼¸µ½µÚ¼¸µÄÎÒÌá½»µÄÁ÷³Ì£¬¼òÂÔ°æ
 	 * @param begin
 	 * @param end
 	 * @param jobId
@@ -230,7 +230,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡ÎÒÌá½»µÄÁ÷³ÌµÄ×ÜÊý
 	 * @param jobId
 	 * @return
 	 */
@@ -241,7 +241,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ±£´æÌá½»µÄÉóÅú
 	 * @param psubmit
 	 * @return
 	 * @throws Exception 
@@ -264,14 +264,14 @@ public class ProcedureDao {
 					for(int i=0;i<opts.length;i++){
 						opts[i].setProcedureId(key);
 						if(!addOptionOfSubmit(opts[i])){
-							//Ê§ï¿½ï¿½ï¿½ï¿½
+							//Ê§°ÜÁË
 							needBack = true;
-//							System.out.println("Ê§ï¿½Ü±ï¿½ï¿½1");
+//							System.out.println("Ê§°Ü±àºÅ1");
 							break;
 						}
 					}
 				}
-				//ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//ÉÏÃæÃ»´í£¬¼ÌÐø
 				if(!needBack){
 					ProcedureShen[] shens = psubmit.getShens();
 					if(shens!=null){
@@ -281,16 +281,16 @@ public class ProcedureDao {
 							}
 							shens[i].setProcedureId(key);
 							if(!addShenOfSubmit(shens[i])){
-								//Ê§ï¿½ï¿½ï¿½ï¿½
+								//Ê§°ÜÁË
 								needBack = true;
-//								System.out.println("Ê§ï¿½Ü±ï¿½ï¿½2");
+//								System.out.println("Ê§°Ü±àºÅ2");
 								break;
 							}
 						}
 					}
 				}
 				if(!needBack){
-					//Ã»ï¿½Ð´ï¿½ï¿½ï¿½
+					//Ã»ÓÐ´íÎó
 					result = true;
 				}
 			}
@@ -307,7 +307,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½Ñ¡ï¿½ï¿½
+	 * ±£´æÌá½»µÄÑ¡Ïî
 	 * @param opt
 	 * @return
 	 */
@@ -318,13 +318,13 @@ public class ProcedureDao {
 		if(num==1){
 			return true;
 		}else{
-//			System.out.println("addOptionOfSubmit"+opt.getOrder()+"ï¿½ï¿½ï¿½ï¿½");
+//			System.out.println("addOptionOfSubmit"+opt.getOrder()+"´íÎó");
 			return false;
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ±£´æÌá½»µÄÉóÅú
 	 * @param shen
 	 * @return
 	 */
@@ -333,14 +333,14 @@ public class ProcedureDao {
 		if(num==1){
 			return true;
 		}else{
-//			System.out.println("addShenOfSubmit"+shen.getOrder()+"ï¿½ï¿½ï¿½ï¿½");
+//			System.out.println("addShenOfSubmit"+shen.getOrder()+"´íÎó");
 			return false;
 		}
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÌµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Á÷³ÌµÄ´´½¨Õß
 	 * @param id
 	 * @return
 	 */
@@ -351,7 +351,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½É¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾ÝID£¬É¾³ýÒ»¸öÁ÷³Ì
 	 * @param id
 	 * @return
 	 * @throws Exception 
@@ -362,17 +362,17 @@ public class ProcedureDao {
 		int num = 0;
 		int num2 = 0;
 
-		//ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+		//²éÑ¯ÓÐ¼¸¸öÑ¡Ïî
 		num2 = moMapper.getNumberOfOneModel(id);
-		//É¾ï¿½ï¿½Ñ¡ï¿½ï¿½
+		//É¾³ýÑ¡Ïî
 		num = moMapper.delAllOptionsByModelId(id);
-		//Ñ¡ï¿½ï¿½È«ï¿½ï¿½É¾ï¿½ï¿½
+		//Ñ¡ÏîÈ«²¿É¾³ý
 		if(num==num2){
-			//ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//²éÑ¯ÓÐ¼¸¸ö¹ý³Ì
 			num2 = msMapper.getNumberOfOneModel(id);
-			//É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//É¾³ý¹ý³Ì
 			num = msMapper.delAllByModelId(id);
-			//ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½É¾ï¿½ï¿½
+			//¹ý³ÌÈ«²¿É¾³ý
 			if(num==num2){
 				num = mpMapper.delById(id);
 				if(num==1){
@@ -387,7 +387,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	 * ¸üÐÂÄ£°å
 	 * @param procedure
 	 * @return
 	 * @throws Exception 
@@ -397,22 +397,22 @@ public class ProcedureDao {
 		int num = 0;
 		int num2 = 0;
 		num = mpMapper.updateModel(procedure);
-		//ï¿½É¹ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½Òª
+		//³É¹¦ÐÞ¸ÄÖ÷Òª
 		if(num==1){
-			//ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+			//²éÑ¯ÓÐ¼¸¸öÑ¡Ïî
 			num2 = moMapper.getNumberOfOneModel(procedure.getId());
-			//É¾ï¿½ï¿½Ñ¡ï¿½ï¿½
+			//É¾³ýÑ¡Ïî
 			num = moMapper.delAllOptionsByModelId(procedure.getId());
-			//Ñ¡ï¿½ï¿½È«ï¿½ï¿½É¾ï¿½ï¿½
+			//Ñ¡ÏîÈ«²¿É¾³ý
 			if(num==num2){
-				//ï¿½ï¿½Ñ¯ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//²éÑ¯ÓÐ¼¸¸ö¹ý³Ì
 				num2 =msMapper.getNumberOfOneModel(procedure.getId());
-				//É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//É¾³ý¹ý³Ì
 				num = msMapper.delAllByModelId(procedure.getId());
-				//ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½É¾ï¿½ï¿½
+				//¹ý³ÌÈ«²¿É¾³ý
 				if(num==num2){
-					boolean needBack = false;//ï¿½Ç·ï¿½ï¿½ï¿½Òªï¿½Ø¹ï¿½
-					//ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+					boolean needBack = false;//ÊÇ·ñÐèÒª»Ø¹ö
+					//Ìí¼ÓÑ¡Ïî
 					ModelOption[] opts = procedure.getOption();
 					for(ModelOption opt:opts){
 						if(!addNewOption(opt,procedure.getId())){
@@ -421,7 +421,7 @@ public class ProcedureDao {
 						}
 					}
 					if(!needBack){
-						//ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½
+						//Ìí¼Ó¹ý³Ì
 						ModelShen[] shens = procedure.getShen();
 						for(ModelShen s:shens){
 							if(!addNewShen(s,procedure.getId())){
@@ -436,7 +436,7 @@ public class ProcedureDao {
 				}
 			}
 		}
-		//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ê§ï¿½ï¿½
+		//ÆäÖÐÒ»¸öÊ§°Ü
 		if(!resTemp){
 			throw new Exception();
 		}
@@ -445,15 +445,15 @@ public class ProcedureDao {
 	
 	
 	/**
-	 * ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½
+	 * »ñÈ¡Ò»¸öÁ÷³ÌÄ£°åµÄÈ«²¿
 	 * @param modelId
 	 * @return
 	 */
 	public ModelProcedure getModelInfoAllById(int modelId) {
 		ModelProcedure result = null;
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//²éÕÒÖ÷ÄÚÈÝ
 		result = mpMapper.findById(modelId);
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+		//²éÕÒÌîÑ¡Ïî
 		List<ModelOption> tempO = moMapper.getOptionsByProcedureId(modelId);
 		if(tempO!=null && tempO.size()!=0){
 			ModelOption[] opts = new ModelOption[tempO.size()];
@@ -461,7 +461,7 @@ public class ProcedureDao {
 				opts[i] = tempO.get(i);
 			}
 			result.setOption(opts);
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//²éÕÒÁ÷³Ì
 			List<ModelShen> tempS = msMapper.getShensByProcedureId(modelId);
 			if(tempS!=null && tempS.size()!=0){
 				ModelShen[] ss = new ModelShen[tempS.size()];
@@ -479,7 +479,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½Ä£ï¿½å£¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ´ÓµÚ¼¸µ½µÚ¼¸µÄÄ£°å£¬°´Ê±¼äÅÅÐò
 	 * @param begin
 	 * @param end
 	 * @return
@@ -491,7 +491,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡ËùÓÐÄ£°åµÄ×ÜÊý
 	 * @return
 	 */
 	public int getAllModelNumber(){
@@ -501,7 +501,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ´´½¨ÐÂµÄÁ÷³Ì
 	 * @param procedure
 	 * @return
 	 * @throws Exception 
@@ -511,7 +511,7 @@ public class ProcedureDao {
 		int key = 0;
 		procedure.setCreateDate(new Date());
 		key = mpMapper.addNewProcedure(procedure);
-		//ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//³É¹¦Ìí¼ÓÉÏÁË
 		if(key!=0){
 			boolean needBack = false;
 			key = procedure.getId();
@@ -542,7 +542,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * Ìí¼ÓÒ»¸öÐÂµÄÁ÷³Ì
 	 * @param s
 	 * @param modelId
 	 * @return
@@ -559,7 +559,7 @@ public class ProcedureDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	 * ÏòÊý¾Ý¿âÖÐÌí¼ÓÒ»¸öÐÂµÄÌîÑ¡Ïî
 	 * @param opt
 	 * @param modelId
 	 * @return

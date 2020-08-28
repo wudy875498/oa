@@ -1,11 +1,12 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.FileDepot;
-import com.cao.oa.dao.FileDepotDao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cao.oa.bean.FileDepot;
+import com.cao.oa.dao.FileDepotDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -17,7 +18,7 @@ public class FileDepotService {
 	private FileDepotDao fileDepotDao;
 
 	/**
-	 * 锟斤拷取锟节硷拷页锟斤拷司锟侥硷拷锟叫憋拷
+	 * 获取第几页公司文件列表
 	 * @param page
 	 * @return
 	 */
@@ -31,7 +32,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷司锟侥硷拷锟斤拷页锟斤拷
+	 * 获取公司文件总页数
 	 * @return
 	 */
 	public int getFileListOfCompanyPageNumber(){
@@ -40,7 +41,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷锟斤拷锟侥硷拷锟叫憋拷
+	 * 获取部门文件列表
 	 * @param page
 	 * @return
 	 */
@@ -54,7 +55,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷锟斤拷锟侥硷拷锟斤拷页锟斤拷
+	 * 获取部门文件总页数
 	 * @return
 	 */
 	public int getFileListOfPartPageNumber(int part){
@@ -63,7 +64,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟叫憋拷
+	 * 获取全部的部门文件列表
 	 * @param page
 	 * @return
 	 */
@@ -77,7 +78,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟斤拷页锟斤拷
+	 * 获取全部的部门文件总页数
 	 * @return
 	 */
 	public int getFileListOfAllPartPageNumber(){
@@ -86,7 +87,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷某锟斤拷小锟斤拷
+	 * 获取小组文件列表，某个小组
 	 * @param page
 	 * @return
 	 */
@@ -100,7 +101,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷页锟斤拷锟斤拷某锟斤拷小锟斤拷
+	 * 获取小组文件总页数，某个小组
 	 * @return
 	 */
 	public int getFileListGroupPageNumber(int part,int group){
@@ -109,7 +110,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷小锟斤拷
+	 * 获取小组文件列表，全部小组
 	 * @param page
 	 * @return
 	 */
@@ -123,7 +124,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷页锟斤拷锟斤拷全锟斤拷小锟斤拷
+	 * 获取小组文件总页数，全部小组
 	 * @return
 	 */
 	public int getFileListOfAllGroupPageNumber(int part){
@@ -132,7 +133,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷锟斤拷锟斤拷
+	 * 获取小组文件列表，全部部门
 	 * @param page
 	 * @return
 	 */
@@ -146,7 +147,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷页锟斤拷锟斤拷全锟斤拷锟斤拷锟斤拷
+	 * 获取小组文件总页数，全部部门
 	 * @return
 	 */
 	public int getFileListOfAllPartAndGroupPageNumber(){
@@ -155,7 +156,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷锟斤拷锟较达拷锟斤拷锟侥硷拷
+	 * 保存上传的文件
 	 * @param fd
 	 * @return
 	 * @throws Exception 
@@ -166,7 +167,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 锟斤拷取一锟斤拷锟侥硷拷锟斤拷锟斤拷细锟斤拷息
+	 * 获取一个文件的详细信息
 	 * @param fileId
 	 * @return
 	 */
@@ -175,7 +176,7 @@ public class FileDepotService {
 	}
 	
 	/**
-	 * 删锟斤拷一锟斤拷锟侥硷拷
+	 * 删除一个文件
 	 * @param fileId
 	 * @return
 	 * @throws Exception 

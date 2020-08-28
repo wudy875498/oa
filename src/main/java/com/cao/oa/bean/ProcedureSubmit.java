@@ -4,25 +4,25 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * ï¿½Ã»ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * ÓÃ»§Ìá½»µÄÁ÷³Ì
  * @author DELL
  *
  */
 public class ProcedureSubmit {
 	/**
-	 * Í¨ï¿½ï¿½
+	 * Í¨¹ý
 	 */
 	public static final int STATUS_PASS = 1;
 	/**
-	 * Î´Í¨ï¿½ï¿½
+	 * Î´Í¨¹ý
 	 */
 	public static final int STATUS_NO_PASS = 2;
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ½øÐÐÖÐ
 	 */
 	public static final int STATUS_WORKING = 3;
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½
+	 * ´íÎó
 	 */
 	public static final int STATUS_ERROR = 4;
 	

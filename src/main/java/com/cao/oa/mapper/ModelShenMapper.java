@@ -1,18 +1,19 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ModelShen;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import com.cao.oa.bean.ModelShen;
 
 public interface ModelShenMapper {
-	//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+	//Ìí¼ÓÒ»¸öÐÂµÄÁ÷³Ì
 	public int addNewShen(ModelShen modelShen);
-	//ï¿½ï¿½È¡Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ò»¸öÄ£°åµÄÈ«²¿Á÷³Ì
 	public List<ModelShen> getShensByProcedureId(@Param("modelId") int modelId);
-	//ï¿½ï¿½È¡Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ò»¸öÄ£°åµÄÁ÷³ÌÊý
 	public int getNumberOfOneModel(@Param("modelId") int modelId);
-	//É¾ï¿½ï¿½Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//É¾³ýÒ»¸öÄ£°åµÄÈ«²¿Á÷³Ì
 	public int delAllByModelId(@Param("modelId") int modelId);
 	
 	

@@ -1,9 +1,10 @@
 package com.cao.oa.action;
 
-import com.cao.oa.singletonPattern.LogToFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.cao.oa.singletonPattern.LogToFile;
 
 @Controller
 public class LogFileAction {

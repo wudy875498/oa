@@ -1,15 +1,9 @@
 package com.cao.oa.action;
 
-import com.cao.oa.bean.Group;
-import com.cao.oa.bean.Part;
-import com.cao.oa.bean.UserInfo;
-import com.cao.oa.service.GroupService;
-import com.cao.oa.service.PartService;
-import com.cao.oa.service.UserService;
-import com.cao.oa.util.JumpPrompt;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-//import java.util.Iterator;
+import com.cao.oa.bean.Group;
+import com.cao.oa.bean.Part;
+import com.cao.oa.bean.UserInfo;
+import com.cao.oa.service.GroupService;
+import com.cao.oa.service.PartService;
+import com.cao.oa.service.UserService;
+import com.cao.oa.util.JumpPrompt;
 
 @Controller
 public class ManageAction {
@@ -33,41 +32,41 @@ public class ManageAction {
 	
 	public ManageAction(){
 		super();
-		sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½ hh:mm:ss");
+		sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
 	}
 
 	/**
-	 * ×ªï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Ò³ï¿½æ£¨ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½
+	 * ×ªµ½ÓÃ»§¹ÜÀí¡ª¡ªÐÞ¸ÄÒ³Ãæ£¨ÍøÕ¾¹ÜÀíÔ±£©
 	 * @param jobId
 	 * @return
 	 */
 	@RequestMapping("manage/userManagerEdit.do")
 	public ModelAndView viewUserManagerEdit(String jobId,HttpServletRequest req){
 		String userJobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		int userKind = userServer.getUserKindByJobId(userJobId);
 		if(userKind!=UserInfo.KIND_MANAGER_WEB){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½Þ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "¶Ô²»Æð£¬ÄúÎÞ´ËÈ¨ÏÞ£¡");
 		}
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/userManagerEdit.jsp");
-		model.put("myPageTitle","ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½");
+		model.put("myPageTitle","ÓÃ»§¹ÜÀí¡ª¡ªÐÞ¸Ä");
 		model.put("myPageNav","12");
 		
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+		//»ñÈ¡ÓÃ»§ÐÅÏ¢
 		UserInfo temp = userServer.getUserInfoByJobId(jobId);
 		if(temp!=null){
-			model.put("umeName", temp.getName());//ï¿½ï¿½ï¿½ï¿½
-			model.put("umeSex", temp.getSex());//ï¿½Ô±ï¿½
-			model.put("umeJobId", jobId);//ï¿½ï¿½ï¿½ï¿½
-			model.put("umeCardId", temp.getCardId());//ï¿½ï¿½ï¿½Ö¤
-			model.put("umePart", temp.getPart());//ï¿½ï¿½ï¿½ï¿½
-			model.put("umeGroup", temp.getGroup());//Ð¡ï¿½ï¿½
-			model.put("umeTel", temp.getTel());//ï¿½ç»°
-			model.put("umeEmail", temp.getEmail());//ï¿½ï¿½ï¿½ï¿½
-			model.put("umeAddr", temp.getAddr());//ï¿½ï¿½Ö·
-			model.put("umeStatue", temp.getStatus());//ï¿½ï¿½Ö·
-			model.put("umePost", temp.getPost());//ï¿½ï¿½Ö·
+			model.put("umeName", temp.getName());//ÐÕÃû
+			model.put("umeSex", temp.getSex());//ÐÔ±ð
+			model.put("umeJobId", jobId);//¹¤ºÅ
+			model.put("umeCardId", temp.getCardId());//Éí·ÝÖ¤
+			model.put("umePart", temp.getPart());//²¿ÃÅ
+			model.put("umeGroup", temp.getGroup());//Ð¡×é
+			model.put("umeTel", temp.getTel());//µç»°
+			model.put("umeEmail", temp.getEmail());//ÓÊÏä
+			model.put("umeAddr", temp.getAddr());//µØÖ·
+			model.put("umeStatue", temp.getStatus());//µØÖ·
+			model.put("umePost", temp.getPost());//µØÖ·
 		}
 		
 		List<Map<String, Object>> partsList = null;
@@ -76,13 +75,13 @@ public class ManageAction {
 		partsList = partService.getAllPartsAndNames();
 		groupsList = groupService.getAllGroupsOfPartNameAndId(temp.getPart());
 		
-		model.put("umePartList", partsList);//ï¿½ï¿½Ö·
-		model.put("umeGroupList", groupsList);//ï¿½ï¿½Ö·
+		model.put("umePartList", partsList);//µØÖ·
+		model.put("umeGroupList", groupsList);//µØÖ·
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½æ£¨ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½
+	 * ×ªµ½ÓÃ»§¹ÜÀíÒ³Ãæ£¨ÍøÕ¾¹ÜÀíÔ±£©
 	 * @param page
 	 * @param partId
 	 * @param req
@@ -91,38 +90,38 @@ public class ManageAction {
 	@RequestMapping("manage/userManager.do")
 	public ModelAndView viewUserManager(String page,String partId,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		int userKind = userServer.getUserKindByJobId(jobId);
 		if(userKind!=UserInfo.KIND_MANAGER_WEB){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½Þ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "¶Ô²»Æð£¬ÄúÎÞ´ËÈ¨ÏÞ£¡");
 		}
 		
-		List<Map<String,String>> personList = null;//Ò»Ò³10ï¿½ï¿½
+		List<Map<String,String>> personList = null;//Ò»Ò³10¸ö
 		List<Map<String,String>> partList = null;
 		int currentPart = 0;
 		int allPage = 0;
 		int currentPage = 0;
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
+		//ÏÖÔÚËù¿´µÄ²¿ÃÅ
 		if(partId==null || partId.length()==0){
 			currentPart = 0;
 		}else{
 			currentPart = Integer.parseInt(partId);
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÏÖÔÚËù¿´µÄÒ³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
+		//»ñÈ¡×ÜÒ³Êý
 		allPage = userServer.getAllPageByPart(currentPart);
-		//ï¿½ï¿½Ö¹ï¿½Ç·ï¿½Ò³ï¿½ï¿½
+		//·ÀÖ¹·Ç·¨Ò³Êý
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}else if(currentPage<1){
 			currentPage = 1;
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+		//»ñÈ¡²¿ÃÅÁÐ±í
 		List<Map<String,Object>> tempList = partService.getAllPartsAndNames();
 		if(tempList!=null){
 			partList = new ArrayList<Map<String,String>>();
@@ -133,7 +132,7 @@ public class ManageAction {
 				partList.add(map);
 			}
 		}
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½Ð±ï¿½
+		//»ñÈ¡ÓÃ»§ÁÐ±í
 		tempList = userServer.getUsersInfoOfPartByPage(currentPart, currentPage);
 		if(tempList!=null){
 			personList = new ArrayList<Map<String,String>>();
@@ -143,12 +142,12 @@ public class ManageAction {
 				map.put("cardId", (String)tempList.get(i).get("cardId"));
 				map.put("name", (String)tempList.get(i).get("name"));
 				if(tempList.get(i).get("post")==null){
-					map.put("post", "ï¿½ï¿½");
+					map.put("post", "ÎÞ");
 				}else{
 					map.put("post", (String)tempList.get(i).get("post"));
 				}
 				if((int)tempList.get(i).get("sex")==UserInfo.SEX_MALE){
-					map.put("sex", "ï¿½ï¿½");
+					map.put("sex", "ÄÐ");
 				}else{
 					map.put("sex", "Å®");
 				}
@@ -161,18 +160,18 @@ public class ManageAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/userManager.jsp");
-		model.put("myPageTitle","ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","ÓÃ»§¹ÜÀí");
 		model.put("myPageNav","12");
-		model.put("umPersonList", personList);//ï¿½Ã»ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½
-		model.put("umPartList", partList);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("umCurrentPart", currentPart+"");//ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½Ä²ï¿½ï¿½ï¿½
+		model.put("umPersonList", personList);//ÓÃ»§ÁÐ±í£¬×î¶à6¸ö
+		model.put("umPartList", partList);//²¿ÃÅÁÐ±í
+		model.put("umCurrentPart", currentPart+"");//µ±Ç°ÏÔÊ¾µÄ²¿ÃÅ
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¡ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ×ªµ½Èº×é¹ÜÀí½çÃæ¡ª¡ª²¿ÃÅ
 	 * @param page
 	 * @param req
 	 * @return
@@ -188,15 +187,15 @@ public class ManageAction {
 			currentPage = Integer.parseInt(page.trim());
 		}
 		allPage = partService.getAllPage();
-		//Ñ¡ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½
+		//Ñ¡ÔñµÄÒ³Êý´óÓÚ×ÜÊý£¬¸ÄÎª×î´ó
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}
-		//ï¿½ï¿½Ö¹ï¿½Ç·ï¿½Ò³ï¿½ï¿½
+		//·ÀÖ¹·Ç·¨Ò³Êý
 		if(currentPage<1){
 			currentPage = 1;
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+		//»ñÈ¡²¿ÃÅÐÅÏ¢
 		managePartList = null;
 		List<Part> list = partService.getPartByPage(currentPage);
 		if(list!=null && list.size()!=0){
@@ -212,19 +211,19 @@ public class ManageAction {
 				managePartList.add(map);
 			}
 		}
-		//×ªï¿½ï¿½
+		//×ªÏò
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/groupManagerPart.jsp");
-		model.put("myPageTitle","Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","Èº×é¹ÜÀí¡ª¡ª²¿ÃÅ");
 		model.put("myPageNav","13");
-		model.put("gmpManagePartList", managePartList);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+		model.put("gmpManagePartList", managePartList);//²¿ÃÅÁÐ±í
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¡ªï¿½ï¿½Ð¡ï¿½ï¿½
+	 * ×ªµ½Èº×é¹ÜÀí½çÃæ¡ª¡ªÐ¡×é
 	 * @param page
 	 * @param partId
 	 * @param req
@@ -234,16 +233,16 @@ public class ManageAction {
 	public ModelAndView viewGroupManagerGroup(String page,String partId,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		int kind = userServer.getUserKindByJobId(jobId);
-		List<Map<String,String>> groupList = null;//Ò»Ò³6ï¿½ï¿½
+		List<Map<String,String>> groupList = null;//Ò»Ò³6¸ö
 		List<Map<String,String>> partList = null;
 		String currentPart = "";
 		int allPage = 0;
 		int currentPage = 0;
 		
 		if(kind==UserInfo.KIND_MANAGER_WEB){
-			//ï¿½ï¿½È«ï¿½ï¿½
+			//¿´È«²¿
 			List<Map<String, Object>> list = partService.getAllPartsAndNames();
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+			//´¦ÀíÐÅÏ¢£¬Ìí¼Ó²¿ÃÅ
 			partList = new ArrayList<>();
 			for(int i=0;i<list.size();i++){
 				Map<String,String> map = new HashMap<>();
@@ -251,16 +250,16 @@ public class ManageAction {
 				map.put("partName", (String)list.get(i).get("name"));
 				partList.add(map);
 			}
-			//ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+			//Ìí¼Ó²¿ÃÅ
 			if(partId==null || partId.length()==0){
 				partId = partList.get(0).get("partId");
 			}
 			
 		}else{//kind==1
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-			//ï¿½ï¿½Ó²ï¿½ï¿½Å£ï¿½ï¿½Ì¶ï¿½
+			//¿´µ¥¸ö
+			//Ìí¼Ó²¿ÃÅ£¬¹Ì¶¨
 			partId = userServer.getUserPartByJobId(jobId)+"";
-			//ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+			//Ìí¼Ó²¿ÃÅ
 			partList = new ArrayList<>();
 			Map<String,String> map = new HashMap<>();
 			map.put("partId", partId);
@@ -268,25 +267,25 @@ public class ManageAction {
 			partList.add(map);
 		}
 		currentPart = partId;
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½ allPage
+		//»ñÈ¡×ÜÒ³Êý allPage
 		allPage = groupService.getAllPage(Integer.parseInt(partId));
-		//Ò³ï¿½ï¿½
+		//Ò³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//Ñ¡ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½
+		//Ñ¡ÔñµÄÒ³Êý´óÓÚ×ÜÊý£¬¸ÄÎª×î´ó
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}
-		//ï¿½ï¿½Ö¹ï¿½Ç·ï¿½Ò³ï¿½ï¿½
+		//·ÀÖ¹·Ç·¨Ò³Êý
 		if(currentPage<1){
 			currentPage = 1;
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ getPartByPage
+		//²éÕÒÊý¾Ý getPartByPage
 		List<Group> groupsListOfSQL = groupService.getGroupsOfPartByPage(Integer.parseInt(partId), currentPage);
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//Ìí¼ÓÊý¾Ý
 		groupList = new ArrayList<>();
 		for(int i=0;i<groupsListOfSQL.size();i++){
 			Map<String,String> map = new HashMap<String,String>();
@@ -300,11 +299,11 @@ public class ManageAction {
 
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/groupManagerGroup.jsp");
-		model.put("myPageTitle","Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½");
+		model.put("myPageTitle","Èº×é¹ÜÀí¡ª¡ªÐ¡×é");
 		model.put("myPageNav","13");
-		model.put("gmgGroupList", groupList);//Ð¡ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½
-		model.put("gmgPartList", partList);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("gmgCurrentPart", currentPart);//ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½Ä²ï¿½ï¿½ï¿½
+		model.put("gmgGroupList", groupList);//Ð¡×éÁÐ±í£¬×î¶à10¸ö
+		model.put("gmgPartList", partList);//²¿ÃÅÁÐ±í
+		model.put("gmgCurrentPart", currentPart);//µ±Ç°ÏÔÊ¾µÄ²¿ÃÅ
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
@@ -312,7 +311,7 @@ public class ManageAction {
 	
 	
 	/**
-	 * ×ªï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¡ªï¿½ï¿½ï¿½ï¿½Ô±
+	 * ×ªµ½Èº×é¹ÜÀí½çÃæ¡ª¡ª³ÉÔ±
 	 * @param page
 	 * @param partId
 	 * @param groupId
@@ -323,7 +322,7 @@ public class ManageAction {
 	public ModelAndView viewGroupManagerMember(String page,String partId,String groupId,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		int kind = userServer.getUserKindByJobId(jobId);
-		List<Map<String,String>> personList = null;//Ò»Ò³6ï¿½ï¿½
+		List<Map<String,String>> personList = null;//Ò»Ò³6¸ö
 		List<Map<String,String>> partList = null;
 		List<Map<String,String>> groupList = null;
 		String currentPart = "";
@@ -331,15 +330,15 @@ public class ManageAction {
 		int allPage = 0;
 		int currentPage = 0;
 		
-		//È·ï¿½ï¿½ï¿½ï¿½Ç°Ò³
+		//È·¶¨µ±Ç°Ò³
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
 		if(kind==UserInfo.KIND_MANAGER_WEB){
-			//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+			//ÍøÕ¾¹ÜÀíÔ±
+			//´¦ÀíÐÅÏ¢£¬Ìí¼Ó²¿ÃÅ
 			List<Map<String, Object>> list = partService.getAllPartsAndNames();
 			partList = new ArrayList<>();
 			for(int i=0;i<list.size();i++){
@@ -348,13 +347,13 @@ public class ManageAction {
 				map.put("partName", (String)list.get(i).get("name"));
 				partList.add(map);
 			}
-			//ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+			//Ìí¼Ó²¿ÃÅ
 			if(partId==null || partId.length()==0){
 				partId = partList.get(0).get("partId");
 			}
-			//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//È·¶¨²¿ÃÅ
 			currentPart = partId;
-			//ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+			//Ìí¼ÓÐ¡×é
 			list = groupService.getAllGroupsOfPartNameAndId(Integer.parseInt(currentPart));
 			groupList = new ArrayList<>();
 			for(int i=0;i<list.size();i++){
@@ -366,13 +365,13 @@ public class ManageAction {
 			if(groupId==null || groupId.length()==0){
 				groupId = groupList.get(0).get("groupId");
 			}
-			//È·ï¿½ï¿½Ð¡ï¿½ï¿½
+			//È·¶¨Ð¡×é
 			currentGroup = groupId;
 		}else if(kind==UserInfo.KIND_MANAGER_PART){
-			//ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±
-			//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//²¿ÃÅ¹ÜÀíÔ±
+			//È·¶¨²¿ÃÅ
 			currentPart = userServer.getUserPartByJobId(jobId)+"";
-			//ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+			//Ìí¼ÓÐ¡×é
 			List<Map<String, Object>> list = groupService.getAllGroupsOfPartNameAndId(Integer.parseInt(currentPart));
 			groupList = new ArrayList<>();
 			for(int i=0;i<list.size();i++){
@@ -384,22 +383,22 @@ public class ManageAction {
 			if(groupId==null || groupId.length()==0){
 				groupId = groupList.get(0).get("groupId");
 			}
-			//È·ï¿½ï¿½Ð¡ï¿½ï¿½
+			//È·¶¨Ð¡×é
 			currentGroup = groupId;
 		}else{
-			//Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
-			//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//Ð¡×é¹ÜÀíÔ±
+			//È·¶¨²¿ÃÅ
 			currentPart = userServer.getUserPartByJobId(jobId)+"";
-			//È·ï¿½ï¿½Ð¡ï¿½ï¿½
+			//È·¶¨Ð¡×é
 			currentGroup = userServer.getUserGroupByJobId(jobId)+"";
 		}
 		
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
+		//»ñÈ¡×ÜÒ³Êý
 		allPage = userServer.getAllPageByGroup(Integer.parseInt(currentPart), Integer.parseInt(currentGroup));
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò³
+		//»ñÈ¡±¾Ò³
 		List<UserInfo> temp = userServer.findUsersGroupOfGroupId(Integer.parseInt(currentPart), 
 				Integer.parseInt(currentGroup),currentPage);
-		//ï¿½ï¿½È¡ï¿½ï¿½Ô±ï¿½ï¿½Ï¢ï¿½Ð±ï¿½
+		//»ñÈ¡³ÉÔ±ÐÅÏ¢ÁÐ±í
 		personList = new ArrayList<>();
 		for(int i=0;i<temp.size();i++){
 			Map<String,String> map = new HashMap<String,String>();
@@ -407,7 +406,7 @@ public class ManageAction {
 			map.put("cardId", temp.get(i).getCardId());
 			map.put("name", temp.get(i).getName());
 			if(temp.get(i).getPost()==null){
-				map.put("post", "ï¿½ï¿½");
+				map.put("post", "ÎÞ");
 			}else{
 				map.put("post", temp.get(i).getPost());
 			}
@@ -417,19 +416,19 @@ public class ManageAction {
 			map.put("ggroup", groupService.getNameById(temp.get(i).getPart(), temp.get(i).getGroup()));
 			switch(temp.get(i).getKind()){
 				case UserInfo.KIND_MANAGER_WEB:
-					map.put("identity", "ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±");
+					map.put("identity", "ÍøÕ¾¹ÜÀíÔ±");
 					break;
 				case UserInfo.KIND_MANAGER_PART:
-					map.put("identity", "ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±");
+					map.put("identity", "²¿ÃÅ¹ÜÀíÔ±");
 					break;
 				case UserInfo.KIND_MANAGER_GROUP:
-					map.put("identity", "Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±");
+					map.put("identity", "Ð¡×é¹ÜÀíÔ±");
 					break;
 				case UserInfo.KIND_MEMBER:
-					map.put("identity", "ï¿½ï¿½Í¨ï¿½ï¿½Ô±");
+					map.put("identity", "ÆÕÍ¨³ÉÔ±");
 					break;
 				default:
-					map.put("identity", "ï¿½ï¿½È¡Ê§ï¿½ï¿½");
+					map.put("identity", "»ñÈ¡Ê§°Ü");
 					break;
 			}
 			personList.add(map);
@@ -438,20 +437,20 @@ public class ManageAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/groupManagerMember.jsp");
-		model.put("myPageTitle","Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±");
+		model.put("myPageTitle","Èº×é¹ÜÀí¡ª¡ª³ÉÔ±");
 		model.put("myPageNav","13");
-		model.put("gmmPersonList", personList);//ï¿½Ã»ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½
-		model.put("gmmPartList", partList);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("gmmGroupList", groupList);//Ð¡ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("gmmCurrentPart", currentPart);//ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½Ä²ï¿½ï¿½ï¿½
-		model.put("gmmCurrentGroup", currentGroup);//ï¿½ï¿½Ç°ï¿½ï¿½Ê¾ï¿½ï¿½Ð¡ï¿½ï¿½
+		model.put("gmmPersonList", personList);//ÓÃ»§ÁÐ±í£¬×î¶à6¸ö
+		model.put("gmmPartList", partList);//²¿ÃÅÁÐ±í
+		model.put("gmmGroupList", groupList);//Ð¡×éÁÐ±í
+		model.put("gmmCurrentPart", currentPart);//µ±Ç°ÏÔÊ¾µÄ²¿ÃÅ
+		model.put("gmmCurrentGroup", currentGroup);//µ±Ç°ÏÔÊ¾µÄÐ¡×é
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¡ªï¿½ï¿½ï¿½Öµï¿½
+	 * ×ªµ½Èº×é¹ÜÀí½çÃæ¡ª¡ª·Öµ¼
 	 * @param req
 	 * @return
 	 */
@@ -461,7 +460,7 @@ public class ManageAction {
 		int kind = userServer.getUserKindByJobId(jobId);
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/groupManager.jsp");
-		model.put("myPageTitle","Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³");
+		model.put("myPageTitle","Èº×é¹ÜÀí·ÖÒ³");
 		model.put("myPageNav","13");
 		switch(kind){
 			case UserInfo.KIND_MANAGER_WEB:
@@ -480,36 +479,36 @@ public class ManageAction {
 				model.put("gmCanMember",1);
 				break;
 			case UserInfo.KIND_MEMBER:
-				return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½Þ£ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/home.do", "¶Ô²»Æð£¬ÄúÎÞ´ËÈ¨ÏÞ£¡");
 			default:
-				return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½Ô²ï¿½ï¿½ï¿½È¨ï¿½Þ»ï¿½È¡ï¿½ì³£ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/home.do", "¶Ô²»Æð£¬È¨ÏÞ»ñÈ¡Òì³££¡");
 		}
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ×ªµ½ÅúÁ¿Ìí¼ÓÓÃ»§½çÃæ
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("manage/addUser.do")
 	public ModelAndView viewAddUser(HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		int userKind = userServer.getUserKindByJobId(jobId);
 		if(userKind!=UserInfo.KIND_MANAGER_WEB){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½Þ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "¶Ô²»Æð£¬ÄúÎÞ´ËÈ¨ÏÞ£¡");
 		}
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","manager/addUsers.jsp");
-		model.put("myPageTitle","ï¿½Þ¸Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","ÐÞ¸Ä¸öÈËÃÜÂë");
 		model.put("myPageNav","14");
 		return new ModelAndView("baseJsp",model);
 	}
 
 	/**
-	 * ï¿½Þ¸ï¿½Ä³ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * ÐÞ¸ÄÄ³¸öÓÃ»§µÄÈ«²¿ÐÅÏ¢
 	 * @param userName
 	 * @param userSex
 	 * @param cardId
@@ -529,7 +528,7 @@ public class ManageAction {
 		String jumpToStr = "/manage/userManagerEdit.do?jobId="+jobId;
 		String userJobId = (String)req.getSession().getAttribute("userJobId");
 		if(userServer.getUserKindByJobId(userJobId)!=UserInfo.KIND_MANAGER_WEB){
-			return JumpPrompt.jumpOfModelAndView(jumpToStr, "È¨ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(jumpToStr, "È¨ÏÞÒì³££¬ÎÞ·¨½øÐÐ²Ù×÷");
 		}
 		if(post!=null && post.trim().length()!=0){
 		}else{
@@ -559,21 +558,21 @@ public class ManageAction {
 		}else{
 			info.setAddr(null);
 		}
-		//ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
+		//¸ü¸ÄÈ«²¿
 		try {
 			if(userServer.changeUserInfoAllByJobId(info)){
-				return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½É¹ï¿½ï¿½Þ¸ï¿½jobIdÎªï¿½ï¿½"+jobId+"ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(jumpToStr, "³É¹¦ÐÞ¸ÄjobIdÎª¡°"+jobId+"¡±µÄÓÃ»§ÐÅÏ¢£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢Ê§ï¿½Ü¡ï¿½");
+				return JumpPrompt.jumpOfModelAndView(jumpToStr, "ÐÞ¸ÄÓÃ»§ÐÅÏ¢Ê§°Ü¡£");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½Þ¸ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(jumpToStr, "ÐÞ¸ÄÓÃ»§ÐÅÏ¢Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ä³ï¿½Ô±
+	 * ¸ü¸Ä³ÉÔ±
 	 * @param modelShowJobId
 	 * @param modelShowPart
 	 * @param modelShowGroup
@@ -585,7 +584,7 @@ public class ManageAction {
 	public ModelAndView changeMemberForm(String modelShowJobId,String modelShowPart,String modelShowGroup,
 			String modelShowUserKind,String currentPage,String currentPartId,String currentGroupId,String modelShowPost,
 			HttpServletRequest req){
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½Ò³ï¿½ï¿½ï¿½Â·ï¿½ï¿½
+		//ÉèÖÃÌø×ª±¾Ò³ÃæµÄÂ·¾¶
 		String jumpToStr = "/manage/groupManagerMember.do?page="+currentPage;
 		if(currentPartId!=null && currentPartId.length()!=0){
 			jumpToStr += "&partId="+currentPartId;
@@ -606,45 +605,45 @@ public class ManageAction {
 		if(modelShowUserKind==null){
 			modelShowUserKind = req.getParameter("modelShowUserKind2");
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½jobId
+		//»ñÈ¡²Ù×÷ÕßµÄjobId
 		String userJobId = (String)req.getSession().getAttribute("userJobId");
 		int partId = userServer.getUserPartByJobId(modelShowJobId);
 		boolean result = false;
 		try{
 			if(userServer.getUserKindByJobId(userJobId)==UserInfo.KIND_MANAGER_WEB){
-				//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±
-//				System.out.println("ï¿½ï¿½ï¿½Ä¡ï¿½id:"+modelShowJobId+",part:"+modelShowPart+",group:"+modelShowGroup+",shen:"+modelShowUserKind);
+				//ÍøÕ¾¹ÜÀíÔ±
+//				System.out.println("¸ü¸Ä¡£id:"+modelShowJobId+",part:"+modelShowPart+",group:"+modelShowGroup+",shen:"+modelShowUserKind);
 				if(!modelShowUserKind.equals("0")){
 					result = userServer.changeUserBaseInfoWithKind(modelShowJobId, Integer.parseInt(modelShowPart), Integer.parseInt(modelShowGroup), Integer.parseInt(modelShowUserKind),modelShowPost);
 				}else{
 					result = userServer.changeUserBaseInfoWithoutKind(modelShowJobId, Integer.parseInt(modelShowPart), Integer.parseInt(modelShowGroup),modelShowPost);
 				}
 			}else if(userServer.getUserKindByJobId(userJobId)==UserInfo.KIND_MANAGER_PART && userServer.getUserPartByJobId(userJobId)==partId){
-				//ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±
-//				System.out.println("ï¿½ï¿½ï¿½Ä¡ï¿½id:"+modelShowJobId+",group:"+modelShowGroup+",shen:"+modelShowUserKind);
+				//²¿ÃÅ¹ÜÀíÔ±
+//				System.out.println("¸ü¸Ä¡£id:"+modelShowJobId+",group:"+modelShowGroup+",shen:"+modelShowUserKind);
 				if(userServer.getUserKindByJobId(modelShowJobId)<userServer.getUserKindByJobId(userJobId)){
-					//ï¿½Äµï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½
+					//¸ÄµÄÉí·Ý£¬±È×Ô¼ºÐ¡£¬¿ÉÒÔ¸Ä
 					result = userServer.changeUserBaseInfoWithKind(modelShowJobId, Integer.parseInt(modelShowPart), Integer.parseInt(modelShowGroup), Integer.parseInt(modelShowUserKind),modelShowPost);
 				}else{
 					result = userServer.changeUserBaseInfoWithoutKind(modelShowJobId, Integer.parseInt(modelShowPart), Integer.parseInt(modelShowGroup),modelShowPost);
 				}
 			}else{
-				return JumpPrompt.jumpOfModelAndView(jumpToStr, "È¨ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½Ð²ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(jumpToStr, "È¨ÏÞÒì³££¬ÎÞ·¨½øÐÐ²Ù×÷");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(jumpToStr, "²Ù×÷Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 		if(result){
-			return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(jumpToStr, "²Ù×÷³É¹¦£¡");
 		}else{
-			return JumpPrompt.jumpOfModelAndView(jumpToStr, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+			return JumpPrompt.jumpOfModelAndView(jumpToStr, "²Ù×÷Ê§°Ü¡£");
 		}
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * Ìí¼ÓÐ¡×é
 	 * @param newGroupName
 	 * @param partId
 	 * @param req
@@ -661,22 +660,22 @@ public class ManageAction {
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		String userName = userServer.getUserNameById(jobId);
 		if(groupService.getGroupByName(Integer.parseInt(partId),newGroupName)!=-1){
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½Ð¡ï¿½é¡°"+newGroupName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "Ìí¼ÓÐ¡×é¡°"+newGroupName+"¡±Ê§°Ü¡££¨ÌáÊ¾£º¸ÃÐ¡×éÒÑ´æÔÚ£©");
 		}
 		try{
 			if(groupService.addGroup(Integer.parseInt(partId) ,newGroupName, userName)){
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½Ð¡ï¿½é¡°"+newGroupName+"ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "Ìí¼ÓÐ¡×é¡°"+newGroupName+"¡±³É¹¦£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½Ð¡ï¿½é¡°"+newGroupName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "Ìí¼ÓÐ¡×é¡°"+newGroupName+"¡±Ê§°Ü¡£");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½Ð¡ï¿½é¡°"+newGroupName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "Ìí¼ÓÐ¡×é¡°"+newGroupName+"¡±Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½Ð¡ï¿½ï¿½
+	 * É¾³ýÐ¡×é
 	 * @param GroupId
 	 * @param partId
 	 * @param req
@@ -692,18 +691,18 @@ public class ManageAction {
 		}
 		try {
 			if(groupService.delGroup(Integer.parseInt(partId),Integer.parseInt(GroupId))){
-				return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "É¾³ý³É¹¦£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ·ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½Ô±ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½é¡±ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨ÎÞ·¨É¾³ýº¬ÓÐ³ÉÔ±µÄÐ¡×é»ò¡°ÔÝÎÞÐ¡×é¡±£©");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+	 * Ìí¼Ó²¿ÃÅ
 	 * @param newPartName
 	 * @param req
 	 * @return
@@ -713,22 +712,22 @@ public class ManageAction {
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		String userName = userServer.getUserNameById(jobId);
 		if(partService.getPartByName(newPartName)!=-1){
-			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "ï¿½ï¿½Ó²ï¿½ï¿½Å¡ï¿½"+newPartName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Ú£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "Ìí¼Ó²¿ÃÅ¡°"+newPartName+"¡±Ê§°Ü¡££¨ÌáÊ¾£º¸Ã²¿ÃÅÒÑ´æÔÚ£©");
 		}
 		try {
 			if(partService.addPart(newPartName, userName)){
-				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "ï¿½ï¿½Ó²ï¿½ï¿½Å¡ï¿½"+newPartName+"ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "Ìí¼Ó²¿ÃÅ¡°"+newPartName+"¡±³É¹¦£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "ï¿½ï¿½Ó²ï¿½ï¿½Å¡ï¿½"+newPartName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "Ìí¼Ó²¿ÃÅ¡°"+newPartName+"¡±Ê§°Ü¡£");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "ï¿½ï¿½Ó²ï¿½ï¿½Å¡ï¿½"+newPartName+"ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "Ìí¼Ó²¿ÃÅ¡°"+newPartName+"¡±Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * É¾³ý²¿ÃÅ
 	 * @param partId
 	 * @param req
 	 * @return
@@ -737,34 +736,34 @@ public class ManageAction {
 	public ModelAndView delPart(String partId,HttpServletRequest req){
 		try {
 			if(partService.getMemberOfPartNumbers(Integer.parseInt(partId))!=0){
-				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ·ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½Ð¡ï¿½é£©");
+				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾³ýÊ§°Ü¡££¨ÎÞ·¨É¾³ýº¬³ÉÔ±µÄÐ¡×é£©");
 			}
 			if(partService.delPart(Integer.parseInt(partId))){
-				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾³ý³É¹¦£¡");
 			}else{
-				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ·ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Í³ï¿½Ô±ï¿½Ä²ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½Ð¡ï¿½é£©");
+				return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾³ýÊ§°Ü¡££¨ÎÞ·¨É¾³ýº¬ÓÐÐ¡×éºÍ³ÉÔ±µÄ²¿ÃÅ£¬³ýÁËÄ¬ÈÏÐ¡×é£©");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/manage/groupManagerPart.do", "É¾³ýÊ§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
+	 * ÅúÁ¿Ìí¼ÓÓÃ»§
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("manage/addUsersFrom.do")
 	public ModelAndView addUser(HttpServletRequest req){
-		int all = Integer.parseInt(req.getParameter("userNumberAll"));//ï¿½ï¿½Òªï¿½ï¿½ÓµÄ¸ï¿½ï¿½ï¿½
-		int end = Integer.parseInt(req.getParameter("userNumberEnd"));//Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ÒµÄ½ï¿½ï¿½ï¿½
+		int all = Integer.parseInt(req.getParameter("userNumberAll"));//ÐèÒªÌí¼ÓµÄ¸öÊý
+		int end = Integer.parseInt(req.getParameter("userNumberEnd"));//Ñ­»·²éÕÒµÄ½áÊø
 		if(all!=0){
 			List<UserInfo> users = new ArrayList<UserInfo>();
 			for(int i=1;i<=end;i++){
 				String jobId = req.getParameter("jobId"+i);
 				if(jobId!=null && jobId.trim().length()!=0){
-					//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½È¡
+					//È·ÈÏÓÐÄÚÈÝ£¬»ñÈ¡
 					UserInfo user = new UserInfo();
 					user.setJobId(jobId.trim());
 					user.setCardId(req.getParameter("cardId"+i));
@@ -776,37 +775,37 @@ public class ManageAction {
 					}
 					int partId = Integer.parseInt(req.getParameter("part"+i));
 					user.setPart(partId);
-					user.setGroup(groupService.getGroupByName(partId, "ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½"));//ï¿½ï¿½Ð¡ï¿½ï¿½
-					user.setKind(UserInfo.KIND_MEMBER); //ï¿½ï¿½ï¿½È¨ï¿½ï¿½
+					user.setGroup(groupService.getGroupByName(partId, "ÔÝÎÞÐ¡×é"));//ÎÞÐ¡×é
+					user.setKind(UserInfo.KIND_MEMBER); //×îµÍÈ¨ÏÞ
 					user.setStatus(UserInfo.STATUS_NO_ACTIVITY);
 					users.add(user);
 //					System.out.println("Action:("+i+")"+user.getKind());
-					//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½Ë³ï¿½Ñ­ï¿½ï¿½
+					//ÊýÁ¿¹»ÁË£¬ÍË³öÑ­»·
 					if(users.size()==all){
 						break;
 					}
 				}
 			}
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
+			//ÅúÁ¿´´½¨ÓÃ»§
 			boolean creatRes;
 			try {
 				creatRes = userServer.createNewUsers(users);
 			} catch (Exception e) {
 				e.printStackTrace();
-				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "ÅúÁ¿´´½¨Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 			}
 			if(creatRes){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½
-//				System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½");
-				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+users.size()+"ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½");
+				//ÅúÁ¿´´½¨³É¹¦
+//				System.out.println("ÅúÁ¿´´½¨³É¹¦");
+				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "³É¹¦ÅúÁ¿´´½¨"+users.size()+"¸öÓÃ»§£¡");
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
-//				System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½");
-				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+				//ÅúÁ¿´´½¨Ê§°Ü
+//				System.out.println("ÅúÁ¿´´½¨Ê§°Ü");
+				return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "ÅúÁ¿´´½¨Ê§°Ü¡£");
 			}
 		}
-		//Ã»ï¿½Ð¶ï¿½ï¿½ï¿½
-		return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "Ã»ï¿½Ð´ï¿½ï¿½ï¿½Óµï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½");
+		//Ã»ÓÐ¶«Î÷
+		return JumpPrompt.jumpOfModelAndView("/manage/addUser.do", "Ã»ÓÐ´ýÌí¼ÓµÄÓÃ»§ÐÅÏ¢¡£");
 	}
 
 	public UserService getUserServer() {

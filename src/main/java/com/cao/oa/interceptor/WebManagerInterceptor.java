@@ -21,7 +21,7 @@ public class WebManagerInterceptor implements HandlerInterceptor {
 		if(jobId!=null && userService.getUserKindByJobId(jobId)==0){
 			return true;
 		}else{
-			request.setAttribute("baseContent", "ï¿½ï¿½È¨ï¿½Þ·ï¿½ï¿½Ê£ï¿½");
+			request.setAttribute("baseContent", "ÎÞÈ¨ÏÞ·ÃÎÊ£¡");
 			request.setAttribute("baseUrl", "/home.do");
 			request.getRequestDispatcher("/jspFile/prompt.jsp").forward(request, response);
 			return false;

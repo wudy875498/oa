@@ -1,9 +1,9 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.UserKind;
-import com.cao.oa.mapper.UserKindMapper;
 import java.util.List;
 import javax.annotation.Resource;
+import com.cao.oa.bean.UserKind;
+import com.cao.oa.mapper.UserKindMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class UserKindDao {
 	private UserKindMapper mapper;
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ·µ»ØËùÓÐÓÃ»§ÀàÐÍ
 	 * @return
 	 */
 	public List<UserKind> getAllUserKind(){
@@ -23,7 +23,7 @@ public class UserKindDao {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾ÝID»ñÈ¡Ãû×Ö
 	 * @param id
 	 * @return
 	 */

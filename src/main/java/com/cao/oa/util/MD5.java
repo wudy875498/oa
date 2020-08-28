@@ -10,15 +10,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
-	// ï¿½ï¿½ï¿½È³ï¿½Ê¼ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½16ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
+	// Ê×ÏÈ³õÊ¼»¯Ò»¸ö×Ö·ûÊý×é£¬ÓÃÀ´´æ·ÅÃ¿¸ö16½øÖÆ×Ö·û
     private static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd',
             'e', 'f' };
 
     /**
-     * ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½MD5Öµ
+     * »ñµÃÒ»¸ö×Ö·û´®µÄMD5Öµ
      * 
-     * @param input ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
-     * @return ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½MD5Öµ
+     * @param input ÊäÈëµÄ×Ö·û´®
+     * @return ÊäÈë×Ö·û´®µÄMD5Öµ
      * 
      */
     public static String md5(String input) {
@@ -26,15 +26,15 @@ public class MD5 {
             return null;
 
         try {
-            // ï¿½Ãµï¿½Ò»ï¿½ï¿½MD5×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªSHA1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¡ï¿½SHA1ï¿½ï¿½ï¿½ï¿½
+            // ÄÃµ½Ò»¸öMD5×ª»»Æ÷£¨Èç¹ûÏëÒªSHA1²ÎÊý»»³É¡±SHA1¡±£©
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ÊäÈëµÄ×Ö·û´®×ª»»³É×Ö½ÚÊý×é
             byte[] inputByteArray = input.getBytes("utf-8");
-            // inputByteArrayï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // inputByteArrayÊÇÊäÈë×Ö·û´®×ª»»µÃµ½µÄ×Ö½ÚÊý×é
             messageDigest.update(inputByteArray);
-            // ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½ï¿½16ï¿½ï¿½Ôªï¿½ï¿½
+            // ×ª»»²¢·µ»Ø½á¹û£¬Ò²ÊÇ×Ö½ÚÊý×é£¬°üº¬16¸öÔªËØ
             byte[] resultByteArray = messageDigest.digest();
-            // ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ×Ö·ûÊý×é×ª»»³É×Ö·û´®·µ»Ø
             return byteArrayToHex(resultByteArray);
         } catch (NoSuchAlgorithmException e) {
             return null;
@@ -44,7 +44,7 @@ public class MD5 {
     }
 
     /**
-     * ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½MD5Öµ
+     * »ñÈ¡ÎÄ¼þµÄMD5Öµ
      * 
      * @param file
      * @return
@@ -52,7 +52,7 @@ public class MD5 {
     public static String md5(File file) {
         try {
             if (!file.isFile()) {
-                System.err.println("ï¿½Ä¼ï¿½" + file.getAbsolutePath() + "ï¿½ï¿½ï¿½ï¿½ï¿½Ú»ï¿½ï¿½ß²ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½");
+                System.err.println("ÎÄ¼þ" + file.getAbsolutePath() + "²»´æÔÚ»òÕß²»ÊÇÎÄ¼þ");
                 return null;
             }
 
@@ -101,17 +101,18 @@ public class MD5 {
     }
 
     private static String byteArrayToHex(byte[] byteArray) {
-        // newÒ»ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Â£ï¿½Ò»ï¿½ï¿½byteï¿½Ç°ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½Ò²ï¿½ï¿½ï¿½ï¿½2Î»Ê®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½2ï¿½ï¿½8ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½16ï¿½ï¿½2ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½
+        // newÒ»¸ö×Ö·ûÊý×é£¬Õâ¸ö¾ÍÊÇÓÃÀ´×é³É½á¹û×Ö·û´®µÄ£¨½âÊÍÒ»ÏÂ£ºÒ»¸öbyteÊÇ°ËÎ»¶þ½øÖÆ£¬Ò²¾ÍÊÇ2Î»Ê®Áù½øÖÆ×Ö·û£¨2µÄ8´Î·½µÈÓÚ16µÄ2´Î·½£©£©
         char[] resultCharArray = new char[byteArray.length * 2];
-        // ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½ï¿½é£¬Í¨ï¿½ï¿½Î»ï¿½ï¿½ï¿½ã£¨Î»ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ê¸ß£ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½Åµï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥
+        // ±éÀú×Ö½ÚÊý×é£¬Í¨¹ýÎ»ÔËËã£¨Î»ÔËËãÐ§ÂÊ¸ß£©£¬×ª»»³É×Ö·û·Åµ½×Ö·ûÊý×éÖÐÈ¥
         int index = 0;
         for (byte b : byteArray) {
             resultCharArray[index++] = hexDigits[b >>> 4 & 0xf];
             resultCharArray[index++] = hexDigits[b & 0xf];
         }
 
-        // ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï³ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ×Ö·ûÊý×é×éºÏ³É×Ö·û´®·µ»Ø
         return new String(resultCharArray);
 
     }
+
 }

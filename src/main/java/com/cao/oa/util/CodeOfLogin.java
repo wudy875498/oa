@@ -23,7 +23,7 @@ public class CodeOfLogin {
 	public static void main(String[] args) {
 		File file = new File("G:\\111.png");
 		try {
-			outputImage(600,200,file,"Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			outputImage(600,200,file,"Å¬Á¦¼ÓÔØÖÐ");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -32,7 +32,7 @@ public class CodeOfLogin {
 	}
 	
 	 /** 
-     * ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ä¼ï¿½ 
+     * Éú³ÉÖ¸¶¨ÑéÖ¤ÂëÍ¼ÏñÎÄ¼þ 
      * @param w 
      * @param h 
      * @param outputFile 
@@ -58,7 +58,7 @@ public class CodeOfLogin {
     }  
 
 	 /** 
-     * ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Í¼Æ¬ï¿½ï¿½ 
+     * Êä³öÖ¸¶¨ÑéÖ¤ÂëÍ¼Æ¬Á÷ 
      * @param w 
      * @param h 
      * @param os 
@@ -82,16 +82,16 @@ public class CodeOfLogin {
         }  
         Arrays.sort(fractions);  
           
-        g2.setColor(Color.GRAY);// ï¿½ï¿½ï¿½Ã±ß¿ï¿½É«  
+        g2.setColor(Color.GRAY);// ÉèÖÃ±ß¿òÉ«  
         g2.fillRect(0, 0, w, h);  
           
         Color c = getRandColor(200, 250);  
-        g2.setColor(c);// ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½É«  
+        g2.setColor(c);// ÉèÖÃ±³¾°É«  
         g2.fillRect(0, 2, w, h-4);  
           
-        //ï¿½ï¿½ï¿½Æ¸ï¿½ï¿½ï¿½ï¿½ï¿½  
+        //»æÖÆ¸ÉÈÅÏß  
         Random random = new Random();  
-        g2.setColor(getRandColor(160, 200));// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«  
+        g2.setColor(getRandColor(160, 200));// ÉèÖÃÏßÌõµÄÑÕÉ«  
         for (int i = 0; i < 20; i++) {  
             int x = random.nextInt(w - 1);  
             int y = random.nextInt(h - 1);  
@@ -100,8 +100,8 @@ public class CodeOfLogin {
             g2.drawLine(x, y, x + xl + 40, y + yl + 20);  
         }  
           
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
-        float yawpRate = 0.05f;// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  
+        // Ìí¼ÓÔëµã  
+        float yawpRate = 0.05f;// ÔëÉùÂÊ  
         int area = (int) (yawpRate * w * h);  
         for (int i = 0; i < area; i++) {  
             int x = random.nextInt(w);  
@@ -110,7 +110,7 @@ public class CodeOfLogin {
             image.setRGB(x, y, rgb);  
         }  
           
-        shear(g2, w, h, c);// Ê¹Í¼Æ¬Å¤ï¿½ï¿½  
+        shear(g2, w, h, c);// Ê¹Í¼Æ¬Å¤Çú  
   
         g2.setColor(getRandColor(100, 160));  
         int fontSize = h-4;  

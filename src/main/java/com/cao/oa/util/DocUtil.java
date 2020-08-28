@@ -23,11 +23,11 @@ public class DocUtil {
 	public void createDoc(String filePath, Map<String,Object> dataMap,String name) {
 		Template template = null;
 		try {
-			//锟斤拷锟斤拷锟届常锟斤拷锟斤拷锟斤拷
+			//设置异常处理器
 	        configure.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
 	        configure.setDirectoryForTemplateLoading(new File(filePath));
 	        
-	        //锟斤拷锟斤拷Template锟斤拷锟斤拷注锟斤拷模锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷downloadType要一锟斤拷
+	        //定义Template对象，注意模板类型名字与downloadType要一致
 			template = configure.getTemplate(name+".xml");
 			File outFile=new File(filePath,name+".doc");
             Writer out=null;

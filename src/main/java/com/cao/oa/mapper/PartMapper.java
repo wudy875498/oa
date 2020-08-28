@@ -1,24 +1,24 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.Part;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Param;
+import com.cao.oa.bean.Part;
 
 public interface PartMapper {
-	//通锟斤拷锟斤拷锟街伙拷取锟斤拷锟斤拷ID
+	//通过名字获取部门ID
 	public int getPartIdByName(@Param("name") String name);
-	//锟斤拷锟斤拷虏锟斤拷牛锟斤拷锟斤拷锟饺★拷虏锟斤拷锟絠d
+	//添加新部门，并获取新部门id
 	public int addNewPart(Part part);
-	//删锟斤拷锟斤拷锟脚ｏ拷锟斤拷锟捷诧拷锟斤拷id
+	//删除部门，根据部门id
 	public int delPartById(@Param("id") int partId);
-	//锟斤拷锟脚碉拷全锟斤拷锟斤拷息锟斤拷锟斤拷锟截从硷拷锟斤拷锟斤拷锟斤拷锟斤拷息
+	//部门的全部信息，返回从几到几的信息
 	public List<Part> getPartsAllInfoByNumber(@Param("begin") int begin, @Param("end") int end);
-	//锟斤拷取锟斤拷锟脚的革拷锟斤拷
+	//获取部门的个数
 	public int allPartsCount();
-	//锟斤拷取锟斤拷锟叫的诧拷锟斤拷id锟斤拷锟斤拷锟斤拷
+	//获取所有的部门id和名字
 	public List<Map<String, Object>>  getAllPartsAndNames();
-	//锟斤拷锟斤拷id锟斤拷取锟斤拷锟斤拷
+	//根据id获取名字
 	public String getNameById(@Param("id") int id);
 	
 	

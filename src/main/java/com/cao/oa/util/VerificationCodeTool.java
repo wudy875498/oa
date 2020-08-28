@@ -25,13 +25,13 @@ public class VerificationCodeTool {
     //result random string  
     private String randomString;  
     //Chinese Numbers  
-//  private static final String [] CNUMBERS = "ï¿½ï¿½,Ò»,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,ï¿½ï¿½,Ê®".split(",");  
-    //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß°Ë¾ï¿½Ê®ï¿½Ë³ï¿½ï¿½Ó¼ï¿½  
+//  private static final String [] CNUMBERS = "Áã,Ò»,¶þ,Èý,ËÄ,Îå,Áù,Æß,°Ë,¾Å,Ê®".split(",");  
+    //ÁãÒ»¶þÈýËÄÎåÁùÆß°Ë¾ÅÊ®³Ë³ý¼Ó¼õ  
     //Here, must be java Unicode code  
     private static final String CVCNUMBERS = "\u96F6\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E58\u9664\u52A0\u51CF";  
     //Definition of drawings in the captcha characters font, font name, font style, font size  
     //static final font : In Chinese characters garbled  
-    private final Font font = new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 18);  
+    private final Font font = new Font("ºÚÌå", Font.BOLD, 18);  
     //data operator  
     private static final Map<String, Integer> OPMap = new HashMap<String, Integer>();  
       
@@ -70,8 +70,8 @@ public class VerificationCodeTool {
         }  
         //Generate a random number, set return data  
         getRandomMathString();  
-        System.out.println("ï¿½ï¿½Ö¤ï¿½ï¿½ : "+randomString);  
-        System.out.println("ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ : "+xyresult);  
+        System.out.println("ÑéÖ¤Âë : "+randomString);  
+        System.out.println("ÑéÖ¤Âë½á¹û : "+xyresult);  
         //The generated random string used to save the system  
         StringBuffer logsu = new StringBuffer();  
         for(int j=0,k = randomString.length(); j < k; j++){  
@@ -88,7 +88,7 @@ public class VerificationCodeTool {
         //= ?  
         drawRandomString((Graphics2D)g,"\u7B49\u4E8E\uFF1F", 3);  
         logsu.append("\u7B49\u4E8E \uFF1F");  
-        System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ : "+logsu);  
+        System.out.println("ºº×ÖÑéÖ¤Âë : "+logsu);  
         randomString = logsu.toString();  
         //Release the brush object  
         g.dispose();  

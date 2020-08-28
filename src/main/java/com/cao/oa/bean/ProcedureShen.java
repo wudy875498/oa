@@ -3,7 +3,7 @@ package com.cao.oa.bean;
 import java.util.Date;
 
 /**
- * ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * Ìá½»µÄÁ÷³ÌµÄÉóÅú¹ı³Ì
  * @author DELL
  *
  */
@@ -13,19 +13,19 @@ public class ProcedureShen {
 	public static final int WORK_NEED = 2;
 	public static final int WORK_PASS = 3;
 	
-	private int id;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
-	private int procedureId;//ï¿½ï¿½ï¿½Ì±ï¿½ï¿½
-	private int userGroup;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½
-	private int userPart;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
-	private String userJobId;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
-	private String userName;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	private int order;//ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½
-	private int work;//ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
-	private String name;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+	private int id;//Á÷³ÌÉóÅúID
+	private int procedureId;//Á÷³Ì±àºÅ
+	private int userGroup;//ÉóÅúÕßËùÔÚĞ¡×é
+	private int userPart;//ÉóÅúÕßËùÔÚ²¿ÃÅ
+	private String userJobId;//ÉóÅúÕßID
+	private String userName;//ÉóÅúÕßĞÕÃû
+	private int order;//ÉóÅúË³Ğò
+	private int work;//ÊÇ·ñÒÑ¾­ÉóÅúÁË£¬ĞèÒªÉóÅú
+	private String name;//ÉóÅúÁ÷³ÌµÄÃû×Ö
 	
-	private String content;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	private Date time;//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-	private boolean pass;//ï¿½Ç·ï¿½Í¨ï¿½ï¿½
+	private String content;//ÉóÅúÄÚÈİ
+	private Date time;//ÉóÅúÊ±¼ä
+	private boolean pass;//ÊÇ·ñÍ¨¹ı
 	public int getId() {
 		return id;
 	}

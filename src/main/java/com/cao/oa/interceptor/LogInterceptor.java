@@ -13,9 +13,9 @@ public class LogInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		LogToFile.getInstance().log(request, response, "ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½");
+		LogToFile.getInstance().log(request, response, "·ÃÎÊ½øÈë");
 		if(request.getServletPath().equals("/admin/where/is/the/log/file.do")){
-			System.out.println("ï¿½ï¿½"+LogToFile.PROJECT_NAME+"ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½Ä¼ï¿½ÎªÎ»ï¿½ï¿½Îªï¿½ï¿½"+LogToFile.getInstance().getAbsolutePath());
+			System.out.println("¡¾"+LogToFile.PROJECT_NAME+"¡¿ÈÕÖ¾ÎÄ¼þÎªÎ»ÖÃÎª£º"+LogToFile.getInstance().getAbsolutePath());
 			response.getWriter().println(LogToFile.getInstance().getAbsolutePath());
 			return false;
 		}
@@ -29,7 +29,7 @@ public class LogInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		LogToFile.getInstance().log(request, response, "ï¿½ï¿½ï¿½ï¿½ï¿½ë¿ª");
+		LogToFile.getInstance().log(request, response, "·ÃÎÊÀë¿ª");
 	}
 
 }

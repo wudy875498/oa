@@ -1,9 +1,9 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.FileDepot;
-import com.cao.oa.mapper.FileDepotMapper;
 import java.util.List;
 import javax.annotation.Resource;
+import com.cao.oa.bean.FileDepot;
+import com.cao.oa.mapper.FileDepotMapper;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class FileDepotDao {
 
 	
 	/**
-	 * 锟斤拷取锟斤拷司锟侥硷拷锟斤拷锟斤拷页锟斤拷
+	 * 获取公司文件的总页数
 	 * @return
 	 */
 	public int getFileOfCompanyNumber() {
@@ -23,7 +23,7 @@ public class FileDepotDao {
 		return result;
 	}
 	/**
-	 * 锟斤拷取锟接第硷拷锟斤拷锟节硷拷锟斤拷锟侥癸拷司锟侥硷拷锟叫憋拷
+	 * 获取从第几到第几个的公司文件列表
 	 * @param begin
 	 * @param end
 	 * @return
@@ -38,7 +38,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷锟斤拷锟侥硷拷锟斤拷锟斤拷
+	 * 获取部门文件总数
 	 * @param part
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷锟斤拷锟侥硷拷锟叫憋拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	 * 获取部门文件列表，从第几到第几个
 	 * @param part
 	 * @param begin
 	 * @param end
@@ -66,7 +66,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟斤拷锟斤拷
+	 * 获取全部的部门文件总数
 	 * @return
 	 */
 	public int getFileOfAllPartNumber() {
@@ -76,7 +76,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取全锟斤拷锟侥诧拷锟斤拷锟侥硷拷锟叫憋拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	 * 获取全部的部门文件列表，从第几到第几个
 	 * @param begin
 	 * @param end
 	 * @return
@@ -91,7 +91,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷某锟斤拷小锟斤拷
+	 * 获取小组文件总数，某个小组
 	 * @param part
 	 * @param group
 	 * @return
@@ -103,7 +103,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷某锟斤拷小锟介，锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	 * 获取小组文件列表，某个小组，从第几到第几个
 	 * @param part
 	 * @param group
 	 * @param begin
@@ -120,7 +120,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷全锟斤拷小锟斤拷
+	 * 获取小组文件总数，全部小组
 	 * @param part
 	 * @return
 	 */
@@ -131,7 +131,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷小锟介，锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	 * 获取小组文件列表，全部小组，从第几到第几个
 	 * @param part
 	 * @param begin
 	 * @param end
@@ -147,7 +147,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟斤拷锟斤拷锟斤拷全锟斤拷锟斤拷锟斤拷
+	 * 获取小组文件总数，全部部门
 	 * @return
 	 */
 	public int getFileOfAllPartAndGroupNumber() {
@@ -158,7 +158,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取小锟斤拷锟侥硷拷锟叫憋拷全锟斤拷锟斤拷锟脚ｏ拷锟接第硷拷锟斤拷锟节硷拷锟斤拷
+	 * 获取小组文件列表，全部部门，从第几到第几个
 	 * @param begin
 	 * @param end
 	 * @return
@@ -174,7 +174,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷锟斤拷锟较达拷锟斤拷锟侥硷拷
+	 * 保存上传的文件
 	 * @param fd
 	 * @return
 	 * @throws Exception 
@@ -190,7 +190,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 锟斤拷取一锟斤拷锟侥硷拷锟斤拷锟斤拷细锟斤拷息
+	 * 获取一个文件的详细信息
 	 * @param fileId
 	 * @return
 	 */
@@ -207,7 +207,7 @@ public class FileDepotDao {
 	}
 	
 	/**
-	 * 删锟斤拷一锟斤拷锟侥硷拷
+	 * 删除一个文件
 	 * @param fileId
 	 * @return
 	 * @throws Exception 

@@ -1,11 +1,5 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.Message;
-import com.cao.oa.bean.ModelProcedure;
-import com.cao.oa.bean.ProcedureShen;
-import com.cao.oa.bean.ProcedureSubmit;
-import com.cao.oa.dao.MessageDao;
-import com.cao.oa.dao.ProcedureDao;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import com.cao.oa.bean.Message;
+import com.cao.oa.bean.ModelProcedure;
+import com.cao.oa.bean.ProcedureShen;
+import com.cao.oa.bean.ProcedureSubmit;
+import com.cao.oa.dao.MessageDao;
+import com.cao.oa.dao.ProcedureDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -27,7 +27,7 @@ public class ProcedureService {
 
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÉóÅúÒ»¸öÁ÷³Ì
 	 * @param shen
 	 * @param jobId
 	 * @return
@@ -37,25 +37,25 @@ public class ProcedureService {
 	public boolean dealOneProcedure(ProcedureShen shen, String jobId) throws Exception {
 		Map<String,Object> map = procedureDao.dealOneProcedure(shen, jobId);
 		if((boolean)map.get("finish")){
-			String mtitle = "ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½ï¿½";
+			String mtitle = "¡¾ÏµÍ³¡¿ÄúµÄÒ»¸öÁ÷³ÌÒÑ¾­ÉóºËÍê³É£¬Çë²é¿´½á¹û¡£";
 			String mcontent = "";
 			if((boolean)map.get("result")){
-				mcontent = "ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½\\(^o^)/~ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½";
+				mcontent = "ÉóºËÒÑÍ¨¹ý£¡\\(^o^)/~£¨ÏêÏ¸Çé¿öÇë²é¿´¡°ÎÒµÄÁ÷³Ì¡±£©";
 			}else{
-				mcontent = "ï¿½ï¿½ï¿½Î´Í¨ï¿½ï¿½ï¿½ï¿½/(ï¿½ï¿½oï¿½ï¿½)/~~ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½";
+				mcontent = "ÉóºËÎ´Í¨¹ý¡£/(¨Òo¨Ò)/~~£¨ÏêÏ¸Çé¿öÇë²é¿´¡°ÎÒµÄÁ÷³Ì¡±£©";
 			}
 			sendOneSystemMessage(mtitle,mcontent,(String)map.get("person"));
 		}else{
-			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			// ÌáÐÑÉóÅúÈË
 			if((boolean)map.get("hasNextPerson")){
-				sendOneSystemMessage("ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½","ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¡ï¿½",(String)map.get("nextPerson"));
+				sendOneSystemMessage("¡¾ÏµÍ³¡¿ÄúÓÐÒ»¸öÐèÒªÉóÅúµÄÁ÷³Ì","ÏêÏ¸Çé¿öÇë²é¿´¡°ÐèÒªÉóÅúµÄÁ÷³Ì¡±",(String)map.get("nextPerson"));
 			}
 		}
 		return true;
 	}
 	
 	@Transactional(readOnly = false,isolation = Isolation.READ_UNCOMMITTED)
-	public boolean sendOneSystemMessage(String title,String content,String jobId) throws Exception{
+	private boolean sendOneSystemMessage(String title,String content,String jobId) throws Exception{
 		Message msg = new Message();
 		msg.setTitle(title);
 		msg.setKind(1);
@@ -71,7 +71,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ú¼ï¿½Ò³ï¿½ï¿½  ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
+	 * »ñÈ¡µÚ¼¸Ò³µÄ  ÐèÒª´¦ÀíµÄÁ÷³Ì£¬¼òÂÔ°æ
 	 * @param page
 	 * @return
 	 */
@@ -85,7 +85,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡ÐèÒª´¦ÀíµÄÁ÷³ÌµÄ×ÜÒ³Êý
 	 * @return
 	 */
 	public int getAllNeedToDealListPage(String jobId) {
@@ -94,7 +94,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Òµï¿½Ò»ï¿½ï¿½ï¿½á½»ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * »ñÈ¡ÎÒµÄÒ»¸öÌá½»µÄÈ«²¿ÐÅÏ¢
 	 * @param submitId
 	 * @return
 	 */
@@ -103,7 +103,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ú¼ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½
+	 * »ñÈ¡µÚ¼¸Ò³µÄÎÒÌá½»µÄÁ÷³Ì£¬¼òÂÔ°æ
 	 * @param page
 	 * @return
 	 */
@@ -117,7 +117,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡ÎÒÌá½»µÄÁ÷³ÌµÄ×ÜÒ³Êý
 	 * @return
 	 */
 	public int getAllMyProcedurePage(String jobId){
@@ -126,7 +126,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½á½»
+	 * Á÷³ÌÌá½»
 	 * @param psubmit
 	 * @return
 	 * @throws Exception 
@@ -138,19 +138,19 @@ public class ProcedureService {
 			if(map==null){
 				return false;
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				sendOneSystemMessage("ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½","ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ï¿½ï¿½é¿´ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌºÅ£ï¿½ï¿½ï¿½"+(int)map.get("key")+"ï¿½ï¿½ï¿½ï¿½",(String)map.get("needToRemind"));
+				//ÌáÐÑÉóÅúÈË
+				sendOneSystemMessage("¡¾ÏµÍ³¡¿ÄúÓÐÒ»¸öÐèÒªÉóÅúµÄÁ÷³Ì","ÏêÏ¸Çé¿öÇë²é¿´¡°ÐèÒªÉóÅúµÄÁ÷³Ì¡±¡¾Á÷³ÌºÅ£º¡°"+(int)map.get("key")+"¡±¡¿",(String)map.get("needToRemind"));
 				return true;
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-//			System.out.println("ï¿½ï¿½Òªï¿½Ø¹ï¿½ï¿½ï¿½");
+//			System.out.println("ÎÒÒª»Ø¹öÁË");
 			throw new RuntimeException();
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÌµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Á÷³ÌµÄ´´½¨Õß
 	 * @param id
 	 * @return
 	 */
@@ -159,7 +159,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½É¾ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾ÝID£¬É¾³ýÒ»¸öÁ÷³Ì
 	 * @param id
 	 * @return
 	 * @throws Exception 
@@ -170,7 +170,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	 * ¸üÐÂÄ£°å
 	 * @param procedure
 	 * @return
 	 * @throws Exception 
@@ -181,7 +181,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸
+	 * »ñÈ¡Ä³Ò»¸öÁ÷³ÌÏêÏ¸
 	 * @param modelId
 	 * @return
 	 */
@@ -190,7 +190,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ú¼ï¿½Ò³ï¿½ï¿½Ä£ï¿½ï¿½
+	 * »ñÈ¡µÚ¼¸Ò³µÄÄ£°å
 	 * @param page
 	 * @return
 	 */
@@ -204,7 +204,7 @@ public class ProcedureService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡×ÜÒ³Êý
 	 * @return
 	 */
 	public int getAllModelPage(){
@@ -213,7 +213,7 @@ public class ProcedureService {
 	}
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ´´½¨ÐÂµÄÁ÷³Ì
 	 * @param procedure
 	 * @return
 	 * @throws Exception 

@@ -1,46 +1,46 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.Message;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import com.cao.oa.bean.Message;
 
 public interface MessageMapper {
-	//ï¿½ï¿½È¡Ä³Ò»ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ï¸
+	//»ñÈ¡Ä³Ò»¸öÏûÏ¢µÄÏêÏ¸
 	public Message findById(@Param("id") String id);
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	//»ñÈ¡¹«¸æÁĞ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	public List<Message> getMessageOfPartFromNumToNum(@Param("kind") int kind,
       @Param("partId") int partId,
       @Param("begin") int begin, @Param("end") int end);
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	//»ñÈ¡¹«¸æÁĞ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	public List<Message> getMessageOfCompanyFromNumToNum(@Param("kind") int kind,
       @Param("begin") int begin, @Param("end") int end);
 	
-	//ï¿½ï¿½È¡Ğ¡ï¿½é¹«ï¿½ï¿½ï¿½Ğ±ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½
+	//»ñÈ¡Ğ¡×é¹«¸æÁĞ±í£¬´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö
 	public List<Message> getMessageOfGroupFromNumToNum(@Param("kind") int kind,
       @Param("part") int part, @Param("group") int group,
       @Param("begin") int begin, @Param("end") int end);
-	//ï¿½ï¿½È¡Ä³ï¿½ËµÄ²ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËµÄ²¿ÃÅ¹«¸æÒ³Êı
 	public int getNoticeOfPartNumberByJobId(@Param("part") int part);
-	//ï¿½ï¿½È¡Ä³ï¿½ËµÄ¹ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËµÄ¹«Ë¾¹«¸æÒ³Êı
 	public int getNoticeOfCompanyNumberByJobId();
-	//ï¿½ï¿½È¡Ä³ï¿½Ëµï¿½Ğ¡ï¿½é¹«ï¿½ï¿½Ò³ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËµÄĞ¡×é¹«¸æÒ³Êı
 	public int getNoticeOfGroupNumberByJobId(@Param("part") int part, @Param("group") int group);
-	//ï¿½ï¿½È¡Ä³ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½  ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËÈ«²¿ÏûÏ¢µÄ  ´ÓµÚ¼¸¸öµ½µÚ¼¸¸ö  µÄÏûÏ¢ÄÚÈİÈ«²¿
 	public List<Message> getAllMessageInfoByJobId(@Param("jobId") String jobId,
       @Param("part") int part, @Param("group") int group,
       @Param("begin") int begin, @Param("end") int end);
-	//ï¿½ï¿½È¡Ä³ï¿½Ëµï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ä³ÈËµÄÈ«²¿ÏûÏ¢¸öÊı
 	public int getAllMessageByJobId(@Param("jobId") String jobId, @Param("part") int part,
       @Param("group") int group);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//Ìí¼ÓĞÂÏûÏ¢
 	public int addNewMessageToAllPerson(Message message);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//Ìí¼ÓĞÂÏûÏ¢
 	public int addNewMessageToPart(Message message);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//Ìí¼ÓĞÂÏûÏ¢
 	public int addNewMessageToPerson(Message message);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//Ìí¼ÓĞÂÏûÏ¢
 	public int addNewMessageToGroup(Message message);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	//Ìí¼ÓĞÂÏûÏ¢
 	
 	
 	

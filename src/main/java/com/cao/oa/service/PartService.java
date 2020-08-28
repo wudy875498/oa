@@ -1,12 +1,14 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.Part;
-import com.cao.oa.dao.PartDao;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cao.oa.bean.Part;
+import com.cao.oa.dao.PartDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -16,7 +18,7 @@ public class PartService {
 	private PartDao partDao;
 
 	/**
-	 * Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½È¡ï¿½ï¿½ï¿½ï¿½ID
+	 * Í¨¹ýÃû×Ö»ñÈ¡²¿ÃÅID
 	 * @param name
 	 * @return
 	 */
@@ -25,7 +27,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÈËÊý
 	 * @param partId
 	 * @return
 	 */
@@ -34,7 +36,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½Ð¡ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÐ¡×éÊý
 	 * @param partId
 	 * @return
 	 */
@@ -43,7 +45,7 @@ public class PartService {
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * É¾³ý²¿ÃÅ
 	 * @param partId
 	 * @return
 	 * @throws Exception
@@ -54,7 +56,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½Ó²ï¿½ï¿½ï¿½
+	 * Ìí¼Ó²¿ÃÅ
 	 * @param name
 	 * @param person
 	 * @return
@@ -66,7 +68,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½Ú¼ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡µÚ¼¸Ò³µÄÄÚÈÝ
 	 * @param page
 	 * @return
 	 */
@@ -80,7 +82,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½
+	 * »ñÈ¡×ÜÒ³Êý
 	 * @return
 	 */
 	public int getAllPage(){
@@ -89,7 +91,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÐµÄ²ï¿½ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * »ñÈ¡ËùÓÐµÄ²¿ÃÅidºÍÃû×Ö
 	 * @return
 	 */
 	public List<Map<String, Object>> getAllPartsAndNames(){
@@ -97,7 +99,7 @@ public class PartService {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ¸ù¾ÝID»ñÈ¡²¿ÃÅÃû³Æ
 	 * @param id
 	 * @return
 	 */

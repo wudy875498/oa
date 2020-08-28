@@ -1,14 +1,13 @@
 package com.cao.oa.dao;
 
-import com.cao.oa.bean.UserInfo;
-import com.cao.oa.mapper.UserFrozenMapper;
-import com.cao.oa.mapper.UserInfoMapper;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import com.cao.oa.bean.UserInfo;
+import com.cao.oa.mapper.UserFrozenMapper;
+import com.cao.oa.mapper.UserInfoMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class UserInfoDao {
@@ -20,7 +19,7 @@ public class UserInfoDao {
 
 	
 	/**
-	 * ????????????????????????jobId
+	 * 获取某个部门的全部用户的名字和jobId
 	 * @param partId
 	 * @param groupId
 	 * @return
@@ -36,7 +35,7 @@ public class UserInfoDao {
 	
 	
 	/**
-	 * ?????????????????????????????????????true??
+	 * 更改某一个用户的全部信息。若更改所属，则传入true。
 	 * @param info
 	 * @param changeTime 
 	 * @return
@@ -44,9 +43,9 @@ public class UserInfoDao {
 	 */
 	public boolean changeUserInfoAllByJobId(UserInfo info,boolean changeTime) throws Exception{
 		boolean result = false;
-			//????????
+			//状态是否更改
 		if(getUserStatusByJobId(info.getJobId())!=info.getStatus()){
-			//??????
+			//更改状态
 			if(!changeUserStatusByJobId(info.getJobId(), info.getStatus())){
 				return false;
 			}
@@ -67,7 +66,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????????????jobId
+	 * 获取用户全部信息，根据用户jobId
 	 * @param jobId
 	 * @return
 	 */
@@ -78,7 +77,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ????????????????????
+	 * 获取全部用户，从第几到第几
 	 * @param begin
 	 * @param end
 	 * @return
@@ -90,7 +89,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????????????????
+	 * 按部门获取全部用户，从第几到第几
 	 * @param partId
 	 * @param begin
 	 * @param end
@@ -106,7 +105,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????
+	 * 获取全部用户个数
 	 * @return
 	 */
 	public int getMemberNumbersOfAll(){
@@ -116,7 +115,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????????
+	 * 获取某个部门用户个数
 	 * @param partId
 	 * @return
 	 */
@@ -127,7 +126,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????????????????????????????jobId?????
+	 * 更改用户基本信息。包括部门、小组、用户类别，根据jobId更改。
 	 * @param jobId
 	 * @param part
 	 * @param group
@@ -138,12 +137,12 @@ public class UserInfoDao {
 	public boolean changeUserBaseInfo(String jobId,int part,int group,int kind,String post,boolean changeTime) throws Exception{
 		boolean result = false;
 		if(changeTime){
-			//?????????
+			//改变了所属
 			if(uiMapper.changeUserBaseInfoWithTime(jobId, part, group, kind, new Date(),post)==1){
 				result = true;
 			}
 		}else{
-			//???????
+			//没变所属
 			if(uiMapper.changeUserBaseInfoNoTime(jobId, kind,post)==1){
 				result = true;
 			}
@@ -156,7 +155,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????????????-1
+	 * 获取用户小组。失败则返回-1
 	 * @param jobId
 	 * @return
 	 */
@@ -167,7 +166,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????????-1
+	 * 获取用户部门。失败则返回-1
 	 * @param jobId
 	 * @return
 	 */
@@ -178,7 +177,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ????????
+	 * 获取用户名
 	 * @param jobId
 	 * @return
 	 */
@@ -189,7 +188,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ??????????
+	 * 批量添加用户
 	 * @param usersList
 	 * @return
 	 * @throws Exception
@@ -216,7 +215,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????????
+	 * 是否有这个用户
 	 * @param jobId
 	 * @return
 	 */
@@ -230,9 +229,9 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???jobId???????????int??
+	 * 通过jobId获取用户类型（int）
 	 * @param id  jobId
-	 * @return ????-1
+	 * @return 失败为-1
 	 */
 	public int getUserKindByJobId(String id){
 		int res = -1;
@@ -241,7 +240,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ????jobId?????????
+	 * 根据jobId找到附加项
 	 * @param jobId
 	 * @return
 	 */
@@ -252,7 +251,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????
+	 * 验证密码
 	 * @param jobId
 	 * @param password
 	 * @return
@@ -267,10 +266,10 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????
+	 * 修改密码
 	 * @param jobId
-	 * @param password ??????
-	 * @return ?????
+	 * @param password 新密码
+	 * @return 是否成功
 	 * @throws Exception 
 	 */
 	public boolean changePassword(String jobId,String password) throws Exception{
@@ -283,7 +282,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???jobId???????????????????????
+	 * 通过jobId更改用户自己的邮箱、电话、地址
 	 * @param jobId
 	 * @param tel
 	 * @param email
@@ -301,10 +300,10 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ????????????
+	 * 获取某小组的人数
 	 * @param partId
 	 * @param groupId
-	 * @return -1????????
+	 * @return -1为查找失败
 	 */
 	public int getMemberNumbersOfGroup(int partId,int groupId){
 		int result = -1;
@@ -313,14 +312,14 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????????????????????????
+	 * 找某一个部门中除了密码以外的信息
 	 * @param groupId
 	 * @return
 	 */
 	public List<UserInfo> findUsersGroupOfGroupId(int partId,int groupId,int begin,int end){
 		List<UserInfo> result = null;
 			result = uiMapper.findUsersGroupOfGroupId(partId, groupId, begin, end);
-			//???????
+			//清除密码
 			if(result!=null && result.size()!=0){
 				for(int i=0;i<result.size();i++){
 					result.get(i).setPassword(null);
@@ -330,7 +329,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ????????????
+	 * 通过工号找信息
 	 * @param jobId
 	 * @return
 	 */
@@ -344,7 +343,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????
+	 * 通过工号登录
 	 * @param jobId
 	 * @param password
 	 * @return
@@ -357,7 +356,7 @@ public class UserInfoDao {
 
 	
 	/**
-	 * ????????
+	 * 查询用户状态
 	 * @param jobId
 	 * @return
 	 */
@@ -374,7 +373,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????
+	 * 更改用户状态
 	 * @param jobId
 	 * @param status
 	 * @return
@@ -383,8 +382,8 @@ public class UserInfoDao {
 	public boolean changeUserStatusByJobId(String jobId, int status) throws Exception {
 		boolean result = false;
 		boolean canGo = true;
-//		System.out.println("???????"+",status:"+status+",jobId??"+jobId);
-		//???????????????
+//		System.out.println("进入该状态"+",status:"+status+",jobId："+jobId);
+		//如果冻结，添加到表中
 		if(status==UserInfo.STATUS_FROZEN_15_MINUTE || status==UserInfo.STATUS_FROZEN_30_MINUTE || status==UserInfo.STATUS_FROZEN_24_HOUR){
 			if(!changeUserStatusToFrozenByJobId(jobId,status)){
 				canGo = false;
@@ -402,7 +401,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ???????????
+	 * 添加到冻结列表
 	 * @param jobId
 	 * @param status
 	 * @return
@@ -410,7 +409,7 @@ public class UserInfoDao {
 	public boolean changeUserStatusToFrozenByJobId(String jobId, int status) throws Exception {
 		boolean result = false;
 		Long times = new Date().getTime();
-		//???????????????
+		//如果冻结，添加到表中
 		if(status==UserInfo.STATUS_FROZEN_15_MINUTE){
 			times += 1000*60*15;
 		}else if(status==UserInfo.STATUS_FROZEN_30_MINUTE){
@@ -428,7 +427,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ??
+	 * 解冻
 	 * @param jobId
 	 * @param status
 	 * @return
@@ -436,10 +435,10 @@ public class UserInfoDao {
 	 */
 	public boolean changeUserStatusOutOfFrozenByJobId(String jobId) throws Exception {
 		boolean result = false;
-		//??????????
+		//从列表中删除
 		int num = ufMapper.delUserFromFrozenByJobId(jobId);
 		if(num==1){
-			//??????
+			//更改状态
 			if(uiMapper.changeUserStatusByJobId(jobId, UserInfo.STATUS_NORMAL)==1){
 				result = true;
 			}else{
@@ -450,7 +449,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????????
+	 * 有需要解冻的用户么
 	 * @return
 	 */
 	public String hasNeedToOutOfFrozen(){
@@ -463,7 +462,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????
+	 * 获得错误次数
 	 * @param jobId
 	 * @return
 	 */
@@ -474,7 +473,7 @@ public class UserInfoDao {
 	}
 	
 	/**
-	 * ?????????
+	 * 改变错误次数
 	 * @param jobId
 	 * @param times
 	 * @return
@@ -485,7 +484,7 @@ public class UserInfoDao {
 		if(num==1){
 			return true;
 		}else{
-			throw new Exception("????????????"+num+",times:"+times+",jobId:"+jobId);
+			throw new Exception("返回的数字为："+num+",times:"+times+",jobId:"+jobId);
 		}
 	}
 	

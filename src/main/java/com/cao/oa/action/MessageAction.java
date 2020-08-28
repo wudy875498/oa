@@ -1,7 +1,5 @@
 package com.cao.oa.action;
 
-import com.cao.oa.bean.Message;
-import com.cao.oa.bean.UserInfo;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 //import java.util.Date;
@@ -13,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import com.cao.oa.bean.Message;
+import com.cao.oa.bean.UserInfo;
 import com.cao.oa.service.GroupService;
 import com.cao.oa.service.MessageService;
 import com.cao.oa.service.PartService;
@@ -38,12 +38,12 @@ public class MessageAction {
 	
 	public MessageAction(){
 		super();
-//		System.out.println(new Date().toString()+"ï¿½ï¿½ï¿½ï¿½MessageAction");
-		sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½ hh:mm:ss");
+//		System.out.println(new Date().toString()+"ÎÒÊÇMessageAction");
+		sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
 	}	
 	
 	/**
-	 * ï¿½é¿´ï¿½ï¿½Ï¢ï¿½ï¿½Ï¸
+	 * ²é¿´ÏûÏ¢ÏêÏ¸
 	 * @param msgId
 	 * @param req
 	 * @return
@@ -51,11 +51,11 @@ public class MessageAction {
 	@RequestMapping("message/lookMessage.do")
 	public ModelAndView viewLookMsg(String msgId,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö·
+		//»ñÈ¡ÉÏÒ»¸öµØÖ·
 		String beforUrl = req.getHeader("REFERER");
 		beforUrl = beforUrl.substring(beforUrl.indexOf("message/"));
 		if(msgId==null  || msgId.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/"+beforUrl, "ï¿½é¿´ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó¡££ï¿½È±ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/"+beforUrl, "²é¿´ÏûÏ¢ÇëÇó´íÎó¡££¨È±ÉÙ²ÎÊý£©");
 		}
 		
 		String title = null;
@@ -64,64 +64,64 @@ public class MessageAction {
 		String date = null;
 		String content = null;
 		
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½
+		//»ñÈ¡½á¹û
 		Message msg = messageService.getMessageInfoByMessageId(msgId);
 		if(msg==null){
-			return JumpPrompt.jumpOfModelAndView("/"+beforUrl, "ï¿½é¿´ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ó¡££ï¿½ï¿½Þ´ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/"+beforUrl, "²é¿´ÏûÏ¢´íÎó¡££¨ÎÞ´ËÏûÏ¢£©");
 		}
 		title = msg.getTitle();
 		date = sdf.format(msg.getSendDate());
 		content = msg.getContent();
 		person = userServer.getUserNameById(msg.getSendPerson());
 		if(person==null){
-			person = "ï¿½ï¿½ï¿½Þ´ï¿½ï¿½ï¿½";
+			person = "²éÎÞ´ËÈË";
 		}
 		
 		if(msg.getKind() == Message.KIND_MESSAGE_PART){
-			kind = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢";
+			kind = "²¿ÃÅÏûÏ¢";
 		}else if(msg.getKind() == Message.KIND_MESSAGE_GROUP){
-			kind = "Ð¡ï¿½ï¿½ï¿½ï¿½Ï¢";
+			kind = "Ð¡×éÏûÏ¢";
 		}else if(msg.getKind() == Message.KIND_MESSAGE_PERSON){
-			kind = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢";
+			kind = "¸öÈËÏûÏ¢";
 		}else if(msg.getKind() == Message.KIND_MESSAGE_COMPANY){
-			kind = "ï¿½ï¿½Ë¾ï¿½ï¿½Ï¢";
+			kind = "¹«Ë¾ÏûÏ¢";
 		}else if(msg.getKind() == Message.KIND_MESSAGE_SYSTEM){
-			kind = "ÏµÍ³ï¿½ï¿½Ï¢";
+			kind = "ÏµÍ³ÏûÏ¢";
 		}else if(msg.getKind() == Message.KIND_NOTICE_PART){
-			kind = "ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½";
+			kind = "²¿ÃÅ¹«¸æ";
 		}else if(msg.getKind() == Message.KIND_NOTICE_GROUP){
-			kind = "Ð¡ï¿½é¹«ï¿½ï¿½";
+			kind = "Ð¡×é¹«¸æ";
 		}else if(msg.getKind() == Message.KIND_NOTICE_COMPANY){
-			kind = "ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½";
+			kind = "¹«Ë¾¹«¸æ";
 		}else{
-			kind = "Î´Öªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+			kind = "Î´ÖªµÄÀàÐÍ";
 		}
 		
 		
 		
-		//ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½
+		//·â×°Êý¾Ý
 		boolean isMag = false;
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/messagePlazaDetail.jsp");
 		if(beforUrl.startsWith("message/personMessageList.do")){
-			model.put("myPageTitle","ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½");
+			model.put("myPageTitle","ÏûÏ¢ÏêÇé");
 			model.put("myPageNav","7");
-			model.put("pmdIsNotice", 0);//ï¿½ï¿½ï¿½ï¿½Ï¢
+			model.put("pmdIsNotice", 0);//ÊÇÏûÏ¢
 			isMag = true;
 		}else{
-			model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			model.put("myPageTitle","¹«¸æÏêÇé");
 			model.put("myPageNav","6");
-			model.put("pmdIsNotice", 1);//ï¿½Ç¹ï¿½ï¿½ï¿½
+			model.put("pmdIsNotice", 1);//ÊÇ¹«¸æ
 			isMag = false;
 		}
-		model.put("pmdPreUrl", beforUrl);//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö·
-		model.put("pmdTitle", title);//ï¿½ï¿½ï¿½ï¿½
-		model.put("pmdKind", kind);//ï¿½ï¿½ï¿½ï¿½
-		model.put("pmdPerson", person);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("pmdDate", date);//Ê±ï¿½ï¿½
-		model.put("pmdContent", content);//ï¿½ï¿½ï¿½ï¿½
+		model.put("pmdPreUrl", beforUrl);//ÉÏÒ»¸öÍøÖ·
+		model.put("pmdTitle", title);//±êÌâ
+		model.put("pmdKind", kind);//·ÖÀà
+		model.put("pmdPerson", person);//·¢ËÍÈË
+		model.put("pmdDate", date);//Ê±¼ä
+		model.put("pmdContent", content);//ÄÚÈÝ
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
+		//ÔÚÌáÐÑÖÐÉ¾³ý
 		try {
 			remindService.takeIdRead(jobId, msg.getId(), isMag);
 		} catch (Exception e) {
@@ -132,14 +132,14 @@ public class MessageAction {
 	}
 	
 	/**
-	 * ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+	 * ×ªµ½¹«¸æÁÐ±í
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/noticeList.do")
 	public ModelAndView viewNoticeList(String kind,String page,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 //		int userKind = userServer.getUserKindByJobId(jobId);
 		List<Map<String,String>> msgList = null;
 		String msgKind = null;
@@ -147,32 +147,32 @@ public class MessageAction {
 		int currentPage = 0;
 		
 		if(kind==null  || kind.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/messagePlaza.do", "ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/messagePlaza.do", "·Ç·¨ÇëÇó");
 		}
-		//ï¿½ï¿½Ç°Ò³
+		//µ±Ç°Ò³
 		if(page==null  || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÀàÐÍºÍ×ÜÒ³Êý
 		if(kind.equals("g")){
-			msgKind = "Ð¡ï¿½ï¿½";
+			msgKind = "Ð¡×é";
 			allPage = messageService.getNoticeOfGroupPageNumberByJobId(jobId);
 		}else if(kind.equals("p")){
-			msgKind = "ï¿½ï¿½ï¿½ï¿½";
+			msgKind = "²¿ÃÅ";
 			allPage = messageService.getNoticeOfPartPageNumberByJobId(jobId);
 		}else{
-			msgKind = "ï¿½ï¿½Ë¾";
+			msgKind = "¹«Ë¾";
 			allPage = messageService.getNoticeOfCompanyPageNumberByJobId();
 		}
-		//ï¿½ï¿½Ö¹Ò³ï¿½ï¿½ï¿½Ç·ï¿½
+		//·ÀÖ¹Ò³Êý·Ç·¨
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}else if(currentPage<1){
 			currentPage = 1;
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½Ï¢ï¿½Ð±ï¿½
+		//»ñÈ¡ÐÅÏ¢ÁÐ±í
 		List<Message> tempList = null;
 		if(kind.equals("g")){
 			tempList = messageService.getNoticeInfoOfGroupToPageByJobId(jobId, currentPage);
@@ -181,7 +181,7 @@ public class MessageAction {
 		}else{
 			tempList = messageService.getNoticeInfoOfCompanyToPageByJobId(currentPage);
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦ÀíÊý¾Ý
 		msgList = new ArrayList<>();
 		if(tempList!=null){
 			for(int i=0;i<tempList.size();i++){
@@ -190,9 +190,9 @@ public class MessageAction {
 				map.put("title", tempList.get(i).getTitle());
 				map.put("date", sdf.format(tempList.get(i).getSendDate()));
 				if(remindService.isRead(jobId,tempList.get(i).getId(),false)){
-					map.put("isRead", "1");//ï¿½Ñ¶ï¿½
+					map.put("isRead", "1");//ÒÑ¶Á
 				}else{
-					map.put("isRead", "0");//Î´ï¿½ï¿½
+					map.put("isRead", "0");//Î´¶Á
 				}
 				msgList.add(map);
 			}
@@ -200,10 +200,10 @@ public class MessageAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/messagePlazaList.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ã³¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½");
+		model.put("myPageTitle","¹«¸æ¹ã³¡¡ª¡ªÁÐ±í");
 		model.put("myPageNav","6");
-		model.put("mplMsgList", msgList);//ï¿½ï¿½Ï¢ï¿½Ð±ï¿½
-		model.put("mplMsgKind", msgKind);//ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+		model.put("mplMsgList", msgList);//ÏûÏ¢ÁÐ±í
+		model.put("mplMsgKind", msgKind);//ÏûÏ¢ÖÖÀà
 		model.put("mplMsgKindStr", kind);
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
@@ -211,14 +211,14 @@ public class MessageAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+	 * µ½¹«¸æÒ³Ãæ
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/messagePlaza.do")
 	public ModelAndView viewMessagePlaza(HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		//int userKind = userServer.getUserKindByJobId(jobId);
 		
 		List<Map<String,String>> partNoticeList = null;
@@ -228,7 +228,7 @@ public class MessageAction {
 		List<Message> tempList = null;
 		
 		
-		//ï¿½ï¿½ï¿½ï¿½
+		//²¿ÃÅ
 		tempList = messageService.getNoticeInfoOfPartToPageByJobId(jobId, 1);
 		partNoticeList = new ArrayList<Map<String,String>>();
 		if(tempList!=null){
@@ -238,15 +238,15 @@ public class MessageAction {
 				map.put("title", tempList.get(i).getTitle());
 				map.put("date", sdf.format(tempList.get(i).getSendDate()));
 				if(remindService.isRead(jobId,tempList.get(i).getId(),false)){
-					map.put("isRead", "1");//ï¿½Ñ¶ï¿½
+					map.put("isRead", "1");//ÒÑ¶Á
 				}else{
-					map.put("isRead", "0");//Î´ï¿½ï¿½
+					map.put("isRead", "0");//Î´¶Á
 				}
 				partNoticeList.add(map);
 			}
 		}
 		
-		//ï¿½ï¿½Ë¾
+		//¹«Ë¾
 		tempList = messageService.getNoticeInfoOfCompanyToPageByJobId(1);
 		companyNoticeList = new ArrayList<Map<String,String>>();
 		if(tempList!=null){
@@ -256,15 +256,15 @@ public class MessageAction {
 				map.put("title", tempList.get(i).getTitle());
 				map.put("date", sdf.format(tempList.get(i).getSendDate()));
 				if(remindService.isRead(jobId,tempList.get(i).getId(),false)){
-					map.put("isRead", "1");//ï¿½Ñ¶ï¿½
+					map.put("isRead", "1");//ÒÑ¶Á
 				}else{
-					map.put("isRead", "0");//Î´ï¿½ï¿½
+					map.put("isRead", "0");//Î´¶Á
 				}
 				companyNoticeList.add(map);
 			}
 		}
 		
-		//Ð¡ï¿½ï¿½
+		//Ð¡×é
 		tempList = messageService.getNoticeInfoOfGroupToPageByJobId(jobId, 1);
 		groupNoticeList = new ArrayList<Map<String,String>>();
 		if(tempList!=null){
@@ -274,9 +274,9 @@ public class MessageAction {
 				map.put("title", tempList.get(i).getTitle());
 				map.put("date", sdf.format(tempList.get(i).getSendDate()));
 				if(remindService.isRead(jobId,tempList.get(i).getId(),false)){
-					map.put("isRead", "1");//ï¿½Ñ¶ï¿½
+					map.put("isRead", "1");//ÒÑ¶Á
 				}else{
-					map.put("isRead", "0");//Î´ï¿½ï¿½
+					map.put("isRead", "0");//Î´¶Á
 				}
 				groupNoticeList.add(map);
 			}
@@ -284,7 +284,7 @@ public class MessageAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/messagePlaza.jsp");
-		model.put("myPageTitle","ï¿½ã³¡");
+		model.put("myPageTitle","¹ã³¡");
 		model.put("myPageNav","6");
 		
 		model.put("mpCompanyMsgList", companyNoticeList);
@@ -294,7 +294,7 @@ public class MessageAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ð±ï¿½
+	 * µ½¸öÈËÏûÏ¢ÁÐ±í
 	 * @param page
 	 * @param req
 	 * @return
@@ -302,28 +302,28 @@ public class MessageAction {
 	@RequestMapping("message/personMessageList.do")
 	public ModelAndView viewPersonMsgList(String page,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		//int userKind = userServer.getUserKindByJobId(jobId);
 //		System.out.println(jobId);
-		List<Map<String,String>> msgList = null;//Ò»Ò³5ï¿½ï¿½
+		List<Map<String,String>> msgList = null;//Ò»Ò³5¸ö
 		int allPage = 0;
 		int currentPage = 0;
-		//ï¿½ï¿½Ç°Ò³
+		//µ±Ç°Ò³
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
 		
-		//ï¿½ï¿½È¡ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÏûÏ¢×ÜÊý
 		allPage = messageService.getAllMessagePageNumberByJobId(jobId);
-		//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//·ÀÖ¹´íÎóÒ³Êý
 		if(currentPage>allPage){
 			currentPage = allPage;
 		}else if(currentPage<1){
 			currentPage = 1;
 		}
-		//ï¿½ï¿½È¡ï¿½ï¿½Ï¢
+		//»ñÈ¡ÏûÏ¢
 		List<Message> temp = messageService.getAllMessageInfoOfPageByJobId(jobId, currentPage);
 		if(temp!=null && temp.size()!=0){
 			msgList = new ArrayList<>();
@@ -337,27 +337,27 @@ public class MessageAction {
 						map.put("source", "ÏµÍ³");
 						break;
 					case Message.KIND_MESSAGE_COMPANY:
-						map.put("source", "ï¿½ï¿½Ë¾");
+						map.put("source", "¹«Ë¾");
 						break;
 					case Message.KIND_MESSAGE_PART:
-						map.put("source", "ï¿½ï¿½ï¿½ï¿½");
+						map.put("source", "²¿ÃÅ");
 						break;
 					case Message.KIND_MESSAGE_GROUP:
-						map.put("source", "Ð¡ï¿½ï¿½");
+						map.put("source", "Ð¡×é");
 						break;
 					case Message.KIND_MESSAGE_PERSON:
-						map.put("source", "ï¿½ï¿½ï¿½ï¿½");
+						map.put("source", "¸öÈË");
 						break;
 					default:
 						map.put("source", "Î´Öª");
 						break;
 				}
 				map.put("date", sdf.format(temp.get(i).getSendDate()));
-				//ï¿½Ç·ï¿½ï¿½Ä¶ï¿½
+				//ÊÇ·ñÔÄ¶Á
 				if(remindService.isRead(jobId,temp.get(i).getId(),true)){
-					map.put("status", "1");//ï¿½Ñ¶ï¿½
+					map.put("status", "1");//ÒÑ¶Á
 				}else{
-					map.put("status", "0");//Î´ï¿½ï¿½
+					map.put("status", "0");//Î´¶Á
 				}
 				msgList.add(map);
 			}
@@ -366,45 +366,45 @@ public class MessageAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/personalMessageList.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½");
+		model.put("myPageTitle","¸öÈËÏûÏ¢¡ª¡ªÁÐ±í");
 		model.put("myPageNav","7");
-		model.put("pmlMsgList", msgList);//ï¿½ï¿½Ï¢ï¿½Ð±ï¿½
+		model.put("pmlMsgList", msgList);//ÏûÏ¢ÁÐ±í
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	 * ·¢ËÍÏûÏ¢
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/sendMessage.do")
 	public ModelAndView viewSendMessage(HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		int userKind = userServer.getUserKindByJobId(jobId);
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/sendMessage.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢");
+		model.put("myPageTitle","·¢ËÍÏûÏ¢");
 		model.put("myPageNav","8");
 		model.put("userKindNumber",userKind);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½
+	 * ·¢ËÍ¹«¸æ
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/sendNotice.do")
 	public ModelAndView viewSendNotice(HttpServletRequest req){//
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+		//»ñÈ¡ÓÃ»§ÀàÐÍ
 		int userKind = userServer.getUserKindByJobId(jobId);
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","message/sendNotice.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","·¢²¼¹«¸æ");
 		model.put("myPageNav","9");
 		model.put("userKindNumber",userKind);
 		return new ModelAndView("baseJsp",model);
@@ -412,26 +412,26 @@ public class MessageAction {
 	
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ·¢ËÍÏûÏ¢±íµ¥²Ù×÷
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/sendMessageForm.do")
 	public ModelAndView sendMsg(HttpServletRequest req){
-		//ï¿½ï¿½ï¿½ï¿½
+		//±êÌâ
 		String title = req.getParameter("mtitle");
 		if(title==null || title.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ð´ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨±êÌâÄÚÈÝÃ»ÓÐÐ´£©");
 		}
-		//ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
+		//·¢ËÍµÄÄÚÈÝ
 		String content = req.getParameter("mcontext");
 		if(content==null || content.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ð´ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨·¢ËÍµÄÄÚÈÝÃ»ÓÐÐ´£©");
 		}
-		//ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+		//ÏûÏ¢ÀàÐÍ
 		String msgKind = req.getParameter("mkind");
 		if(msgKind==null || msgKind.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ñ¡ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÏûÏ¢ÀàÐÍÃ»ÓÐÑ¡Ôñ£©");
 		}
 		boolean result = false;
 		String jobId = (String)req.getSession().getAttribute("userJobId");
@@ -443,93 +443,93 @@ public class MessageAction {
 		msg.setSendPerson(jobId);
 		try{
 			if(msgKind.equals("person")){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jobId
+				//¸öÈËÏûÏ¢
+				//½ÓÊÜÕßjobId
 				String accept = req.getParameter("macceptJobId");
 				if(!userServer.hasUserByJobId(accept)){
-					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½Ã»ï¿½Ð¹ï¿½ï¿½ï¿½Îªï¿½ï¿½"+accept+"ï¿½ï¿½ï¿½Ä³ï¿½Ô±ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨Ã»ÓÐ¹¤ºÅÎª¡°"+accept+"¡±µÄ³ÉÔ±£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½  acceptï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//·¢ËÍ  accept½ÓÊÜÕß
 				msg.setAcceptPerson(accept);
 				msg.setKind(Message.KIND_MESSAGE_PERSON);
 				result = messageService.sendOneMsgToPerson(msg,true);
 			}else if(msgKind.equals("group")){
-				//Ð¡ï¿½ï¿½ï¿½ï¿½Ï¢
+				//Ð¡×éÏûÏ¢
 				int acceptPart = -1;
 				int acceptGroup = -1;
-				if(userKind==UserInfo.KIND_MANAGER_WEB){//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±
+				if(userKind==UserInfo.KIND_MANAGER_WEB){//ÍøÕ¾¹ÜÀíÔ±
 					acceptPart = Integer.parseInt(req.getParameter("macceptpPart"));
 					acceptGroup = Integer.parseInt(req.getParameter("macceptgGroup"));
-				}else if(userKind==UserInfo.KIND_MANAGER_PART){//ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±
+				}else if(userKind==UserInfo.KIND_MANAGER_PART){//²¿ÃÅ¹ÜÀíÔ±
 					acceptPart = userServer.getUserPartByJobId(jobId);
 					acceptGroup = Integer.parseInt(req.getParameter("macceptg"));
-				}else if(userKind==UserInfo.KIND_MANAGER_GROUP){//Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+				}else if(userKind==UserInfo.KIND_MANAGER_GROUP){//Ð¡×é¹ÜÀíÔ±
 					acceptPart = userServer.getUserPartByJobId(jobId);
 					acceptGroup = userServer.getUserGroupByJobId(jobId);
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ acceptPartï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½acceptGroupÐ¡ï¿½ï¿½
+				//·¢ËÍÏûÏ¢ acceptPart²¿ÃÅ £¬acceptGroupÐ¡×é
 				msg.setKind(Message.KIND_MESSAGE_GROUP);
 				msg.setAcceptPart(acceptPart);
 				msg.setAcceptGroup(acceptGroup);
 				result = messageService.sendOneMsgToGroup(msg,true);
 			}else if(msgKind.equals("part")){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+				//²¿ÃÅÏûÏ¢
 				int acceptPart = -1;
 				if(userKind==UserInfo.KIND_MANAGER_WEB){
 					acceptPart = Integer.parseInt(req.getParameter("macceptp"));
 				}else if(userKind==UserInfo.KIND_MANAGER_PART){
 					acceptPart = userServer.getUserPartByJobId(jobId);
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½   acceptPartï¿½ï¿½ï¿½ï¿½
+				//·¢ËÍ   acceptPart²¿ÃÅ
 				msg.setKind(Message.KIND_MESSAGE_PART);
 				msg.setAcceptPart(acceptPart);
 				result = messageService.sendOneMsgToPart(msg,true);
 			}else if(msgKind.equals("company")){
-				//ï¿½ï¿½Ë¾ï¿½ï¿½Ï¢
-				if(userKind!= UserInfo.KIND_MANAGER_WEB){
-					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+				//¹«Ë¾ÏûÏ¢
+				if(userKind!=UserInfo.KIND_MANAGER_WEB){
+					return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½
+				//·¢ËÍ
 				msg.setKind(Message.KIND_MESSAGE_COMPANY);
 				result = messageService.sendOneMsgToAll(msg,true);
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 		if(result){
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½É¹ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "³É¹¦ÏûÏ¢·¢ËÍ£¡");
 		}else{
-			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendMessage.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡£");
 		}
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½ï¿½Í¹ï¿½ï¿½ï¿½
+	 * ·¢ËÍ¹«¸æ
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("message/sendNoticeForm.do")
 	public ModelAndView sendNotice(HttpServletRequest req){
-		//ï¿½ï¿½ï¿½ï¿½
+		//±êÌâ
 		String title = req.getParameter("mtitle");
 		if(title==null || title.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ð´ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨±êÌâÄÚÈÝÃ»ÓÐÐ´£©");
 		}
-		//ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½
+		//·¢ËÍµÄÄÚÈÝ
 		String content = req.getParameter("mcontext");
 		if(content==null || content.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ð´ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨·¢ËÍµÄÄÚÈÝÃ»ÓÐÐ´£©");
 		}
-		//ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+		//ÏûÏ¢ÀàÐÍ
 		String msgKind = req.getParameter("mkind");
 		if(msgKind==null || msgKind.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ñ¡ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÏûÏ¢ÀàÐÍÃ»ÓÐÑ¡Ôñ£©");
 		}
 		boolean result = false;
 		String jobId = (String)req.getSession().getAttribute("userJobId");
@@ -541,59 +541,59 @@ public class MessageAction {
 		msg.setSendPerson(jobId);
 		try{
 			if(msgKind.equals("group")){
-				//Ð¡ï¿½é¹«ï¿½ï¿½
+				//Ð¡×é¹«¸æ
 				int acceptPart = -1;
 				int acceptGroup = -1;
-				if(userKind==UserInfo.KIND_MANAGER_WEB){//ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½Ô±
+				if(userKind==UserInfo.KIND_MANAGER_WEB){//ÍøÕ¾¹ÜÀíÔ±
 					acceptPart = Integer.parseInt(req.getParameter("macceptpPart"));
 					acceptGroup = Integer.parseInt(req.getParameter("macceptgGroup"));
-				}else if(userKind==UserInfo.KIND_MANAGER_PART){//ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½Ô±
+				}else if(userKind==UserInfo.KIND_MANAGER_PART){//²¿ÃÅ¹ÜÀíÔ±
 					acceptPart = userServer.getUserPartByJobId(jobId);
 					acceptGroup = Integer.parseInt(req.getParameter("macceptg"));
-				}else if(userKind==UserInfo.KIND_MANAGER_GROUP){//Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ô±
+				}else if(userKind==UserInfo.KIND_MANAGER_GROUP){//Ð¡×é¹ÜÀíÔ±
 					acceptPart = userServer.getUserPartByJobId(jobId);
 					acceptGroup = userServer.getUserGroupByJobId(jobId);
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ acceptPartï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½acceptGroupÐ¡ï¿½ï¿½
+				//·¢ËÍÏûÏ¢ acceptPart²¿ÃÅ £¬acceptGroupÐ¡×é
 				msg.setKind(Message.KIND_NOTICE_PART);
 				msg.setAcceptPart(acceptPart);
 				msg.setAcceptGroup(acceptGroup);
 				result = messageService.sendOneMsgToGroup(msg,false);
 			}else if(msgKind.equals("part")){
-				//ï¿½ï¿½ï¿½Å¹ï¿½ï¿½ï¿½
+				//²¿ÃÅ¹«¸æ
 				int acceptPart = -1;
 				if(userKind==UserInfo.KIND_MANAGER_WEB){
 					acceptPart = Integer.parseInt(req.getParameter("macceptp"));
 				}else if(userKind==UserInfo.KIND_MANAGER_PART){
 					acceptPart = userServer.getUserPartByJobId(jobId);
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½   acceptPartï¿½ï¿½ï¿½ï¿½
+				//·¢ËÍ   acceptPart²¿ÃÅ
 				msg.setKind(Message.KIND_NOTICE_PART);
 				msg.setAcceptPart(acceptPart);
 				result = messageService.sendOneMsgToPart(msg,false);
 			}else if(msgKind.equals("company")){
-				//ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½
+				//¹«Ë¾¹«¸æ
 				if(userKind!=UserInfo.KIND_MANAGER_WEB){
-					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½Þ´ï¿½È¨ï¿½ï¿½@_@ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÎÞ´ËÈ¨ÏÞ@_@£©");
 				}
-				//ï¿½ï¿½ï¿½ï¿½
+				//·¢ËÍ
 				msg.setKind(Message.KIND_NOTICE_COMPANY);
 				result = messageService.sendOneMsgToAll(msg,false);
 			}else{
-				return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨ÀàÐÍ´íÎó£©");
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 		if(result){
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½É¹ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Í£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "³É¹¦ÏûÏ¢·¢ËÍ£¡");
 		}else{
-			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/message/sendNotice.do", "ÏûÏ¢·¢ËÍÊ§°Ü¡£");
 		}
 	}
 

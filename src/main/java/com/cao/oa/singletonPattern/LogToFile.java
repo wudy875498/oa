@@ -17,7 +17,7 @@ public class LogToFile {
 	public static String PROJECT_NAME = "";
 	private static final String fileName = "_webAccessLog.log";
 	private static final String fileParentName = "webLog/cxx";
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½  HH:mm:ss.SSSZ");
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ  HH:mm:ss.SSSZ");
 	private static File file = null;
 	private static LogToFile log = null;
 	public synchronized static LogToFile getInstance(){
@@ -59,10 +59,10 @@ public class LogToFile {
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return "ï¿½ï¿½È¡Ê§ï¿½ï¿½";
+			return "¶ÁÈ¡Ê§°Ü";
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "ï¿½ï¿½È¡Ê§ï¿½ï¿½";
+			return "¶ÁÈ¡Ê§°Ü";
 		}finally {
 			if(fis!=null){
 				try {
@@ -75,43 +75,43 @@ public class LogToFile {
 		return res;
 	}
 	public void logStart(){
-		System.out.println("ï¿½ï¿½"+PROJECT_NAME+"ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½æ´¢Î»ï¿½Ã£ï¿½"+file.getAbsolutePath());
+		System.out.println("¡¾"+PROJECT_NAME+"¡¿ÈÕÖ¾´æ´¢Î»ÖÃ£º"+file.getAbsolutePath());
 		String str = ""+System.lineSeparator()+System.lineSeparator()+System.lineSeparator()+System.lineSeparator();
-		str += "####################ÏµÍ³ï¿½ï¿½ï¿½ï¿½###########################"+System.lineSeparator();
-		str += "ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£º"+sdf.format(new Date())+System.lineSeparator();
-		str += "[Ê±ï¿½ï¿½]\t\t\t\t\t ï¿½ï¿½ï¿½Ê·ï¿½Ê½\t ï¿½ï¿½ï¿½ï¿½IP\t\t ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½\t ï¿½ï¿½ï¿½ï¿½\t ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ \t\t"+System.lineSeparator();
+		str += "####################ÏµÍ³Æô¶¯###########################"+System.lineSeparator();
+		str += "Æô¶¯Ê±¼ä£º"+sdf.format(new Date())+System.lineSeparator();
+		str += "[Ê±¼ä]\t\t\t\t\t ·ÃÎÊ·½Ê½\t ·ÃÎÊIP\t\t ·ÃÎÊÓÃ»§\t ÄÚÈÝ\t ·ÃÎÊÂ·¾¶ \t\t"+System.lineSeparator();
 		wirteToFile(str);
 	}
 	public void logStop(){
 		String str = "";
-		str += "ï¿½Ø±ï¿½Ê±ï¿½ä£º"+sdf.format(new Date())+System.lineSeparator();
-		str += "####################ÏµÍ³ï¿½Ø±ï¿½###########################"+System.lineSeparator();
+		str += "¹Ø±ÕÊ±¼ä£º"+sdf.format(new Date())+System.lineSeparator();
+		str += "####################ÏµÍ³¹Ø±Õ###########################"+System.lineSeparator();
 		str += ""+System.lineSeparator()+System.lineSeparator()+System.lineSeparator()+System.lineSeparator();
 		wirteToFile(str);
-		System.out.println("ï¿½ï¿½"+PROJECT_NAME+"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È«ï¿½Ø±Õ£ï¿½");
+		System.out.println("¡¾"+PROJECT_NAME+"¡¿ÒÑÍêÈ«¹Ø±Õ£¡");
 	}
 
 	public void log(HttpServletRequest req, HttpServletResponse resp,String content){
-		String str = "["+sdf.format(new Date())+"]"+"\t";//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		str += req.getMethod()+"\t\t";//ï¿½ï¿½ï¿½ï¿½Ê½
-		str += req.getRemoteAddr()+":"+req.getRemotePort()+"\t";//ï¿½ï¿½ï¿½ï¿½IP
-		//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
+		String str = "["+sdf.format(new Date())+"]"+"\t";//·ÃÎÊÊ±¼ä
+		str += req.getMethod()+"\t\t";//ÇëÇó·½Ê½
+		str += req.getRemoteAddr()+":"+req.getRemotePort()+"\t";//·ÃÎÊIP
+		//·ÃÎÊÓÃ»§
 		HttpSession session = req.getSession();
 		String userId = (String)session.getAttribute("userJobId");
 		if(userId==null){
-			str += "ï¿½Î¿ï¿½\t\t";
+			str += "ÓÎ¿Í\t\t";
 		}else{
 			str += userId+"\t\t";
 		}
-		str += content+"\t";//ï¿½ï¿½ï¿½ï¿½
-		str += req.getServletPath()+"\t";//ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½
-		str += req.getQueryString()+"\t";//ï¿½ï¿½ï¿½ï¿½
+		str += content+"\t";//ÄÚÈÝ
+		str += req.getServletPath()+"\t";//ÇëÇóÂ·¾¶
+		str += req.getQueryString()+"\t";//²ÎÊý
 		str += System.lineSeparator();
 		wirteToFile(str);
-		System.out.println("ï¿½ï¿½"+PROJECT_NAME+"ï¿½ï¿½"+str);
+		System.out.println("¡¾"+PROJECT_NAME+"¡¿"+str);
 	}
 	/**
-	 * Ð´ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * Ð´ÈëÎÄ¼þ
 	 * @param str
 	 */
 	private synchronized void wirteToFile(String str){

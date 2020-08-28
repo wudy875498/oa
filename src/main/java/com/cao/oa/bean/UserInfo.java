@@ -3,7 +3,7 @@ package com.cao.oa.bean;
 import java.util.Date;
 
 /**
- * ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
+ * ÓÃ»§ÐÅÏ¢
  * @author DELL
  *
  */
@@ -14,19 +14,19 @@ public class UserInfo {
 	public static final int KIND_MANAGER_GROUP = 2;
 	public static final int KIND_MEMBER = 3;
 	
-	public static final int STATUS_NO_ACTIVITY = 0;//Î´ï¿½ï¿½ï¿½ï¿½
-	public static final int STATUS_NORMAL = 1;//ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½
-	public static final int STATUS_DISABLE = 2;//ï¿½ï¿½ï¿½ï¿½
-	public static final int STATUS_ABNORMAL = 3;//ï¿½ì³£ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Â½ï¿½ï¿½
-	public static final int STATUS_FROZEN_15_MINUTE = 4;//ï¿½ï¿½ï¿½á£¨15ï¿½ï¿½ï¿½Ó£ï¿½
-	public static final int STATUS_FROZEN_30_MINUTE = 5;//ï¿½ï¿½ï¿½á£¨30ï¿½ï¿½ï¿½Ó£ï¿½
-	public static final int STATUS_FROZEN_24_HOUR = 6;//ï¿½ï¿½ï¿½á£¨24Ð¡Ê±ï¿½ï¿½
+	public static final int STATUS_NO_ACTIVITY = 0;//Î´¼¤»î
+	public static final int STATUS_NORMAL = 1;//Õý³£Ê¹ÓÃ
+	public static final int STATUS_DISABLE = 2;//½ûÓÃ
+	public static final int STATUS_ABNORMAL = 3;//Òì³££¨½ûÖ¹µÇÂ½£©
+	public static final int STATUS_FROZEN_15_MINUTE = 4;//¶³½á£¨15·ÖÖÓ£©
+	public static final int STATUS_FROZEN_30_MINUTE = 5;//¶³½á£¨30·ÖÖÓ£©
+	public static final int STATUS_FROZEN_24_HOUR = 6;//¶³½á£¨24Ð¡Ê±£©
 	
 	public static final int SEX_MALE = 0;
 	public static final int SEX_FAMALE = 1;
 	
 	private String jobId;
-	private String post;//Ö°ï¿½ï¿½
+	private String post;//Ö°Îñ
 	private String cardId;
 	private String name;
 	private int sex;

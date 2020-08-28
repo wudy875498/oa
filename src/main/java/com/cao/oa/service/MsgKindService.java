@@ -1,11 +1,13 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.MessageKind;
-import com.cao.oa.dao.MsgKindDao;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cao.oa.bean.MessageKind;
+import com.cao.oa.dao.MsgKindDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -14,7 +16,7 @@ public class MsgKindService {
 	private MsgKindDao msgKindDao;
 
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ·µ»ØËùÓÐÓÃ»§ÀàÐÍ
 	 * @return
 	 */
 	public List<MessageKind> getAllUserKind(){

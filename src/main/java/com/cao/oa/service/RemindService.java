@@ -1,10 +1,11 @@
 package com.cao.oa.service;
 
-import com.cao.oa.dao.ProcedureDao;
-import com.cao.oa.dao.RemindDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cao.oa.dao.ProcedureDao;
+import com.cao.oa.dao.RemindDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -14,7 +15,7 @@ public class RemindService {
 	@Autowired
 	private ProcedureDao procedureDao;
 	/**
-	 * 删锟斤拷一锟斤拷指锟斤拷锟斤拷锟斤拷锟斤拷
+	 * 删除一条指定的提醒
 	 * @param jobId
 	 * @param msgId
 	 * @param isMag
@@ -27,7 +28,7 @@ public class RemindService {
 	}
 	
 	/**
-	 * 锟角凤拷锟侥讹拷锟斤拷
+	 * 是否阅读了
 	 * @param jobId
 	 * @param msgId
 	 * @param isMag
@@ -39,7 +40,7 @@ public class RemindService {
 	
 	
 	/**
-	 * 锟斤拷取某锟斤拷锟斤拷锟斤拷要锟斤拷锟窖碉拷锟斤拷息ID锟斤拷
+	 * 获取某个人需要提醒的消息ID数
 	 * @param jobId
 	 * @return
 	 */
@@ -48,7 +49,7 @@ public class RemindService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟斤拷锟斤拷锟斤拷要锟斤拷锟窖的癸拷锟斤拷ID锟斤拷
+	 * 获取某个人需要提醒的公告ID数
 	 * @param jobId
 	 * @return
 	 */
@@ -57,7 +58,7 @@ public class RemindService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟斤拷锟斤拷锟斤拷要锟斤拷锟窖碉拷锟斤拷锟斤拷ID锟斤拷
+	 * 获取某个人需要提醒的流程ID数
 	 * @param jobId
 	 * @return
 	 */

@@ -1,12 +1,13 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.Message;
-import com.cao.oa.dao.MessageDao;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.cao.oa.bean.Message;
+import com.cao.oa.dao.MessageDao;
 
 @Transactional(readOnly = true)
 @Service
@@ -17,7 +18,7 @@ public class MessageService {
 	public static final int PAGE_NOTICE = 5;
 
 	/**
-	 * 锟斤拷取某一锟斤拷锟斤拷息锟斤拷锟斤拷细
+	 * 获取某一个消息的详细
 	 * @param messageId
 	 * @return
 	 */
@@ -26,7 +27,8 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿的癸拷司锟斤拷锟斤拷锟叫憋拷锟节硷拷页
+	 * 获取某人的公司公告列表，第几页
+	 * @param jobId
 	 * @param page
 	 * @return
 	 */
@@ -40,7 +42,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿的诧拷锟脚癸拷锟斤拷锟叫憋拷锟节硷拷页
+	 * 获取某人的部门公告列表，第几页
 	 * @param jobId
 	 * @param page
 	 * @return
@@ -55,7 +57,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿碉拷小锟介公锟斤拷锟叫憋拷锟节硷拷页
+	 * 获取某人的小组公告列表，第几页
 	 * @param jobId
 	 * @param page
 	 * @return
@@ -70,7 +72,8 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿的癸拷司锟斤拷锟斤拷页锟斤拷
+	 * 获取某人的公司公告页数
+	 * @param jobId
 	 * @return
 	 */
 	public int getNoticeOfCompanyPageNumberByJobId(){
@@ -79,7 +82,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿的诧拷锟脚癸拷锟斤拷页锟斤拷
+	 * 获取某人的部门公告页数
 	 * @param jobId
 	 * @return
 	 */
@@ -89,7 +92,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟剿碉拷小锟介公锟斤拷页锟斤拷
+	 * 获取某人的小组公告页数
 	 * @param jobId
 	 * @return
 	 */
@@ -99,7 +102,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取某锟斤拷全锟斤拷锟斤拷息锟侥第硷拷页锟斤拷锟斤拷息锟斤拷锟斤拷全锟斤拷
+	 * 获取某人全部消息的第几页的消息内容全部
 	 * @param jobId
 	 * @param page
 	 * @return
@@ -114,7 +117,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷取锟斤拷页锟斤拷锟斤拷某锟剿碉拷锟斤拷息锟叫憋拷
+	 * 获取总页数，某人的消息列表
 	 * @param jobId
 	 * @return
 	 */
@@ -124,7 +127,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷锟斤拷锟斤拷锟剿凤拷锟斤拷
+	 * 向所有人发送
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -135,7 +138,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷锟脚凤拷
+	 * 向部门发
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -146,7 +149,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷某锟剿凤拷
+	 * 向某人发
 	 * @param msg
 	 * @return
 	 * @throws Exception 
@@ -158,7 +161,7 @@ public class MessageService {
 	}
 	
 	/**
-	 * 锟斤拷小锟介发
+	 * 向小组发
 	 * @param msg
 	 * @return
 	 * @throws Exception 

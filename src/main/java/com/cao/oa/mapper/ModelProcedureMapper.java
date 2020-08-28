@@ -1,28 +1,30 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ModelProcedure;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
+
+import com.cao.oa.bean.ModelProcedure;
 
 public interface ModelProcedureMapper {
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+	//´´½¨ÐÂµÄÁ÷³Ì
 	public int addNewProcedure(ModelProcedure modelProcedure);
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡ËùÓÐÄ£°åµÄ×ÜÊý
 	public int getAllModelNumber();
-	//ï¿½ï¿½È¡Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ÓµÚ¼ï¿½ï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½Ä£ï¿½å£¬ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ä£°å¼òÂÔÐÅÏ¢£¬´ÓµÚ¼¸µ½µÚ¼¸µÄÄ£°å£¬°´Ê±¼äÅÅÐò¡£
 	public List<Map<String,Object>> getAllModelFromNumToNum(@Param("begin") int begin,
       @Param("end") int end);
 	
-	//ï¿½ï¿½È¡Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½
+	//»ñÈ¡Ò»¸öÄ£°åµÄÈ«²¿
 	public ModelProcedure findById(@Param("id") int id);
 	
-	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ä£ï¿½ï¿½
+	//¸üÐÂÒ»¸öÄ£°å
 	public int updateModel(ModelProcedure modelProcedure);
-	//É¾ï¿½ï¿½Ò»ï¿½ï¿½Ä£ï¿½ï¿½
+	//É¾³ýÒ»¸öÄ£°å
 	public int delById(@Param("id") int id);
-	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ÌµÄ´ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Á÷³ÌµÄ´´½¨Õß
 	public String getUserOfProcedureWhoCreateById(@Param("id") int id);
 	
 	

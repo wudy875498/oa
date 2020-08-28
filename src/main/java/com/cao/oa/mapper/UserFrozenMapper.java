@@ -3,13 +3,13 @@ package com.cao.oa.mapper;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserFrozenMapper {
-	//ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+	//Ìí¼Óµ½¶³½áÁÐ±í
 	public int changeUserStatusToFrozenByJobId(@Param("jobId") String jobId,
       @Param("times") long times);
-	//ï¿½â¶³ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+	//½â¶³£¬ÒÆ³ý¶³½áÁÐ±í
 	public int delUserFromFrozenByJobId(@Param("jobId") String jobId);
-	//ï¿½ï¿½È¡ï¿½ï¿½Òªï¿½â¶³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡ÐèÒª½â¶³µÄÈËÊý
 	public int getNeedOutOfFrozenNumber(@Param("nowTime") long nowTime);
-	//ï¿½ï¿½È¡ï¿½ï¿½Òªï¿½â¶³ï¿½ï¿½ï¿½Ëµï¿½jobId
+	//»ñÈ¡ÐèÒª½â¶³µÄÈËµÄjobId
 	public String getNeedOutOfFrozenJobId();
 }

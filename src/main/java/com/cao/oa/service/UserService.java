@@ -1,8 +1,5 @@
 package com.cao.oa.service;
 
-import com.cao.oa.bean.UserInfo;
-import com.cao.oa.dao.UserInfoDao;
-import com.cao.oa.util.MD5;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,464 +7,440 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cao.oa.bean.UserInfo;
+import com.cao.oa.dao.UserInfoDao;
+import com.cao.oa.util.MD5;
+
 @Transactional(readOnly = true)
 @Service
 public class UserService {
-  public static int PAGE_NUMBER = 10;
-  public static int PAGE_USER_MANAGE_NUMBER = 10;
-  @Autowired
-  private UserInfoDao userInfoDao;
+	public static int PAGE_NUMBER = 10;
+	public static int PAGE_USER_MANAGE_NUMBER = 10;
+	@Autowired
+	private UserInfoDao userInfoDao;
+	
+	/**
+	 * »ñÈ¡Ä³¸ö²¿ÃÅµÄÈ«²¿ÓÃ»§µÄÃû×ÖºÍjobId
+	 * @param partId
+	 * @param groupId
+	 * @return
+	 */
+	public List<Map<String, Object>> getAllUserNameAndJobIdOfGroup(int partId, int groupId) {
+		return userInfoDao.getAllUserNameAndJobIdOfGroup(partId,groupId);
+	}
+	
+	/**
+	 * ¸ü¸ÄÄ³Ò»¸öÓÃ»§µÄÈ«²¿ÐÅÏ¢£¨³ýÁËÃÜÂë£©
+	 * @param info
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserInfoAllByJobId(UserInfo info) throws Exception{
+		int part = getUserPartByJobId(info.getJobId());
+		int group = getUserGroupByJobId(info.getJobId());
+		if(part!=info.getPart() || group!=info.getGroup()){
+			return userInfoDao.changeUserInfoAllByJobId(info, true);
+		}else{
+			return userInfoDao.changeUserInfoAllByJobId(info, false);
+		}
+	}
+	
+	/**
+	 * »ñÈ¡ÓÃ»§È«²¿ÐÅÏ¢£¬¸ù¾ÝÓÃ»§jobId
+	 * @param jobId
+	 * @return
+	 */
+	public UserInfo getUserInfoByJobId(String jobId){
+		return userInfoDao.getUserInfoByJobId(jobId);
+	}
+	
+	
+	/**
+	 * »ñÈ¡È«²¿ÓÃ»§ÐÅÏ¢£¬°´Ä³¸ö²¿ÃÅ»òÈ«²¿²¿ÃÅ¡£partIdÎª0£¬Ôò»ñÈ¡È«²¿²¿ÃÅ¡£
+	 * @param partId
+	 * @param page
+	 * @return
+	 */
+	public List<Map<String,Object>> getUsersInfoOfPartByPage(int partId,int page){
+		if(page<1){
+			page = 1;
+		}
+		int begin = (page-1)*PAGE_USER_MANAGE_NUMBER;
+		int end = PAGE_USER_MANAGE_NUMBER;
+		if(partId==0){
+			return userInfoDao.getUsersInfoOfAllByPageLimit(begin,end);
+		}else{
+			return userInfoDao.getUsersInfoOfPartByPageLimit(partId,begin,end);
+		}
+	}
+	
+	/**
+	 * »ñÈ¡×ÜÒ³Êý£¬°´²¿ÃÅ»òÈ«²¿¡£partIdÎª0£¬Ôò»ñÈ¡È«²¿
+	 * @param partId
+	 * @return
+	 */
+	public int getAllPageByPart(int partId){
+		int number = 0;
+		if(partId==0){
+			number = userInfoDao.getMemberNumbersOfAll();
+		}else{
+			number = userInfoDao.getMemberNumbersOfPart(partId);
+		}
+		return (int)Math.ceil(1.0*number/PAGE_USER_MANAGE_NUMBER);
+	}
+	
+	
+	/**
+	 * ¸ü¸ÄÓÃ»§»ù±¾ÐÅÏ¢¡£°üÀ¨²¿ÃÅ¡¢Ð¡×é¡¢ÓÃ»§Àà±ð£¬¸ù¾ÝjobId¸ü¸Ä¡£
+	 * @param jobId
+	 * @param part
+	 * @param group
+	 * @param kind
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserBaseInfoWithKind(String jobId,int part,int group,int kind,String post) throws Exception{
+		int preGroup = getUserGroupByJobId(jobId);
+		int prePart = getUserPartByJobId(jobId);
+		if(preGroup!=group || prePart!=part){
+			//¸Ä±äÁËËùÊô
+			return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, true);
+		}else{
+			//Ã»¸Ä±äËùÊô
+			return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, false);
+		}
+	}
+	
+	/**
+	 * ¸ü¸ÄÓÃ»§»ù±¾ÐÅÏ¢¡£°üÀ¨²¿ÃÅºÍÐ¡×é£¬¸ù¾ÝjobId¸ü¸Ä¡£
+	 * @param jobId
+	 * @param part
+	 * @param group
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserBaseInfoWithoutKind(String jobId,int part,int group,String post) throws Exception{
+		int kind = getUserKindByJobId(jobId);
+		int preGroup = getUserGroupByJobId(jobId);
+		int prePart = getUserPartByJobId(jobId);
+		if(preGroup!=group || prePart!=part){
+			//¸Ä±äÁËËùÊô
+			return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, true);
+		}else{
+			//Ã»¸Ä±äËùÊô
+			return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, false);
+		}
+	}
+	
+	/**
+	 * »ñÈ¡ÓÃ»§Ð¡×é¡£Ê§°ÜÔò·µ»Ø-1
+	 * @param jobId
+	 * @return
+	 */
+	public int getUserGroupByJobId(String jobId) {
+		return userInfoDao.getUserGroupByJobId(jobId);
+	}
+	
+	/**
+	 * »ñÈ¡ÓÃ»§²¿ÃÅ¡£Ê§°ÜÔò·µ»Ø-1
+	 * @param jobId
+	 * @return
+	 */
+	public int getUserPartByJobId(String jobId){
+		return userInfoDao.getUserPartByJobId(jobId);
+	}
+	
+	/**
+	 * »ñÈ¡ÓÃ»§Ãû
+	 * @param jobId
+	 * @return
+	 */
+	public String getUserNameById(String jobId){
+		return userInfoDao.getUserNameByJobId(jobId);
+	}
+	
+	/**
+	 * ÅúÁ¿´´½¨ÐÂÓÃ»§
+	 * @param usersList
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false,isolation = Isolation.READ_UNCOMMITTED)
+	public boolean createNewUsers(List<UserInfo> usersList) throws Exception{
+		boolean res = false;
+		//ÓÐÄÚÈÝ
+		if(usersList!=null && usersList.size()!=0){
+			for(int i=0;i<usersList.size();i++){
+				UserInfo user = usersList.get(i);
+//				System.out.println("Service:("+i+")"+user.getKind());
+				if(user.getJobId()!=null && user.getCardId()!=null && user.getName()!=null
+						&& user.getSex()!=-1 && user.getPart()!=-1 && user.getGroup()!=-1){
+					if(user.getKind()==0){
+						usersList.get(i).setKind(UserInfo.KIND_MEMBER);//Èç¹ûÃ»ÓÐ£¬ÉèÎªÄ¬ÈÏÖµ
+					}
+					if(user.getPassword()==null){
+						usersList.get(i).setPassword(md5PasswordFirst("123456"));//Èç¹ûÃ»ÓÐ£¬ÉèÎªÄ¬ÈÏÖµ
+					}
+				}else{
+					//È±ÉÙ¶«Î÷£¬²»½øÐÐÌí¼Ó
+//					System.out.println("È±ÉÙ¶«Î÷£¬²»½øÐÐÌí¼Ó");
+					return res;
+				}
+			}
+			//½øÐÐÌí¼Ó
+			return userInfoDao.createNewUsers(usersList);
+		}
+		return res;
+	}
+	
+	/**
+	 * ÊÇ·ñÓÐÕâ¸öÓÃ»§
+	 * @param jobId
+	 * @return
+	 */
+	public boolean hasUserByJobId(String jobId){
+		return userInfoDao.hasUserByJobId(jobId);
+	}
+	
+	/**
+	 * Í¨¹ýjobId»ñÈ¡ÓÃ»§ÀàÐÍ
+	 * @param jobId
+	 * @return Ê§°ÜÎª-1
+	 */
+	public int getUserKindByJobId(String jobId){
+		return userInfoDao.getUserKindByJobId(jobId);
+	}
+	
+	/**
+	 * »ñÈ¡×ÜÒ³Êý,°´Ð¡×é
+	 * @param part
+	 * @param group
+	 * @return
+	 */
+	public int getAllPageByGroup(int partId,int groupId){
+		int number = userInfoDao.getMemberNumbersOfGroup(partId, groupId);
+		return (int)Math.ceil(1.0*number/PAGE_NUMBER);
+	}
+	
+	
+	/**
+	 * ÕÒÄ³Ò»¸ö²¿ÃÅÖÐ³ýÁËÃÜÂëÒÔÍâµÄÐÅÏ¢
+	 * @param groupId
+	 * @return
+	 */
+	public List<UserInfo> findUsersGroupOfGroupId(int partId,int groupId,int page){
+		if(page<1){
+			page = 1;
+		}
+		int begin = (page-1)*PAGE_NUMBER;
+		int end = PAGE_NUMBER;
+		return userInfoDao.findUsersGroupOfGroupId(partId,groupId,begin,end);
+	}
+	
+	/**
+	 * Í¨¹ýjobId»ñÈ¡´¦ÁËÃÜÂëÒÔÍâµÄÐÅÏ¢
+	 * @param jobId
+	 * @return
+	 */
+	public Map<String, Object> getPersonInfoAllByJobId(String jobId){
+		return userInfoDao.findUserByJobId(jobId);
+	}
+	
+	/**
+	 * Í¨¹ýjobId¸ü¸ÄÓÃ»§×Ô¼ºµÄÓÊÏä¡¢µç»°¡¢µØÖ·
+	 * @param jobId
+	 * @param tel
+	 * @param email
+	 * @param addr
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeMyPersonInfoByJobId(String jobId,String tel,String email,String addr) throws Exception{
+		if(tel==null || tel.length()==0){
+			tel = null;
+		}
+		if(email==null || email.length()==0){
+			email = null;
+		}
+		if(addr==null || addr.length()==0){
+			addr = null;
+		}
+		return userInfoDao.changeMyPersonInfoByJobId(jobId, tel, email, addr);
+	}
+	
+	/**
+	 * ¸ù¾ÝjobIdÕÒµ½¸½¼ÓÏî
+	 * @param jobId
+	 * @return
+	 */
+	public Map<String,Object> getOtherInfoByJobId(String jobId){
+		return userInfoDao.getOtherInfoByJobId(jobId);
+	}
+	
+	/**
+	 * ÑéÖ¤µÇÂ¼
+	 * @param jobId
+	 * @param password
+	 * @return
+	 */
+	public UserInfo checkLogin(String jobId,String password){
+		UserInfo res = null;
+		password = md5Password(password);
+		res  = userInfoDao.checkLoginByJobId(jobId, password);
+//		if(res==null){
+//			res  = userInfoDao.checkLoginByCardId(jobId, password);
+//		}
+		return res;
+	}
+	
+	/**
+	 * ÐÞ¸Ä×Ô¼ºµÄÃÜÂë
+	 * @param jobId
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeMyPassword(String jobId,String oldPassword,String newPassword) throws Exception{
+		boolean res = false;
+		oldPassword = md5Password(oldPassword);
+		newPassword = md5Password(newPassword);
+		//Èç¹ûÃÜÂëÕýÈ·
+		if(userInfoDao.validatePasswordByJobId(jobId, oldPassword)){
+			//ÐÞ¸ÄÃÜÂë
+			if(userInfoDao.changePassword(jobId, newPassword)){
+				res = true;
+			}
+		}
+		return res;
+	}
+	
+	/**
+	 * Íü¼ÇÃÜÂë
+	 * @param jobId
+	 * @param cardId
+	 * @param name
+	 * @param newPassword
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = false)
+	public Boolean forgetPassword(String jobId,String cardId,String name,String newPassword) throws Exception{
+		Boolean res = false;
+		//¼ÓÃÜ´¦Àí
+		newPassword = md5Password(newPassword);
+		//ÑéÖ¤ÓÃ»§
+		Map<String, Object> verif = userInfoDao.findUserByJobId(jobId);
+		if(verif==null){
+			return res;
+		}
+		if(verif.get("jobId").equals(jobId) && verif.get("cardId").equals(cardId) && verif.get("name").equals(name)){
+			//ÑéÖ¤Í¨¹ý£¬ÊÇ±¾ÈË,ÐÞ¸ÄÃÜÂë
+			if(userInfoDao.getUserStatusByJobId(jobId)==UserInfo.STATUS_NO_ACTIVITY){
+				//Ã»ÓÐ¼¤»î£¬½øÐÐ¼¤»î
+				userInfoDao.changeUserStatusByJobId(jobId,UserInfo.STATUS_NORMAL);
+			}
+			return userInfoDao.changePassword(jobId, newPassword);
+		}else{
+			return res;
+		}
+	}
+	
+	/**
+	 * ¸ü¸ÄÓÃ»§×´Ì¬
+	 * @param jobId
+	 * @param status
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserStatusByJobId(String jobId, int status) throws Exception{
+		return userInfoDao.changeUserStatusByJobId(jobId, status);
+	}
+	
+	/**
+	 * ½â¶³
+	 * @param jobId
+	 * @return
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserStatusOutOfFrozenByJobId(String jobId) throws Exception{
+		return userInfoDao.changeUserStatusOutOfFrozenByJobId(jobId);
+	}
+	
+	/**
+	 * ÓÐÐèÒª½â¶³µÄÓÃ»§Ã´
+	 * @return
+	 */
+	public String hasNeedToOutOfFrozen(){
+		return userInfoDao.hasNeedToOutOfFrozen();
+	}
+	
+	/**
+	 * ¶ÔÃÜÂë¶þ¼¶¼ÓÃÜ
+	 * @param str
+	 * @return
+	 */
+	private String md5Password(String str){
+		String res = null;
+		String doStr = "ruan"+str+"jian"+str;
+		res = MD5.md5(doStr);
+		System.out.println("MD5-->"+res);
+		return res;
+	}
+	
+	/**
+	 * ¶ÔÃÜÂëÒ»¼¶¼ÓÃÜ
+	 * @param str
+	 * @return
+	 */
+	private String md5PasswordFirst(String str){
+		String res = null;
+		String doStr = str+"15180600101"+str;
+		res = MD5.md5(doStr);
+		return res;
+	}
+	
+	/**
+	 * ²éÑ¯ÓÃ»§×´Ì¬
+	 * @param jobId
+	 * @return
+	 */
+	public int getUserStatusByJobId(String jobId){
+		return userInfoDao.getUserStatusByJobId(jobId);
+	}
+	
+	
+	/**
+	 * ¸Ä±ä´íÎó´ÎÊý
+	 * @param username
+	 * @param times
+	 * @throws Exception 
+	 */
+	@Transactional(readOnly = false)
+	public boolean changeUserPasswordErrorTimes(String jobId, int times) throws Exception {
+		return userInfoDao.changeUserPasswordErrorTimes(jobId, times);
+	}
+	
+	/**
+	 * »ñµÃ´íÎó´ÎÊý
+	 * @param username
+	 * @return
+	 */
+	public int getUserPasawordErrorTimes(String jobId) {
+		return userInfoDao.getUserPasawordErrorTimes(jobId);
+	}
 
-  /**
-   * ï¿½ï¿½È¡Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½È«ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öºï¿½jobId
-   *
-   * @param partId
-   * @param groupId
-   * @return
-   */
-  public List<Map<String, Object>> getAllUserNameAndJobIdOfGroup(int partId, int groupId) {
-    return userInfoDao.getAllUserNameAndJobIdOfGroup(partId, groupId);
-  }
+	
 
-  /**
-   * ï¿½ï¿½ï¿½ï¿½Ä³Ò»ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£©
-   *
-   * @param info
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserInfoAllByJobId(UserInfo info) throws Exception {
-    int part = getUserPartByJobId(info.getJobId());
-    int group = getUserGroupByJobId(info.getJobId());
-    if (part != info.getPart() || group != info.getGroup()) {
-      return userInfoDao.changeUserInfoAllByJobId(info, true);
-    } else {
-      return userInfoDao.changeUserInfoAllByJobId(info, false);
-    }
-  }
+	
+	
 
-  /**
-   * ï¿½ï¿½È¡ï¿½Ã»ï¿½È«ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½jobId
-   *
-   * @param jobId
-   * @return
-   */
-  public UserInfo getUserInfoByJobId(String jobId) {
-    return userInfoDao.getUserInfoByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½È¡È«ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½È«ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½partIdÎª0ï¿½ï¿½ï¿½ï¿½ï¿½È¡È«ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½
-   *
-   * @param partId
-   * @param page
-   * @return
-   */
-  public List<Map<String, Object>> getUsersInfoOfPartByPage(int partId, int page) {
-    if (page < 1) {
-      page = 1;
-    }
-    int begin = (page - 1) * PAGE_USER_MANAGE_NUMBER;
-    int end = PAGE_USER_MANAGE_NUMBER;
-    if (partId == 0) {
-      return userInfoDao.getUsersInfoOfAllByPageLimit(begin, end);
-    } else {
-      return userInfoDao.getUsersInfoOfPartByPageLimit(partId, begin, end);
-    }
-  }
-
-  /**
-   * ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å»ï¿½È«ï¿½ï¿½ï¿½ï¿½partIdÎª0ï¿½ï¿½ï¿½ï¿½ï¿½È¡È«ï¿½ï¿½
-   *
-   * @param partId
-   * @return
-   */
-  public int getAllPageByPart(int partId) {
-    int number = 0;
-    if (partId == 0) {
-      number = userInfoDao.getMemberNumbersOfAll();
-    } else {
-      number = userInfoDao.getMemberNumbersOfPart(partId);
-    }
-    return (int) Math.ceil(1.0 * number / PAGE_USER_MANAGE_NUMBER);
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¡ï¿½Ð¡ï¿½é¡¢ï¿½Ã»ï¿½ï¿½ï¿½ð£¬¸ï¿½ï¿½ï¿½jobIdï¿½ï¿½ï¿½Ä¡ï¿½
-   *
-   * @param jobId
-   * @param part
-   * @param group
-   * @param kind
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserBaseInfoWithKind(String jobId, int part, int group, int kind,
-      String post) throws Exception {
-    int preGroup = getUserGroupByJobId(jobId);
-    int prePart = getUserPartByJobId(jobId);
-    if (preGroup != group || prePart != part) {
-      //ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-      return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, true);
-    } else {
-      //Ã»ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
-      return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, false);
-    }
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åºï¿½Ð¡ï¿½é£¬ï¿½ï¿½ï¿½ï¿½jobIdï¿½ï¿½ï¿½Ä¡ï¿½
-   *
-   * @param jobId
-   * @param part
-   * @param group
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserBaseInfoWithoutKind(String jobId, int part, int group, String post)
-      throws Exception {
-    int kind = getUserKindByJobId(jobId);
-    int preGroup = getUserGroupByJobId(jobId);
-    int prePart = getUserPartByJobId(jobId);
-    if (preGroup != group || prePart != part) {
-      //ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-      return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, true);
-    } else {
-      //Ã»ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½
-      return userInfoDao.changeUserBaseInfo(jobId, part, group, kind, post, false);
-    }
-  }
-
-  /**
-   * ï¿½ï¿½È¡ï¿½Ã»ï¿½Ð¡ï¿½é¡£Ê§ï¿½ï¿½ï¿½ò·µ»ï¿½-1
-   *
-   * @param jobId
-   * @return
-   */
-  public int getUserGroupByJobId(String jobId) {
-    return userInfoDao.getUserGroupByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Å¡ï¿½Ê§ï¿½ï¿½ï¿½ò·µ»ï¿½-1
-   *
-   * @param jobId
-   * @return
-   */
-  public int getUserPartByJobId(String jobId) {
-    return userInfoDao.getUserPartByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½
-   *
-   * @param jobId
-   * @return
-   */
-  public String getUserNameById(String jobId) {
-    return userInfoDao.getUserNameByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
-   *
-   * @param usersList
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false, isolation = Isolation.READ_UNCOMMITTED)
-  public boolean createNewUsers(List<UserInfo> usersList) throws Exception {
-    boolean res = false;
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    if (usersList != null && usersList.size() != 0) {
-      for (int i = 0; i < usersList.size(); i++) {
-        UserInfo user = usersList.get(i);
-        //				System.out.println("Service:("+i+")"+user.getKind());
-        if (user.getJobId() != null && user.getCardId() != null && user.getName() != null
-            && user.getSex() != -1 && user.getPart() != -1 && user.getGroup() != -1) {
-          if (user.getKind() == 0) {
-            usersList.get(i).setKind(UserInfo.KIND_MEMBER);//ï¿½ï¿½ï¿½Ã»ï¿½Ð£ï¿½ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ
-          }
-          if (user.getPassword() == null) {
-            usersList.get(i).setPassword(md5PasswordFirst("123456"));//ï¿½ï¿½ï¿½Ã»ï¿½Ð£ï¿½ï¿½ï¿½ÎªÄ¬ï¿½ï¿½Öµ
-          }
-        } else {
-          //È±ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-          //					System.out.println("È±ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
-          return res;
-        }
-      }
-      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-      return userInfoDao.createNewUsers(usersList);
-    }
-    return res;
-  }
-
-  /**
-   * ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
-   *
-   * @param jobId
-   * @return
-   */
-  public boolean hasUserByJobId(String jobId) {
-    return userInfoDao.hasUserByJobId(jobId);
-  }
-
-  /**
-   * Í¨ï¿½ï¿½jobIdï¿½ï¿½È¡ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param jobId
-   * @return Ê§ï¿½ï¿½Îª-1
-   */
-  public int getUserKindByJobId(String jobId) {
-    return userInfoDao.getUserKindByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½È¡ï¿½ï¿½Ò³ï¿½ï¿½,ï¿½ï¿½Ð¡ï¿½ï¿½
-   *
-   * @return
-   */
-  public int getAllPageByGroup(int partId, int groupId) {
-    int number = userInfoDao.getMemberNumbersOfGroup(partId, groupId);
-    return (int) Math.ceil(1.0 * number / PAGE_NUMBER);
-  }
-
-  /**
-   * ï¿½ï¿½Ä³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
-   *
-   * @param groupId
-   * @return
-   */
-  public List<UserInfo> findUsersGroupOfGroupId(int partId, int groupId, int page) {
-    if (page < 1) {
-      page = 1;
-    }
-    int begin = (page - 1) * PAGE_NUMBER;
-    int end = PAGE_NUMBER;
-    return userInfoDao.findUsersGroupOfGroupId(partId, groupId, begin, end);
-  }
-
-  /**
-   * Í¨ï¿½ï¿½jobIdï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
-   *
-   * @param jobId
-   * @return
-   */
-  public Map<String, Object> getPersonInfoAllByJobId(String jobId) {
-    return userInfoDao.findUserByJobId(jobId);
-  }
-
-  /**
-   * Í¨ï¿½ï¿½jobIdï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ä¡¢ï¿½ç»°ï¿½ï¿½ï¿½ï¿½Ö·
-   *
-   * @param jobId
-   * @param tel
-   * @param email
-   * @param addr
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeMyPersonInfoByJobId(String jobId, String tel, String email, String addr)
-      throws Exception {
-    if (tel == null || tel.length() == 0) {
-      tel = null;
-    }
-    if (email == null || email.length() == 0) {
-      email = null;
-    }
-    if (addr == null || addr.length() == 0) {
-      addr = null;
-    }
-    return userInfoDao.changeMyPersonInfoByJobId(jobId, tel, email, addr);
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½jobIdï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param jobId
-   * @return
-   */
-  public Map<String, Object> getOtherInfoByJobId(String jobId) {
-    return userInfoDao.getOtherInfoByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½Ö¤ï¿½ï¿½Â¼
-   *
-   * @param jobId
-   * @param password
-   * @return
-   */
-  public UserInfo checkLogin(String jobId, String password) {
-    UserInfo res = null;
-    password = md5Password(password);
-    res = userInfoDao.checkLoginByJobId(jobId, password);
-    //		if(res==null){
-    //			res  = userInfoDao.checkLoginByCardId(jobId, password);
-    //		}
-    return res;
-  }
-
-  /**
-   * ï¿½Þ¸ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param jobId
-   * @param oldPassword
-   * @param newPassword
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeMyPassword(String jobId, String oldPassword, String newPassword)
-      throws Exception {
-    boolean res = false;
-    oldPassword = md5Password(oldPassword);
-    newPassword = md5Password(newPassword);
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·
-    if (userInfoDao.validatePasswordByJobId(jobId, oldPassword)) {
-      //ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
-      if (userInfoDao.changePassword(jobId, newPassword)) {
-        res = true;
-      }
-    }
-    return res;
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param jobId
-   * @param cardId
-   * @param name
-   * @param newPassword
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public Boolean forgetPassword(String jobId, String cardId, String name, String newPassword)
-      throws Exception {
-    Boolean res = false;
-    //ï¿½ï¿½ï¿½Ü´ï¿½ï¿½ï¿½
-    newPassword = md5Password(newPassword);
-    //ï¿½ï¿½Ö¤ï¿½Ã»ï¿½
-    Map<String, Object> verif = userInfoDao.findUserByJobId(jobId);
-    if (verif == null) {
-      return res;
-    }
-    if (verif.get("jobId").equals(jobId) && verif.get("cardId").equals(cardId) && verif.get("name")
-        .equals(name)) {
-      //ï¿½ï¿½Ö¤Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½ï¿½,ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
-      if (userInfoDao.getUserStatusByJobId(jobId) == UserInfo.STATUS_NO_ACTIVITY) {
-        //Ã»ï¿½Ð¼ï¿½ï¿½î£¬ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½ï¿½
-        userInfoDao.changeUserStatusByJobId(jobId, UserInfo.STATUS_NORMAL);
-      }
-      return userInfoDao.changePassword(jobId, newPassword);
-    } else {
-      return res;
-    }
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½×´Ì¬
-   *
-   * @param jobId
-   * @param status
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserStatusByJobId(String jobId, int status) throws Exception {
-    return userInfoDao.changeUserStatusByJobId(jobId, status);
-  }
-
-  /**
-   * ï¿½â¶³
-   *
-   * @param jobId
-   * @return
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserStatusOutOfFrozenByJobId(String jobId) throws Exception {
-    return userInfoDao.changeUserStatusOutOfFrozenByJobId(jobId);
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½Òªï¿½â¶³ï¿½ï¿½ï¿½Ã»ï¿½Ã´
-   *
-   * @return
-   */
-  public String hasNeedToOutOfFrozen() {
-    return userInfoDao.hasNeedToOutOfFrozen();
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param str
-   * @return
-   */
-  private String md5Password(String str) {
-    String res = null;
-    String doStr = "ruan" + str + "jian" + str;
-    res = MD5.md5(doStr);
-    //		System.out.println("MD5-->"+res);
-    return res;
-  }
-
-  /**
-   * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param str
-   * @return
-   */
-  private String md5PasswordFirst(String str) {
-    String res = null;
-    String doStr = str + "15180600101" + str;
-    res = MD5.md5(doStr);
-    return res;
-  }
-
-  /**
-   * ï¿½ï¿½Ñ¯ï¿½Ã»ï¿½×´Ì¬
-   *
-   * @param jobId
-   * @return
-   */
-  public int getUserStatusByJobId(String jobId) {
-    return userInfoDao.getUserStatusByJobId(jobId);
-  }
-
-  public UserInfoDao getUserInfoDao() {
-    return userInfoDao;
-  }
-
-  public void setUserInfoDao(UserInfoDao userInfoDao) {
-    this.userInfoDao = userInfoDao;
-  }
-
-  /**
-   * ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @param times
-   * @throws Exception
-   */
-  @Transactional(readOnly = false)
-  public boolean changeUserPasswordErrorTimes(String jobId, int times) throws Exception {
-    return userInfoDao.changeUserPasswordErrorTimes(jobId, times);
-  }
-
-  /**
-   * ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-   *
-   * @return
-   */
-  public int getUserPasawordErrorTimes(String jobId) {
-    return userInfoDao.getUserPasawordErrorTimes(jobId);
-  }
+	
 }

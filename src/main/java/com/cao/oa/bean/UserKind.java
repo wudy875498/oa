@@ -1,7 +1,7 @@
 package com.cao.oa.bean;
 
 /**
- * 锟矫伙拷锟斤拷锟斤拷
+ * 用户类型
  * @author DELL
  *
  */

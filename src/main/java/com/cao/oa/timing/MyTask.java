@@ -1,9 +1,10 @@
 package com.cao.oa.timing;
 
-import com.cao.oa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.cao.oa.service.UserService;
 
 @Component
 public class MyTask {
@@ -23,6 +24,6 @@ public class MyTask {
 			}
 			jobId = userServer.hasNeedToOutOfFrozen();
 		}
-//		System.out.println("ï¿½ï¿½Ê±ï¿½â¶³ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½");
+//		System.out.println("¶¨Ê±½â¶³ÈÎÎñÖ´ÐÐ");
 	}
 }

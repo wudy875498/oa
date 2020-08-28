@@ -5,10 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * Ã¿Ò»ï¿½ï¿½Ð¡Ê±ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ä¼ï¿½
+ * Ã¿Ò»¸öÐ¡Ê±Çå³ýÒ»ÏÂÑéÖ¤ÂëÎÄ¼þ
  * FileName ClearFileTask.java
  * @author DELL
- * @date 2017ï¿½ï¿½12ï¿½ï¿½20ï¿½ï¿½
+ * @date 2017Äê12ÔÂ20ÈÕ
  */
 @Component
 public class ClearFileTask {
@@ -21,11 +21,11 @@ public class ClearFileTask {
 		classPath = classPath.substring(1,classPath.indexOf("/target/classes/"));
 		String name = classPath.substring(classPath.lastIndexOf("/")+1);
 		path += "/webapps/"+name+"/img/loginCode";
-		System.out.println("ï¿½ï¿½"+name+"ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
+		System.out.println("¡¾"+name+"¡¿¿ªÊ¼ÇåÀíÑéÖ¤ÂëÎÄ¼þ¡£");
 		File f = new File(path);
 		System.out.println(f.getAbsolutePath());
 		if(!f.exists()){
-			System.out.println("ï¿½ï¿½"+name+"ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½");
+			System.out.println("¡¾"+name+"¡¿ÑéÖ¤ÂëÎÄ¼þ²»´æÔÚ¡£");
 			return;
 		}
 		File[] files = f.listFiles();

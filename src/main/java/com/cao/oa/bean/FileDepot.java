@@ -3,7 +3,7 @@ package com.cao.oa.bean;
 import java.util.Date;
 
 /**
- * О©╫д╪О©╫О©╫ж©О©╫
+ * нд╪Ч╡ж©Б
  * @author DELL
  *
  */

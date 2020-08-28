@@ -1,18 +1,20 @@
 package com.cao.oa.mapper;
 
-import com.cao.oa.bean.ModelOption;
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
+
+import com.cao.oa.bean.ModelOption;
 
 public interface ModelOptionMapper {
 	
-	//ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	//Ìí¼ÓÒ»¸öĞÂµÄÌîÑ¡Ïî
 	public int addNewOption(ModelOption opt);
-	//ï¿½ï¿½È¡Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	//»ñÈ¡Ò»¸öÄ£°åµÄÈ«²¿ÌîÑ¡Ïî
 	public List<ModelOption> getOptionsByProcedureId(@Param("modelId") int modelId);
-	//ï¿½ï¿½È¡Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
+	//»ñÈ¡Ò»¸öÄ£°åµÄÌîÑ¡ÏîÊı
 	public int getNumberOfOneModel(@Param("modelId") int modelId);
-	//É¾ï¿½ï¿½Ò»ï¿½ï¿½Ä£ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
+	//É¾³ıÒ»¸öÄ£°åµÄÈ«²¿ÌîÑ¡Ïî
 	public int delAllOptionsByModelId(@Param("modelId") int modelId);
 	
 	

@@ -1,9 +1,5 @@
 package com.cao.oa.action;
 
-import com.cao.oa.service.GroupService;
-import com.cao.oa.service.PartService;
-import com.cao.oa.service.ProcedureService;
-import com.cao.oa.service.UserService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -55,11 +51,11 @@ public class ProcedureAction {
 	
 	public ProcedureAction(){
 		super();
-		sdf = new SimpleDateFormat("yyyyï¿½ï¿½MMï¿½ï¿½ddï¿½ï¿½ hh:mm:ss");
+		sdf = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ hh:mm:ss");
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½é¿´Ä£ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * µ½²é¿´Ä£°å½çÃæ
 	 * @param modelId
 	 * @param req
 	 * @return
@@ -69,17 +65,17 @@ public class ProcedureAction {
 		if(modelId==null || modelId.length()==0){
 			String url = req.getHeader("REFERER");
 			url = url.substring(url.indexOf("/procedure/"));
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "Ìá½»²ÎÊý´íÎó");
 		}
 		ModelProcedure modelP = procedureService.getModelInfoAllById(Integer.parseInt(modelId));
 		
-		String title = modelP.getTitle();//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		String produceName = modelP.getProjectName();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		String illustrate = modelP.getIllustrate();//Ëµï¿½ï¿½
-		int enclosure = modelP.getEnclosure();//ï¿½Ç·ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
-		Map<Integer,Map<String,Object>> blankMap = null;//Ð¡ï¿½ï¿½  Map<Ñ¡ï¿½ï¿½ï¿½Ë³ï¿½ï¿½,Map<key,value>>
+		String title = modelP.getTitle();//±í¸ñÌâÍ·
+		String produceName = modelP.getProjectName();//ÏîÄ¿Ãû³Æ
+		String illustrate = modelP.getIllustrate();//ËµÃ÷
+		int enclosure = modelP.getEnclosure();//ÊÇ·ñÓÐ¸½¼þ
+		Map<Integer,Map<String,Object>> blankMap = null;//Ð¡Ïî  Map<Ñ¡ÏîµÄË³Ðò,Map<key,value>>
 
-		//ï¿½ï¿½ï¿½ï¿½
+		//Êý¾Ý
 		ModelOption[] mp = modelP.getOption();
 		blankMap = new HashMap<Integer,Map<String,Object>>();
 		if(mp!=null){
@@ -96,21 +92,21 @@ public class ProcedureAction {
 				blankMap.put((i+1), map);
 			}
 		}
-		//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+		//Á÷³ÌÁÐ±í
 		ModelShen[] ss = modelP.getShen();
 		Map<Integer,Map<String,Object>> processMap = new HashMap<>();
 //		System.out.println(ss.length);
 		for(int i=0;i<ss.length;i++){
 			Map<String,Object> map = new HashMap<String,Object>();
 			UserInfo ui = userServer.getUserInfoByJobId(ss[i].getPerson());
-			String showStr = ss[i].getName()+"ï¿½ï¿½"+ui.getName()+"ï¿½ï¿½";
+			String showStr = ss[i].getName()+"£¨"+ui.getName()+"£¬";
 			if(ui.getPost()==null){
-				showStr += "ï¿½ï¿½Ö°ï¿½ï¿½";
+				showStr += "ÎÞÖ°Îñ£¬";
 			}else{
-				showStr += ui.getPost()+"ï¿½ï¿½";
+				showStr += ui.getPost()+"£¬";
 			}
-			showStr += partService.getNameById(ui.getPart())+"ï¿½ï¿½";
-			showStr += groupService.getNameById(ui.getPart(), ui.getGroup())+"ï¿½ï¿½";
+			showStr += partService.getNameById(ui.getPart())+"£¬";
+			showStr += groupService.getNameById(ui.getPart(), ui.getGroup())+"£©";
 			map.put("key", showStr);
 			map.put("color", "orange");
 			processMap.put(ss[i].getOrder(), map);
@@ -119,21 +115,21 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureModelLook.jsp");
-		model.put("myPageTitle","ï¿½é¿´ï¿½ï¿½ï¿½Ì±ï¿½");
+		model.put("myPageTitle","²é¿´Á÷³Ì±í");
 		model.put("myPageNav","3");
 		
 		model.put("pseModelProcessMap", processMap);
-		model.put("pseModelId", modelId);//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		model.put("pseTitle", title);//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		model.put("pseProduceName", produceName);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		model.put("pseIllustrate", illustrate);//Ëµï¿½ï¿½
-		model.put("pseEnclosure", enclosure);//ï¿½Ç·ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
-		model.put("pseBlankMap", blankMap);//Ð¡ï¿½ï¿½   Map<Ñ¡ï¿½ï¿½ï¿½Ë³ï¿½ï¿½,Map<key,value>>
+		model.put("pseModelId", modelId);//±í¸ñÌâÍ·
+		model.put("pseTitle", title);//±í¸ñÌâÍ·
+		model.put("pseProduceName", produceName);//ÏîÄ¿Ãû³Æ
+		model.put("pseIllustrate", illustrate);//ËµÃ÷
+		model.put("pseEnclosure", enclosure);//ÊÇ·ñÓÐ¸½¼þ
+		model.put("pseBlankMap", blankMap);//Ð¡Ïî   Map<Ñ¡ÏîµÄË³Ðò,Map<key,value>>
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½Ò³ï¿½ï¿½
+	 * ÐèÒª´¦ÀíÁÐ±íÒ³Ãæ
 	 * @param page
 	 * @param req
 	 * @return
@@ -142,17 +138,17 @@ public class ProcedureAction {
 	public ModelAndView viewNeedToDealList(String page,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		
-		List<Map<String,String>> procedureList = null;//Ò»Ò³5ï¿½ï¿½
+		List<Map<String,String>> procedureList = null;//Ò»Ò³5¸ö
 		int allPage = 0;
 		int currentPage = 0;
 		
-		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÏÖÔÚÒ³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½Ò³ï¿½ï¿½
+		//×ÜÒ³Êý
 		allPage = procedureService.getAllNeedToDealListPage(jobId);
 		if(currentPage>allPage){
 			currentPage = allPage;
@@ -165,12 +161,12 @@ public class ProcedureAction {
 			procedureList = new ArrayList<Map<String,String>>();
 			for(int i=0;i<tempList.size();i++){
 				Map<String,String> map = new HashMap<String,String>();
-				map.put("id", ""+(int)tempList.get(i).get("id"));//ï¿½ï¿½ï¿½
-				map.put("name", (String)tempList.get(i).get("name"));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				map.put("produceName", (String)tempList.get(i).get("projectName"));//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-				map.put("createDate", sdf.format((Date)tempList.get(i).get("createDate")));//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-				map.put("createPerson", userServer.getUserNameById((String)tempList.get(i).get("createPerson")));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				map.put("updateDate", sdf.format((Date)tempList.get(i).get("updateDate")));//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+				map.put("id", ""+(int)tempList.get(i).get("id"));//±àºÅ
+				map.put("name", (String)tempList.get(i).get("name"));//Á÷³ÌÃû³Æ
+				map.put("produceName", (String)tempList.get(i).get("projectName"));//ÏîÄ¿Ãû³Æ
+				map.put("createDate", sdf.format((Date)tempList.get(i).get("createDate")));//´´½¨Ê±¼ä
+				map.put("createPerson", userServer.getUserNameById((String)tempList.get(i).get("createPerson")));//´´½¨ÈË
+				map.put("updateDate", sdf.format((Date)tempList.get(i).get("updateDate")));//¸üÐÂÊ±¼ä
 				procedureList.add(map);
 			}
 		}
@@ -179,35 +175,35 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureDealList.jsp");
-		model.put("myPageTitle","ï¿½è´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½ï¿½é¿´ï¿½Ð±ï¿½");
+		model.put("myPageTitle","Ðè´¦ÀíµÄÁ÷³Ì¡ª¡ª²é¿´ÁÐ±í");
 		model.put("myPageNav","4");
 		
-		model.put("pdlProcedureList", procedureList);//ï¿½Ð±ï¿½
+		model.put("pdlProcedureList", procedureList);//ÁÐ±í
 		model.put("allPage", allPage);
 		model.put("currentPage", currentPage);
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½Ð±ï¿½Ò³ï¿½ï¿½ 
+	 * Á÷³ÌÌá½»ÁÐ±íÒ³Ãæ 
 	 * @param page
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("submitList.do")
 	public ModelAndView viewSubmitList(String page,HttpServletRequest req){
-		List<Map<String,String>> procedureModelList = null;//Ò»Ò³5ï¿½ï¿½
+		List<Map<String,String>> procedureModelList = null;//Ò»Ò³5¸ö
 		int allPage = 0;
 		int currentPage = 0;
 		
 		
-		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÏÖÔÚÒ³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½Ò³ï¿½ï¿½
+		//×ÜÒ³Êý
 		allPage = procedureService.getAllModelPage();
 		if(currentPage>allPage){
 			currentPage = allPage;
@@ -215,9 +211,9 @@ public class ProcedureAction {
 			currentPage = 1;
 		}
 
-		//ï¿½ï¿½È¡ï¿½Ð±ï¿½
+		//»ñÈ¡ÁÐ±í
 		List<Map<String,Object>> temp = procedureService.getAllModelByPage(currentPage);
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦ÀíÊý¾Ý
 		procedureModelList = new ArrayList<Map<String,String>>();
 		for(int i=0;i<temp.size();i++){
 			Map<String,String> map = new HashMap<String,String>();
@@ -234,7 +230,7 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureSubmitList.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½");
+		model.put("myPageTitle","Á÷³ÌÌá½»¡ª¡ªÑ¡ÔñÁÐ±í");
 		model.put("myPageNav","1");
 		
 		model.put("procedureModelList", procedureModelList);
@@ -244,7 +240,7 @@ public class ProcedureAction {
 	}
 	
 	/**
-	 * ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½
+	 * ÎÒµÄÁ÷³ÌÁÐ±í½çÃæ
 	 * @param page
 	 * @param req
 	 * @return
@@ -253,17 +249,17 @@ public class ProcedureAction {
 	public ModelAndView viewMyList(String page,HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		
-		List<Map<String,String>> procedureList = null;//Ò»Ò³5ï¿½ï¿½
+		List<Map<String,String>> procedureList = null;//Ò»Ò³5¸ö
 		int allPage = 0;
 		int currentPage = 0;
 		
-		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÏÖÔÚÒ³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½Ò³ï¿½ï¿½
+		//×ÜÒ³Êý
 		allPage = procedureService.getAllMyProcedurePage(jobId);
 		if(currentPage>allPage && allPage!=0){
 			currentPage = allPage;
@@ -276,11 +272,11 @@ public class ProcedureAction {
 		if(tempList!=null){
 			for(int i=0;i<tempList.size();i++){
 				Map<String,String> map = new HashMap<String,String>();
-				map.put("id", ""+(int)tempList.get(i).get("id"));//ï¿½ï¿½ï¿½
-				map.put("name", (String)tempList.get(i).get("name"));//ï¿½ï¿½ï¿½ï¿½
-				map.put("produceName", (String)tempList.get(i).get("projectNameTitle"));//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-				map.put("createDate", sdf.format((Date)tempList.get(i).get("createDate")));//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-				map.put("createPerson", userServer.getUserNameById((String)tempList.get(i).get("createPerson")));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				map.put("id", ""+(int)tempList.get(i).get("id"));//±àºÅ
+				map.put("name", (String)tempList.get(i).get("name"));//Ãû³Æ
+				map.put("produceName", (String)tempList.get(i).get("projectNameTitle"));//ÏîÄ¿Ãû³Æ
+				map.put("createDate", sdf.format((Date)tempList.get(i).get("createDate")));//´´½¨Ê±¼ä
+				map.put("createPerson", userServer.getUserNameById((String)tempList.get(i).get("createPerson")));//´´½¨ÈË
 				map.put("status", ""+(int)tempList.get(i).get("status"));//×´Ì¬
 				procedureList.add(map);
 			}
@@ -289,7 +285,7 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/myProcedureList.jsp");
-		model.put("myPageTitle","ï¿½Òµï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½ï¿½Ð±ï¿½");
+		model.put("myPageTitle","ÎÒµÄÁ÷³Ì¡ª¡ªÁÐ±í");
 		model.put("myPageNav","2");
 		
 		model.put("mplProcedureList", procedureList);
@@ -299,7 +295,7 @@ public class ProcedureAction {
 	}
 	
 	/**
-	 * Ä£ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½
+	 * Ä£°åÁÐ±í½çÃæ
 	 * @param page
 	 * @param req
 	 * @return
@@ -311,20 +307,20 @@ public class ProcedureAction {
 		int allPage = 0;
 		int currentPage = 0;
 		boolean canAdd = true;
-		List<Map<String,String>> tableList = null;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		List<Map<String,String>> tableList = null;//±í¸ñÊý¾Ý
 		
-		//ï¿½ï¿½Í¨ï¿½Ã»ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½
+		//ÆÕÍ¨ÓÃ»§ÎÞ·¨Ìí¼Ó
 		if(userKind==UserInfo.KIND_MEMBER){
 			canAdd = false;
 		}
 		
-		//ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
+		//ÏÖÔÚÒ³Êý
 		if(page==null || page.length()==0){
 			currentPage = 1;
 		}else{
 			currentPage = Integer.parseInt(page);
 		}
-		//ï¿½ï¿½Ò³ï¿½ï¿½
+		//×ÜÒ³Êý
 		allPage = procedureService.getAllModelPage();
 		if(currentPage>allPage){
 			currentPage = allPage;
@@ -332,9 +328,9 @@ public class ProcedureAction {
 			currentPage = 1;
 		}
 
-		//ï¿½ï¿½È¡ï¿½Ð±ï¿½
+		//»ñÈ¡ÁÐ±í
 		List<Map<String,Object>> temp = procedureService.getAllModelByPage(currentPage);
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦ÀíÊý¾Ý
 		tableList = new ArrayList<Map<String,String>>();
 		for(int i=0;i<temp.size();i++){
 			Map<String,String> map = new HashMap<String,String>();
@@ -361,18 +357,18 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureModel.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½");
+		model.put("myPageTitle","Á÷³ÌÄ£°å");
 		model.put("myPageNav","3");
 		
-		model.put("pmCanAdd", canAdd);//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("pmTableList", tableList);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("allPage", allPage);//ï¿½ï¿½Ò³ï¿½ï¿½
-		model.put("currentPage", currentPage);//ï¿½ï¿½Ç°Ò³
+		model.put("pmCanAdd", canAdd);//ÊÇ·ñ¿ÉÒÔÌí¼Ó
+		model.put("pmTableList", tableList);//±í¸ñÊý¾Ý
+		model.put("allPage", allPage);//×ÜÒ³Êý
+		model.put("currentPage", currentPage);//µ±Ç°Ò³
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * Ä£ï¿½ï¿½à¼­
+	 * Ä£°å±à¼­
 	 * @param modelId
 	 * @param req
 	 * @return
@@ -381,22 +377,22 @@ public class ProcedureAction {
 	public ModelAndView viewModelEdit(String modelId,HttpServletRequest req){
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureModelEdit.jsp");
-		model.put("myPageTitle","ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½à¼­");
+		model.put("myPageTitle","Á÷³ÌÄ£°å±à¼­");
 		model.put("myPageNav","3");
 		
 		boolean isNew = true;
 		if(modelId==null || modelId.length()==0){
-			//ï¿½ï¿½ï¿½ï¿½Âµï¿½
+			//Ìí¼ÓÐÂµÄ
 			isNew = true;
 		}else{
-			//ï¿½à¼­ï¿½ï¿½ï¿½Þ¸Ä¾Éµï¿½
+			//±à¼­¡¢ÐÞ¸Ä¾ÉµÄ
 			isNew = false;
 			ModelProcedure mp = procedureService.getModelInfoAllById(Integer.parseInt(modelId));
 			
 			if(mp==null){
 				String url = req.getHeader("REFERER");
 				url = url.substring(url.indexOf("/procedure/"));
-				return JumpPrompt.jumpOfModelAndView(url, "Ã»ï¿½ï¿½IDÎªï¿½ï¿½"+modelId+"ï¿½ï¿½ï¿½ï¿½Ä£ï¿½å£¡");
+				return JumpPrompt.jumpOfModelAndView(url, "Ã»ÓÐIDÎª¡°"+modelId+"¡±µÄÄ£°å£¡");
 			}
 			String name = mp.getName();
 			String introduction = mp.getIntroduction();
@@ -404,13 +400,13 @@ public class ProcedureAction {
 			String remark = mp.getRemark();
 			String title = mp.getTitle();
 			String produceName = mp.getProjectName();
-			int enclosure = mp.getEnclosure();//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½
+			int enclosure = mp.getEnclosure();//ÉÏ´«¸½¼þ
 			Map<Integer,Map<String,Object>> blankMap = null;
 			Map<Integer,Map<String,Object>> processMap = null;
 			
 			blankMap = new HashMap<Integer,Map<String,Object>>();
 			processMap = new HashMap<Integer,Map<String,Object>>();
-			//ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½
+			//ÌîÑ¡ÏîÁÐ±í
 			ModelOption[] opts = mp.getOption();
 			for(int i=0;i<opts.length;i++){
 				Map<String,Object> map = new HashMap<String,Object>();
@@ -422,7 +418,7 @@ public class ProcedureAction {
 				}
 				blankMap.put(opts[i].getOrder(), map);
 			}
-			//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+			//Á÷³ÌÁÐ±í
 			ModelShen[] ss = mp.getShen();
 //			System.out.println(ss.length);
 			for(int i=0;i<ss.length;i++){
@@ -445,15 +441,15 @@ public class ProcedureAction {
 			model.put("pmeTitle", title);
 			model.put("pmeProduceName", produceName);
 			model.put("pmeEnclosure", enclosure);
-			model.put("pmeBlankMap", blankMap);//ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Ð±ï¿½
-			model.put("pmeProcessMap", processMap);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+			model.put("pmeBlankMap", blankMap);//ÌîÑ¡ÏîÁÐ±í
+			model.put("pmeProcessMap", processMap);//Á÷³ÌÁÐ±í
 		}
-		model.put("pmeIsNew", isNew);//ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Âµï¿½
+		model.put("pmeIsNew", isNew);//ÊÇ·ñÊÇÐÂµÄ
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÎÒÌá½»µÄÏêÇé
 	 * @param submitId
 	 * @param req
 	 * @return
@@ -463,33 +459,33 @@ public class ProcedureAction {
 		String backUrl = req.getHeader("REFERER");
 		backUrl = backUrl.substring(backUrl.indexOf("/procedure/"));
 		if(submitId==null || submitId.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½é¿´Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "²é¿´Ê§°Ü¡££¨²ÎÊý´íÎó£©");
 		}
 		
 		ProcedureSubmit pSubmit = null;
 		pSubmit = procedureService.getMySubmitAllInfoById(Integer.parseInt(submitId));
 		if(pSubmit==null){
-			return JumpPrompt.jumpOfModelAndView("/procedure/myList.do", "ï¿½é¿´Ê§ï¿½Ü¡ï¿½ï¿½ï¿½Ã»ï¿½Òµï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/procedure/myList.do", "²é¿´Ê§°Ü¡££¨Ã»ÕÒµ½¶ÔÓ¦µÄÁ÷³Ì£©");
 		}
 		
 		Map<Integer,Map<String,String>> tblankMap = null;
 		Map<Integer,Map<String,Object>> tprocedureMap = null;
 		
-		String tname = pSubmit.getName() + "ï¿½ï¿½ï¿½ï¿½";//XXXXXï¿½ï¿½ï¿½Ì±ï¿½
-		String tproduceNameTitle = pSubmit.getProjectName();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		String tproduceName = pSubmit.getProjectNameTitle();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tidStr = "A"+pSubmit.getId();//ï¿½ï¿½ï¿½
-		String tid = ""+pSubmit.getId();//ï¿½ï¿½ï¿½
-		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//ï¿½á½»ï¿½ï¿½
-		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		String tremark = pSubmit.getRemark();//ï¿½ï¿½×¢
-		String tshowFileName = pSubmit.getShowFileName();//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		String tfileName = pSubmit.getFileName();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		String tpart = pSubmit.getPartName();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tgroup = pSubmit.getGroupName();//ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+		String tname = pSubmit.getName() + "Á÷³Ì";//XXXXXÁ÷³Ì±í
+		String tproduceNameTitle = pSubmit.getProjectName();//ÏîÄ¿Ãû³Æ
+		String tproduceName = pSubmit.getProjectNameTitle();//ÏîÄ¿Ãû³ÆÄÚÈÝ
+		String tidStr = "A"+pSubmit.getId();//±àºÅ
+		String tid = ""+pSubmit.getId();//±àºÅ
+		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//Ìá½»ÈË
+		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ÉêÇëÊ±¼ä
+		String tremark = pSubmit.getRemark();//±¸×¢
+		String tshowFileName = pSubmit.getShowFileName();//ÉÏ´«µÄÎÄ¼þÃû
+		String tfileName = pSubmit.getFileName();//·þÎñÆ÷ÉÏµÄÎÄ¼þÃû
+		String tpart = pSubmit.getPartName();//ËùÊô²¿ÃÅ
+		String tgroup = pSubmit.getGroupName();//ËùÊôÐ¡×é
 		int status = pSubmit.getStatus();
 
-		//ï¿½ï¿½Ñ¡
+		//ÌîÑ¡
 		ProcedureOption[] opts = pSubmit.getOpts();
 		if(opts!=null){
 			tblankMap = new HashMap<Integer,Map<String,String>>();
@@ -502,7 +498,7 @@ public class ProcedureAction {
 		}
 		
 		
-		//ï¿½ï¿½ï¿½ï¿½
+		//ÉóÅú
 		ProcedureShen[] shens = pSubmit.getShens();
 //		System.out.println(shens);
 		tprocedureMap = new HashMap<Integer,Map<String,Object>>();
@@ -529,31 +525,31 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/myProcedureDetail.jsp");
-		model.put("myPageTitle","ï¿½Òµï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½ï¿½é¿´");
+		model.put("myPageTitle","ÎÒµÄÁ÷³Ì¡ª¡ª²é¿´");
 		model.put("myPageNav","2");
 		
 		
-		model.put("mpdBackUrl", backUrl);//ï¿½ï¿½Ò»ï¿½ï¿½Â·ï¿½ï¿½
-		model.put("mpdStatus", status);//ï¿½ï¿½ï¿½ï¿½×´Ì¬
-		model.put("mpdTname", tname);//XXXXXï¿½ï¿½ï¿½Ì±ï¿½
-		model.put("mpdProduceName", tproduceName);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		model.put("mpdProduceNameTitle", tproduceNameTitle);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("mpdId", tid);//ï¿½ï¿½ï¿½
-		model.put("mpdIdStr", tidStr);//ï¿½ï¿½Å´ï¿½
-		model.put("mpdCreatePerson", tcreatePerson);//ï¿½á½»ï¿½ï¿½
-		model.put("mpdCreateDate", tcreateDate);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		model.put("mpdRemark", tremark);//ï¿½ï¿½×¢
-		model.put("mpdShowFileName", tshowFileName);//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		model.put("mpdFileName", tfileName);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		model.put("mpdPart", tpart);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("mpdGroup", tgroup);//ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
-		model.put("mpdBlankMap", tblankMap);//Ð¡ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("mpdProcedureMap", tprocedureMap);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+		model.put("mpdBackUrl", backUrl);//ÉÏÒ»¼¶Â·¾¶
+		model.put("mpdStatus", status);//Á÷³Ì×´Ì¬
+		model.put("mpdTname", tname);//XXXXXÁ÷³Ì±í
+		model.put("mpdProduceName", tproduceName);//ÏîÄ¿Ãû³Æ
+		model.put("mpdProduceNameTitle", tproduceNameTitle);//ÏîÄ¿Ãû³ÆÄÚÈÝ
+		model.put("mpdId", tid);//±àºÅ
+		model.put("mpdIdStr", tidStr);//±àºÅ´®
+		model.put("mpdCreatePerson", tcreatePerson);//Ìá½»ÈË
+		model.put("mpdCreateDate", tcreateDate);//ÉêÇëÊ±¼ä
+		model.put("mpdRemark", tremark);//±¸×¢
+		model.put("mpdShowFileName", tshowFileName);//ÉÏ´«µÄÎÄ¼þÃû
+		model.put("mpdFileName", tfileName);//·þÎñÆ÷ÉÏµÄÎÄ¼þÃû
+		model.put("mpdPart", tpart);//ËùÊô²¿ÃÅ
+		model.put("mpdGroup", tgroup);//ËùÊôÐ¡×é
+		model.put("mpdBlankMap", tblankMap);//Ð¡ÏîÁÐ±í
+		model.put("mpdProcedureMap", tprocedureMap);//Á÷³ÌÁÐ±í
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	/**
-	 * ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * ÐèÒª´¦ÀíÏêÇé
 	 * @param submitId
 	 * @param req
 	 * @return
@@ -564,33 +560,33 @@ public class ProcedureAction {
 		String backUrl = req.getHeader("REFERER");
 		backUrl = backUrl.substring(backUrl.indexOf("/procedure/"));
 		if(submitId==null || submitId.length()==0){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "ï¿½é¿´Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "²é¿´Ê§°Ü¡££¨²ÎÊý´íÎó£©");
 		}
 		
 		ProcedureSubmit pSubmit = null;
 		
 		pSubmit = procedureService.getMySubmitAllInfoById(Integer.parseInt(submitId));
 		if(pSubmit==null){
-			return JumpPrompt.jumpOfModelAndView("/procedure/needToDealList.do", "ï¿½é¿´Ê§ï¿½Ü¡ï¿½ï¿½ï¿½Ã»ï¿½Òµï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½Ì£ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/procedure/needToDealList.do", "²é¿´Ê§°Ü¡££¨Ã»ÕÒµ½¶ÔÓ¦µÄÁ÷³Ì£©");
 		}
 		
 		Map<Integer,Map<String,String>> tblankMap = null;
 		Map<Integer,Map<String,Object>> tprocedureMap = null;
 		
-		String tname = pSubmit.getName() + "ï¿½ï¿½ï¿½ï¿½";//XXXXXï¿½ï¿½ï¿½Ì±ï¿½
-		String tproduceName = pSubmit.getProjectName();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		String tproduceNameTitle = pSubmit.getProjectNameTitle();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tid = "A"+pSubmit.getId();//ï¿½ï¿½ï¿½
-		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//ï¿½á½»ï¿½ï¿½
-		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		String tremark = pSubmit.getRemark();//ï¿½ï¿½×¢
-		String tshowFileName = pSubmit.getShowFileName();//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		String tfileName = pSubmit.getFileName();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		String tpart = pSubmit.getPartName();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tgroup = pSubmit.getGroupName();//ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+		String tname = pSubmit.getName() + "Á÷³Ì";//XXXXXÁ÷³Ì±í
+		String tproduceName = pSubmit.getProjectName();//ÏîÄ¿Ãû³Æ
+		String tproduceNameTitle = pSubmit.getProjectNameTitle();//ÏîÄ¿Ãû³ÆÄÚÈÝ
+		String tid = "A"+pSubmit.getId();//±àºÅ
+		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//Ìá½»ÈË
+		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ÉêÇëÊ±¼ä
+		String tremark = pSubmit.getRemark();//±¸×¢
+		String tshowFileName = pSubmit.getShowFileName();//ÉÏ´«µÄÎÄ¼þÃû
+		String tfileName = pSubmit.getFileName();//·þÎñÆ÷ÉÏµÄÎÄ¼þÃû
+		String tpart = pSubmit.getPartName();//ËùÊô²¿ÃÅ
+		String tgroup = pSubmit.getGroupName();//ËùÊôÐ¡×é
 		int status = pSubmit.getStatus();
 
-		//ï¿½ï¿½Ñ¡
+		//ÌîÑ¡
 		ProcedureOption[] opts = pSubmit.getOpts();
 		if(opts!=null){
 			tblankMap = new HashMap<Integer,Map<String,String>>();
@@ -602,7 +598,7 @@ public class ProcedureAction {
 			}
 		}
 		
-		//ï¿½ï¿½ï¿½ï¿½
+		//ÉóÅú
 		ProcedureShen[] shens = pSubmit.getShens();
 //		System.out.println(shens);
 		tprocedureMap = new HashMap<Integer,Map<String,Object>>();
@@ -634,31 +630,31 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureDealEdit.jsp");
-		model.put("myPageTitle","ï¿½è´¦ï¿½ï¿½ï¿½ï¿½ï¿½Ì¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+		model.put("myPageTitle","Ðè´¦ÀíÁ÷³Ì¡ª¡ª´¦Àí");
 		model.put("myPageNav","4");
 		
-		model.put("pdeBackUrl", backUrl);//ï¿½ï¿½Ò»ï¿½ï¿½Â·ï¿½ï¿½
-		model.put("pdeStatus", status);//ï¿½ï¿½ï¿½ï¿½×´Ì¬
-		model.put("pdeTname", tname);//XXXXXï¿½ï¿½ï¿½Ì±ï¿½
-		model.put("pdeProduceName", tproduceName);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		model.put("pdeProduceNameTitle", tproduceNameTitle);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("pdeId", tid);//ï¿½ï¿½ï¿½
-		model.put("pdeCreatePerson", tcreatePerson);//ï¿½á½»ï¿½ï¿½
-		model.put("pdeCreateDate", tcreateDate);//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		model.put("pdeRemark", tremark);//ï¿½ï¿½×¢
-		model.put("pdeShowFileName", tshowFileName);//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		model.put("pdeFileName", tfileName);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		model.put("pdePart", tpart);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		model.put("pdeGroup", tgroup);//ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
-		model.put("pdeBlankMap", tblankMap);//Ð¡ï¿½ï¿½ï¿½Ð±ï¿½
-		model.put("pdeProcedureMap", tprocedureMap);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+		model.put("pdeBackUrl", backUrl);//ÉÏÒ»¼¶Â·¾¶
+		model.put("pdeStatus", status);//Á÷³Ì×´Ì¬
+		model.put("pdeTname", tname);//XXXXXÁ÷³Ì±í
+		model.put("pdeProduceName", tproduceName);//ÏîÄ¿Ãû³Æ
+		model.put("pdeProduceNameTitle", tproduceNameTitle);//ÏîÄ¿Ãû³ÆÄÚÈÝ
+		model.put("pdeId", tid);//±àºÅ
+		model.put("pdeCreatePerson", tcreatePerson);//Ìá½»ÈË
+		model.put("pdeCreateDate", tcreateDate);//ÉêÇëÊ±¼ä
+		model.put("pdeRemark", tremark);//±¸×¢
+		model.put("pdeShowFileName", tshowFileName);//ÉÏ´«µÄÎÄ¼þÃû
+		model.put("pdeFileName", tfileName);//·þÎñÆ÷ÉÏµÄÎÄ¼þÃû
+		model.put("pdePart", tpart);//ËùÊô²¿ÃÅ
+		model.put("pdeGroup", tgroup);//ËùÊôÐ¡×é
+		model.put("pdeBlankMap", tblankMap);//Ð¡ÏîÁÐ±í
+		model.put("pdeProcedureMap", tprocedureMap);//Á÷³ÌÁÐ±í
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	
 	
 	/**
-	 * ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½Ð´ï¿½ï¿½ 
+	 * ÐÂµÄÁ÷³ÌÌá½»ÌîÐ´±í 
 	 * @param modelId
 	 * @param req
 	 * @return
@@ -668,17 +664,17 @@ public class ProcedureAction {
 		if(modelId==null || modelId.length()==0){
 			String url = req.getHeader("REFERER");
 			url = url.substring(url.indexOf("/procedure/"));
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "Ìá½»²ÎÊý´íÎó");
 		}
 		ModelProcedure modelP = procedureService.getModelInfoAllById(Integer.parseInt(modelId));
 		
-		String title = modelP.getTitle();//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		String produceName = modelP.getProjectName();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		String illustrate = modelP.getIllustrate();//Ëµï¿½ï¿½
-		int enclosure = modelP.getEnclosure();//ï¿½Ç·ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
-		Map<Integer,Map<String,Object>> blankMap = null;//Ð¡ï¿½ï¿½  Map<Ñ¡ï¿½ï¿½ï¿½Ë³ï¿½ï¿½,Map<key,value>>
+		String title = modelP.getTitle();//±í¸ñÌâÍ·
+		String produceName = modelP.getProjectName();//ÏîÄ¿Ãû³Æ
+		String illustrate = modelP.getIllustrate();//ËµÃ÷
+		int enclosure = modelP.getEnclosure();//ÊÇ·ñÓÐ¸½¼þ
+		Map<Integer,Map<String,Object>> blankMap = null;//Ð¡Ïî  Map<Ñ¡ÏîµÄË³Ðò,Map<key,value>>
 
-		//ï¿½ï¿½ï¿½ï¿½
+		//Êý¾Ý
 		ModelOption[] mp = modelP.getOption();
 		blankMap = new HashMap<Integer,Map<String,Object>>();
 		if(mp!=null){
@@ -699,35 +695,35 @@ public class ProcedureAction {
 		
 		Map<String,Object> model = new HashMap<String,Object>();
 		model.put("myPageUrlName","procedure/procedureSubmitEdit.jsp");
-		model.put("myPageTitle","ï¿½ï¿½Ð´ï¿½ï¿½ï¿½Ì±ï¿½");
+		model.put("myPageTitle","ÌîÐ´Á÷³Ì±í");
 		model.put("myPageNav","1");
 		
-		model.put("pseModelId", modelId);//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		model.put("pseTitle", title);//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
-		model.put("pseProduceName", produceName);//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		model.put("pseIllustrate", illustrate);//Ëµï¿½ï¿½
-		model.put("pseEnclosure", enclosure);//ï¿½Ç·ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½
-		model.put("pseBlankMap", blankMap);//Ð¡ï¿½ï¿½   Map<Ñ¡ï¿½ï¿½ï¿½Ë³ï¿½ï¿½,Map<key,value>>
+		model.put("pseModelId", modelId);//±í¸ñÌâÍ·
+		model.put("pseTitle", title);//±í¸ñÌâÍ·
+		model.put("pseProduceName", produceName);//ÏîÄ¿Ãû³Æ
+		model.put("pseIllustrate", illustrate);//ËµÃ÷
+		model.put("pseEnclosure", enclosure);//ÊÇ·ñÓÐ¸½¼þ
+		model.put("pseBlankMap", blankMap);//Ð¡Ïî   Map<Ñ¡ÏîµÄË³Ðò,Map<key,value>>
 		return new ModelAndView("baseJsp",model);
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½Ó»ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	 * Ìí¼Ó»òÐÞ¸ÄÁ÷³ÌÄ£°å
 	 * @param req
 	 * @return
 	 */
 	@RequestMapping("addNewModelForm.do")
 	public ModelAndView addOrEditModel(HttpServletRequest req){
 		String jobId = (String)req.getSession().getAttribute("userJobId");
-		//ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö·
+		//»ñÈ¡ÉÏÒ»¸öµØÖ·
 		String beforUrl = req.getHeader("REFERER");
 		
 		beforUrl = beforUrl.substring(beforUrl.indexOf("/procedure/"));
-//		System.out.println("ï¿½ï¿½Ò»ï¿½ï¿½URI:"+beforUrl);
+//		System.out.println("ÉÏÒ»¸öURI:"+beforUrl);
 		int userKind = userServer.getUserKindByJobId(jobId);
 		if(userKind==UserInfo.KIND_MEMBER){
-			return JumpPrompt.jumpOfModelAndView("/home.do", "Ã»ï¿½ï¿½È¨ï¿½Þ£ï¿½ï¿½Þ·ï¿½Ê¹ï¿½Ã¡ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/home.do", "Ã»ÓÐÈ¨ÏÞ£¬ÎÞ·¨Ê¹ÓÃ¡£");
 		}
 		
 		
@@ -740,61 +736,61 @@ public class ProcedureAction {
 		if(modeId.equals("-1")){
 			isNew = true;
 		}else{
-			procedure.setId(Integer.parseInt(modeId));//ï¿½ï¿½ï¿½ï¿½ID
+			procedure.setId(Integer.parseInt(modeId));//ÉèÖÃID
 		}
 
-		String pname = req.getParameter("pname").trim();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		String pname = req.getParameter("pname").trim();//Á÷³ÌÃû³Æ
 		if(pname.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°Á÷³ÌÃû³Æ¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setName(pname);
-		String pdescribe = req.getParameter("pdescribe").trim();//ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½
+		String pdescribe = req.getParameter("pdescribe").trim();//Á÷³Ì¼ò½é
 		if(pdescribe.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½é¡±ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°Á÷³Ì¼ò½é¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setIntroduction(pdescribe);
-		String pillustration = req.getParameter("pillustration").trim();//ï¿½ï¿½Ð´Ëµï¿½ï¿½
+		String pillustration = req.getParameter("pillustration").trim();//ÌîÐ´ËµÃ÷
 		if(pillustration.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð´Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°ÌîÐ´ËµÃ÷¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setIllustrate(pillustration);
-		String premark = req.getParameter("premark").trim();//ï¿½ï¿½Ð´ï¿½ï¿½×¢
+		String premark = req.getParameter("premark").trim();//ÌîÐ´±¸×¢
 		if(premark.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°ÌîÐ´±¸×¢¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setRemark(premark);
-		String ptableTitle = req.getParameter("ptableTitle").trim();//ï¿½ï¿½ï¿½ï¿½ï¿½Í·
+		String ptableTitle = req.getParameter("ptableTitle").trim();//±í¸ñÌâÍ·
 		if(ptableTitle.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°±í¸ñÌâÍ·¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setTitle(ptableTitle);
-		String pprocedureTitle = req.getParameter("pprocedureTitle").trim();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
+		String pprocedureTitle = req.getParameter("pprocedureTitle").trim();//ÏîÄ¿Ãû³Æ
 		if(pprocedureTitle.length()==0){
-			return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°ÏîÄ¿Ãû³Æ¡±²»¿ÉÎª¿Õ");
 		}
 		procedure.setProjectName(pprocedureTitle);
-		String pattachmentNeed = req.getParameter("pattachmentNeed");//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªÎªintï¿½ï¿½
+		String pattachmentNeed = req.getParameter("pattachmentNeed");//ÉÏ´«¸½¼þ£¨Ðè×ªÎªint£©
 		procedure.setEnclosure(Integer.parseInt(pattachmentNeed));
-		procedure.setCreatePerson(jobId);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ID
+		procedure.setCreatePerson(jobId);//´´½¨ÈËID
 		
-		int processNumber = Integer.parseInt(req.getParameter("processNumber").trim());//ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½
-		int blankNumber = Integer.parseInt(req.getParameter("blankNumber").trim());//ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
-		int processNumberEnd = Integer.parseInt(req.getParameter("processNumberEnd").trim());//ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		int blankNumberEnd = Integer.parseInt(req.getParameter("blankNumberEnd").trim());//ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½
+		int processNumber = Integer.parseInt(req.getParameter("processNumber").trim());//Á÷³Ì¸öÊý
+		int blankNumber = Integer.parseInt(req.getParameter("blankNumber").trim());//ÌîÑ¡¸öÊý
+		int processNumberEnd = Integer.parseInt(req.getParameter("processNumberEnd").trim());//Á÷³Ì¸öÊý½áÊø
+		int blankNumberEnd = Integer.parseInt(req.getParameter("blankNumberEnd").trim());//ÌîÑ¡½áÊø
 		
 		opts = new ModelOption[blankNumber];
 		shens = new ModelShen[processNumber];
 		
 		int i = 1;
 		int all = 0;
-		//ï¿½ï¿½È¡ï¿½ï¿½Ñ¡ï¿½ï¿½
+		//¶ÁÈ¡ÌîÑ¡Ïî
 		while(i<=blankNumberEnd){
 			String nameTemp = req.getParameter("pinputName"+i).trim();
 			if(nameTemp.length()==0){
-				return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½"+(all+1)+"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°ÌîÑ¡Ïî"+(all+1)+"¡±²»¿ÉÎª¿Õ");
 			}
 			if(nameTemp==null || nameTemp.length()==0){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//²»´æÔÚ
 				i++;
 				continue;
 			}
@@ -803,9 +799,9 @@ public class ProcedureAction {
 			o.setName(nameTemp);
 			o.setMust(Integer.parseInt(req.getParameter("pinputMust"+i).trim()));
 			o.setOrder(all);
-			opts[all-1] = o;//ï¿½ï¿½ï¿½ï¿½
+			opts[all-1] = o;//´æÈë
 			if(all==blankNumber){
-				//ï¿½ï¿½ï¿½ï¿½
+				//¹»ÁË
 				break;
 			}
 			i++;
@@ -814,14 +810,14 @@ public class ProcedureAction {
 		
 		i = 1;
 		all = 0;
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+		//¶ÁÈ¡Á÷³Ì
 		while(i<=processNumberEnd){
 			String nameTemp = req.getParameter("pprocessName"+i).trim();
 			if(nameTemp.length()==0){
-				return JumpPrompt.jumpOfModelAndView(beforUrl, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"+(all+1)+"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView(beforUrl, "´´½¨Ê§°Ü¡£¡°Á÷³Ì"+(all+1)+"¡±²»¿ÉÎª¿Õ");
 			}
 			if(nameTemp==null || nameTemp.length()==0){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//²»´æÔÚ
 				i++;
 				continue;
 			}
@@ -832,9 +828,9 @@ public class ProcedureAction {
 			s.setGroup(Integer.parseInt(req.getParameter("pgroup"+i).trim()));
 			s.setPerson(req.getParameter("pperson"+i).trim());
 			s.setOrder(all);
-			shens[all-1] = s;//ï¿½ï¿½ï¿½ï¿½
+			shens[all-1] = s;//´æÈë
 			if(all==processNumber){
-				//ï¿½ï¿½ï¿½ï¿½
+				//¹»ÁË
 				break;
 			}
 			i++;
@@ -843,28 +839,28 @@ public class ProcedureAction {
 		
 		try{
 			if(isNew){
-				//ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½
+				//½øÐÐ´´½¨
 				if(procedureService.createNewProcedure(procedure)){
-					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "´´½¨³É¹¦£¡");
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "´´½¨Ê§°Ü¡£");
 				}
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½
+				//½øÐÐÐÞ¸Ä
 				if(procedureService.updateProcedure(procedure)){
-					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ï¿½Þ¸Ä³É¹ï¿½ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ÐÞ¸Ä³É¹¦£¡");
 				}else{
-					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ï¿½Þ¸Ä³É¹ï¿½ï¿½ï¿½");
+					return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ÐÞ¸Ä³É¹¦£¡");
 				}
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/procedure/modelList.do", "´´½¨Ê§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * É¾ï¿½ï¿½Ä£ï¿½ï¿½
+	 * É¾³ýÄ£°å
 	 * @param modelId
 	 * @param req
 	 * @return
@@ -874,38 +870,38 @@ public class ProcedureAction {
 		String jobId = (String)req.getSession().getAttribute("userJobId");
 		String url = req.getHeader("REFERER");
 		url = url.substring(url.indexOf("/procedure/"));
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
-		String returnStr = "(ï¿½ï¿½oï¿½ï¿½)Å¶ï¿½ï¿½";
+		//»ñÈ¡ÄÚÈÝ
+		String returnStr = "(¡Ño¡Ñ)Å¶£¿";
 		
 		String create = procedureService.getUserOfProcedureWhoCreateById(Integer.parseInt(modelId));
 		if(userServer.getUserKindByJobId(create)>userServer.getUserKindByJobId(jobId)){
-			//ï¿½ï¿½È¨ï¿½ï¿½
+			//¸ßÈ¨ÏÞ
 		}else if(create.equals(jobId)){
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½
+			//´´½¨Õß×Ô¼º
 		}else{
-			returnStr = "Ã»ï¿½ï¿½É¾ï¿½ï¿½È¨ï¿½Þ¡ï¿½";
+			returnStr = "Ã»ÓÐÉ¾³ýÈ¨ÏÞ¡£";
 			return JumpPrompt.jumpOfModelAndView(url, returnStr);
 		}
 		if(modelId!=null && modelId.length()!=0){
 			try {
 				if(procedureService.delProcedureById(Integer.parseInt(modelId))){
-					returnStr = "É¾ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½";
+					returnStr = "É¾³ý³É¹¦£¡";
 				}else{
-					returnStr = "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½";
+					returnStr = "É¾³ýÊ§°Ü¡£";
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				JumpPrompt.jumpOfModelAndView(url, "É¾ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+				JumpPrompt.jumpOfModelAndView(url, "É¾³ýÊ§°Ü¡£");
 			}
 		}else{
-			returnStr = "É¾ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½";
+			returnStr = "É¾³ýÊ±£¬´«ÈëÐÅÏ¢´íÎó";
 		}
 		return JumpPrompt.jumpOfModelAndView(url, returnStr);
 	}
 	
 	
 	/**
-	 * ï¿½ï¿½Ó»ï¿½ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+	 * Ìí¼Ó»òÐÞ¸ÄÁ÷³ÌÄ£°å
 	 * @param enclosure
 	 * @param req
 	 * @return
@@ -921,19 +917,19 @@ public class ProcedureAction {
 //			System.out.println(enclosure.getOriginalFilename());
 //			System.out.println(enclosure.getSize());
 		}else{
-//			System.out.println("enclosureï¿½Ç¿ï¿½");
+//			System.out.println("enclosureÊÇ¿Õ");
 		}
 		
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½
+		//×îÖÕÐèÒª±£´æµÄ
 		ProcedureSubmit procedureSubmit = new ProcedureSubmit();
-		//ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+		//Á÷³ÌÄ£°å
 		ModelProcedure modelProcedure = new ModelProcedure();
 		
 		String modelId = req.getParameter("modelId");
 		String name = req.getParameter("ptprocedureName");
 		
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½
+		//»ñÈ¡Á÷³ÌÄ£°å
 		modelProcedure = procedureService.getModelInfoAllById(Integer.parseInt(modelId));
 		procedureSubmit.setName(modelProcedure.getName());
 		procedureSubmit.setProjectNameTitle(modelProcedure.getProjectName());
@@ -949,31 +945,31 @@ public class ProcedureAction {
 		
 		
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ñ¡ Ë³ï¿½ò¡¢±ï¿½ï¿½â¡¢ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+		//»ñµÃÐèÒªÌîÑ¡ Ë³Ðò¡¢±êÌâ¡¢ÊÇ·ñ±ØÐë
 		ModelOption[] opts = modelProcedure.getOption();
-		ProcedureOption[] pOpts = new ProcedureOption[opts.length];//ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½
+		ProcedureOption[] pOpts = new ProcedureOption[opts.length];//ÐòºÅ±£´æµÄ
 		for(int i=0;i<opts.length;i++){
 			ProcedureOption o = new ProcedureOption();
-			//ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//µÃµ½µÄÄÚÈÝ
 //			System.out.println(i+":"+req.getParameter("ptsmallName"+opts[i].getId()));
 //			System.out.println(opts[i].getId());
 			o.setContent(req.getParameter("ptsmallName"+opts[i].getId()));
 			o.setOrder(opts[i].getOrder());
 			o.setTitle(opts[i].getName());
 			if(opts[i].getMust()==1){
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				//¼ì²é±ØÌî
 				if(o.getContent()==null){
-					//ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½
-					return JumpPrompt.jumpOfModelAndView(url, "ï¿½á½»Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î¡°"+opts[i].getName()+"ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½");
+					//±ØÌîµÄÃ»ÓÐÌî
+					return JumpPrompt.jumpOfModelAndView(url, "Ìá½»Ê§°Ü¡££¨±ØÌîÏî¡°"+opts[i].getName()+"¡±Ã»ÓÐÌîÐ´£©");
 				}
 			}
 			pOpts[i]=o;
 		}
 		procedureSubmit.setOpts(pOpts);
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//´¦ÀíÉóÅú
 		ModelShen[] shens = modelProcedure.getShen();
-		ProcedureShen[] pShens = new ProcedureShen[shens.length];//ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½
+		ProcedureShen[] pShens = new ProcedureShen[shens.length];//ÐòºÅ±£´æµÄ
 		for(int i=0;i<shens.length;i++){
 			ProcedureShen ps = new ProcedureShen();
 			ps.setUserGroup(shens[i].getGroup());
@@ -991,22 +987,22 @@ public class ProcedureAction {
 		}
 		procedureSubmit.setShens(pShens);
 		
-		//È±ï¿½Ù´ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+		//È±ÉÙ´«ÎÄ¼þÃû¡¢ÕæÎÄ¼þÃû
 		
-		//ï¿½ï¿½È¡ï¿½Ä¼ï¿½
+		//»ñÈ¡ÎÄ¼þ
 		File file = null;
 		if(enclosure.getSize()!=0){
-			//ï¿½ï¿½ï¿½Ä¼ï¿½
-			//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+			//ÓÐÎÄ¼þ
+			//ÉÏ´«µÄÎÄ¼þÃû
 			procedureSubmit.setShowFileName(enclosure.getOriginalFilename());
 			ServletContext application = req.getServletContext();
 			String realPath = application.getRealPath(filePath);
 			int index = enclosure.getOriginalFilename().lastIndexOf(".");
 			String suffix = enclosure.getOriginalFilename().substring(index+1);
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½jobId_1234567891235646.ï¿½ï¿½×º
+			//ÃüÃû¸ñÊ½£ºjobId_1234567891235646.ºó×º
 			String realFileName = jobId+"_"+new Date().getTime()+"."+suffix;
 			String fileName = realPath+File.separator+realFileName;
-			//ï¿½ï¿½È¡ï¿½Ä¼ï¿½
+			//»ñÈ¡ÎÄ¼þ
 			file = new File(fileName);
 			try {
 				File fileTemp = new File(realPath);
@@ -1020,30 +1016,30 @@ public class ProcedureAction {
 				e.printStackTrace();
 			}
 		}
-		//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
+		//ÉèÖÃÊ±¼ä
 		procedureSubmit.setCreateDate(new Date());
 		
-		//ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½Ý¿ï¿½
+		//±£´æµ½Êý¾Ý¿â
 		try {
 			if(procedureService.procedureSubmit(procedureSubmit)){
-				//ï¿½ï¿½ï¿½ï¿½É¹ï¿½
-				return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "ï¿½ï¿½ï¿½ï¿½ï¿½á½»ï¿½É¹ï¿½ï¿½ï¿½");
+				//±£´æ³É¹¦
+				return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "Á÷³ÌÌá½»³É¹¦£¡");
 			}else{
-				//ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
-				//É¾ï¿½ï¿½ï¿½Ä¼ï¿½
+				//±£´æÊ§°Ü
+				//É¾³ýÎÄ¼þ
 				if(file!=null){
 					file.delete();
 				}
-				return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "ï¿½ï¿½ï¿½ï¿½ï¿½á½»Ê§ï¿½ï¿½");
+				return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "Á÷³ÌÌá½»Ê§°Ü");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "ï¿½ï¿½ï¿½ï¿½ï¿½á½»Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView("/procedure/submitList.do", "Á÷³ÌÌá½»Ê§°Ü£¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á½»
+	 * ´¦ÀíÁ÷³ÌÌá½»
 	 * @param proId
 	 * @param spid
 	 * @param content
@@ -1062,16 +1058,16 @@ public class ProcedureAction {
 					if(pass!=null && pass.length()!=0){
 						
 					}else{
-						return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+						return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡££¨È±ÉÙÒâ¼û£©");
 					}
 				}else{
-					return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½");
+					return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡££¨È±ÉÙÒâ¼ûÄÚÈÝ£©");
 				}
 			}else{
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½Ù¹ï¿½ï¿½ÌºÅ£ï¿½");
+				return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡££¨È±ÉÙ¹ý³ÌºÅ£©");
 			}
 		}else{
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½È±ï¿½ï¿½ï¿½ï¿½ï¿½ÌºÅ£ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡££¨È±ÉÙÁ÷³ÌºÅ£©");
 		}
 		
 		ProcedureShen shen = new ProcedureShen();
@@ -1085,31 +1081,31 @@ public class ProcedureAction {
 		}
 		shen.setTime(new Date());
 		
-		//ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½Ý¿ï¿½
+		//±£´æµ½Êý¾Ý¿â
 		
 		try {
 			if(procedureService.dealOneProcedure(shen,jobId)){
-				//ï¿½É¹ï¿½
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
+				//³É¹¦
+				return JumpPrompt.jumpOfModelAndView(url, "ÉóÅú³É¹¦£¡");
 			}else{
-				//Ê§ï¿½ï¿½
-				return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½");
+				//Ê§°Ü
+				return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡£");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JumpPrompt.jumpOfModelAndView(url, "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì³£ï¿½ï¿½");
+			return JumpPrompt.jumpOfModelAndView(url, "ÉóÅúÊ§°Ü¡££¨·þÎñÆ÷Òì³££©");
 		}
 	}
 	
 	/**
-	 * /ï¿½ï¿½ï¿½ï¿½wordï¿½Äµï¿½
+	 * /ÏÂÔØwordÎÄµµ
 	 * @param submitId
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping("downFileOfWord.do")
 	public void downFileToWord(String submitId,HttpServletRequest request,HttpServletResponse response){
-		String showFile = "ï¿½ï¿½ï¿½Äµï¿½.doc";
+		String showFile = "ºÅÎÄµµ.doc";
 		String tempFileName = submitId +"_"+ System.currentTimeMillis();
 		if(submitId==null || submitId.length()==0){
 			return;
@@ -1127,16 +1123,16 @@ public class ProcedureAction {
 		Map<Integer,Map<String,String>> shen = null;
 
 		
-		String tname = pSubmit.getName() + "ï¿½ï¿½ï¿½ï¿½";//XXXXXï¿½ï¿½ï¿½Ì±ï¿½
-		String tproduceNameTitle = pSubmit.getProjectName();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½
-		String tproduceName = pSubmit.getProjectNameTitle();//ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tid = "A"+pSubmit.getId();//ï¿½ï¿½ï¿½
-		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//ï¿½á½»ï¿½ï¿½
-		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
-		String tremark = pSubmit.getRemark();//ï¿½ï¿½×¢
-		String tshowFileName = pSubmit.getShowFileName();//ï¿½Ï´ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		String tpart = pSubmit.getPartName();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		String tgroup = pSubmit.getGroupName();//ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½
+		String tname = pSubmit.getName() + "Á÷³Ì";//XXXXXÁ÷³Ì±í
+		String tproduceNameTitle = pSubmit.getProjectName();//ÏîÄ¿Ãû³Æ
+		String tproduceName = pSubmit.getProjectNameTitle();//ÏîÄ¿Ãû³ÆÄÚÈÝ
+		String tid = "A"+pSubmit.getId();//±àºÅ
+		String tcreatePerson = userServer.getUserNameById(pSubmit.getCreatePerson());//Ìá½»ÈË
+		String tcreateDate = sdf.format(pSubmit.getCreateDate());//ÉêÇëÊ±¼ä
+		String tremark = pSubmit.getRemark();//±¸×¢
+		String tshowFileName = pSubmit.getShowFileName();//ÉÏ´«µÄÎÄ¼þÃû
+		String tpart = pSubmit.getPartName();//ËùÊô²¿ÃÅ
+		String tgroup = pSubmit.getGroupName();//ËùÊôÐ¡×é
 		int status = pSubmit.getStatus();
 		
 		showFile = pSubmit.getId() + showFile;
@@ -1172,20 +1168,20 @@ public class ProcedureAction {
 		}
 //		for(int i=0;i<7;i++) {
 //			Map<String,String> map = new HashMap<>();
-//			map.put("title", "Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½"+i);
-//			map.put("content", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý°ï¿½"+i);
+//			map.put("title", "Ñ¡Ïî±êÌâ"+i);
+//			map.put("content", "ÎÒÊÇÄÚÈÝ°¡"+i);
 //			opt.add(map);
 //		}
 		
 //		for(int i=0;i<5;i++) {
 //			Map<String,String> map = new HashMap<>();
-//			map.put("name", "ï¿½ï¿½Ð´ï¿½ï¿½"+i);
-//			map.put("time", "2017ï¿½ï¿½11ï¿½ï¿½14ï¿½ï¿½10:57:4"+i);
-//			map.put("title", "ï¿½ï¿½ï¿½Ìºï¿½"+i);
-//			map.put("content", "Í¬ï¿½ï¿½ï¿½ï¿½"+i*6);
+//			map.put("name", "ÌîÐ´ÈË"+i);
+//			map.put("time", "2017Äê11ÔÂ14ÈÕ10:57:4"+i);
+//			map.put("title", "Á÷³ÌºÅ"+i);
+//			map.put("content", "Í¬ÒâÁË"+i*6);
 //			shen.add(map);
 //		}
-		//ï¿½ï¿½ï¿½ï¿½
+		//ÉóÅú
 		ProcedureShen[] shens = pSubmit.getShens();
 //		System.out.println(shens);
 		shen = new HashMap<Integer,Map<String,String>>();
@@ -1211,15 +1207,15 @@ public class ProcedureAction {
 		File file = new File(servletPath,tempFileName+".doc");
 //		System.out.println("\nAction->"+file.getAbsolutePath());
 		if(file.exists()){
-			response.setContentType("application/octet-stream;charset=UTF-8");// ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
-			response.addHeader("Content-Length", "" + file.length());//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+			response.setContentType("application/octet-stream;charset=UTF-8");// ÉèÖÃÇ¿ÖÆÏÂÔØ²»´ò¿ª
+			response.addHeader("Content-Length", "" + file.length());//ÎÄ¼þ³¤¶È
 			try {
 				String encodedFileName = new String(showFile.getBytes("utf-8"),"iso-8859-1");
 				response.addHeader("Content-Disposition",  "attachment;fileName=\"" +encodedFileName+"\"" );
 			} catch (UnsupportedEncodingException e1) {
 				response.addHeader("Content-Disposition",  "attachment;fileName=" +showFile);
 				e1.printStackTrace();
-			}//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+			}//ÉèÖÃÎÄ¼þÃû
 			OutputStream os = null;
 			FileInputStream fis = null;
 			try {
@@ -1249,7 +1245,7 @@ public class ProcedureAction {
 	}
 	
 	/**
-	 * ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+	 * ÏÂÔØÎÄ¼þ
 	 * @param showFile
 	 * @param realFile
 	 * @param req
@@ -1265,15 +1261,15 @@ public class ProcedureAction {
 		String fileName = realPath+File.separator+realFile;
 		File file = new File(fileName);
 		if(file.exists()){
-			response.setContentType("application/octet-stream;charset=UTF-8");// ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø²ï¿½ï¿½ï¿½
-			response.addHeader("Content-Length", "" + file.length());//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+			response.setContentType("application/octet-stream;charset=UTF-8");// ÉèÖÃÇ¿ÖÆÏÂÔØ²»´ò¿ª
+			response.addHeader("Content-Length", "" + file.length());//ÎÄ¼þ³¤¶È
 			try {
 				String encodedFileName = new String(showFile.getBytes("utf-8"),"iso-8859-1");
 				response.addHeader("Content-Disposition",  "attachment;fileName=\"" +encodedFileName+"\"" );
 			} catch (UnsupportedEncodingException e1) {
 				response.addHeader("Content-Disposition",  "attachment;fileName=" +showFile);
 				e1.printStackTrace();
-			}//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
+			}//ÉèÖÃÎÄ¼þÃû
 			OutputStream os = null;
 			FileInputStream fis = null;
 			try {
@@ -1287,17 +1283,15 @@ public class ProcedureAction {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}finally{
-				if(os!=null) {
+				if(os!=null)
 					try {
 						os.close();
 					}catch (IOException e) {e.printStackTrace();
 				}
-				}
-				if(fis!=null) {
+				if(fis!=null)
 					try {
 						fis.close();
 					}catch (IOException e) {e.printStackTrace();
-				}
 				}
 			}
 		}

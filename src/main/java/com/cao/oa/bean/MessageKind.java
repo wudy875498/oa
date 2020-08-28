@@ -1,7 +1,7 @@
 package com.cao.oa.bean;
 
 /**
- * 锟斤拷息锟斤拷锟斤拷
+ * 消息类型
  * @author DELL
  *
  */
